@@ -90,7 +90,6 @@ def writeOutData(samplePath = './data/sampleSubmission.csv'):
 	print('finish writing data', int(endTime-startTime), 's')
 
 if __name__ == "__main__":
-	global k, outputIdx
 	initialization()
 	print('k =',k)
 	print('output idx =',outputIdx)
