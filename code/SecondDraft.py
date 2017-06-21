@@ -43,8 +43,9 @@ def readInData(inPath):
 	return data
 
 def splitData(data, n = 10):
+	print('start splitting data')
 	p = 1.0/n
-	trainMask = data[:,i]!=0
+	trainMask = data!=0
 	testMask = trainMask.copy()
 	for i in range(nUsers):
 		for j in range(nItems):
@@ -56,7 +57,7 @@ def splitData(data, n = 10):
 					trainMask[i,j] = False
 	train = data.copy()
 	train[testMask] = 0
-	print('train num:',np.sum(trainMask),'test num:', np.sum(testMask))
+	print('finish splitting data train num:',np.sum(trainMask),'test num:', np.sum(testMask))
 	return train, testMask
 
 def fillInMissing(data):
