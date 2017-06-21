@@ -81,7 +81,7 @@ def SVD(data):
 	S[:min(nUsers,nItems), :min(nUsers,nItems)] = np.diag(s)
 	return U, S, Vt
 
-def prediction(U,S,Vt):
+def prediction(U,S,Vt,k):
 	print('start matrix multiplication')
 	Sk = S[:k,:k]
 	Ak = U[:,:k].dot(Sk).dot(Vt[:k,:])
@@ -113,15 +113,31 @@ def writeOutData(samplePath = './data/sampleSubmission.csv'):
 	endTime = time.time()
 	print('finish writing data', int(endTime-startTime), 's')
 
+def chooseK(data,n=10):
+	csvWriter = csv.writer(open('./log/k.csv','w',newline=''))
+	csvWriter.writerow(['k','RMSE'])
+	for k in range(20,1001,20):
+		print('k =',k)
+		train, testMask = splitData(data,n)
+		fillInMissing(train)
+		U, S, Vt = SVD(train)
+		Ak = prediction(U, S, Vt, k)
+		score = evaluation(data,Ak,testMask)
+		print('RMSE =',score)
+		csvWriter.writerow([k,score])
+
+
 if __name__ == "__main__":
 	initialization()
-	print('k =',k)
-	print('output idx =',outputIdx)
-	data = readInData('./data/data_train.csv')
-	train, testMask = splitData(data)
-	fillInMissing(train)
-	U, S, Vt = SVD(train)
-	Ak = prediction(U, S, Vt)
-	print(evaluation(data,Ak,testMask))
+	# print('k =',k)
+	# print('output idx =',outputIdx)
+	# data = readInData('./data/data_train.csv')
+	# train, testMask = splitData(data)
+	# fillInMissing(train)
+	# U, S, Vt = SVD(train)
+	# Ak = prediction(U, S, Vt)
+	# print('RMSE =',evaluation(data,Ak,testMask))
 	# writeOutData()
+	data = readInData('./data/data_train.csv')
+	chooseK(data)
 
