@@ -9,7 +9,7 @@ outputIdx = ''
 for i in range(1,len(argv)):
 	if argv[i].startswith('-k='):
 		k = int(argv[i][3:])
-	else if argv[i].startswith('-o='):
+	elif argv[i].startswith('-o='):
 		outputIdx = argv[i][3:]
 print('k =',k)
 print('output idx =',outputIdx)
