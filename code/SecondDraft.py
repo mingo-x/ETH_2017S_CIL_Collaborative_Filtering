@@ -4,6 +4,16 @@ import csv
 from sys import argv
 import time
 
+k = 1000
+outputIdx = ''
+for i in range(1,len(argv)):
+	if argv[i].startswith('-k='):
+		k = int(argv[i][3:])
+	else if argv[i].startswith('-o='):
+		outputIdx = argv[i][3:]
+print('k =',k)
+print('output idx =',outputIdx)
+
 # read in training data
 data = np.zeros((10000,1000))
 print('start reading data')
@@ -42,18 +52,16 @@ S[:1000, :1000] = np.diag(s)
 A = U.dot(S).dot(Vt)
 # whether two arrays are element-wise equal within a tolerance
 print('close?', np.allclose(data, A))
-k = 1000
+print('start matrix multiplication')
 Sk = S.copy()
 Sk[k:, k:] = 0
 Ak = U.dot(Sk).dot(Vt)
+print('finish matrix multiplication')
 
 # write prediction
 print('start writing data')
 csvReader = csv.reader(open('./data/sampleSubmission.csv',encoding='utf-8'))
-idx = ''
-if len(argv) > 1 :
-	idx = argv[1]
-csvWriter = csv.writer(open('./data/prediction'+idx+'.csv','w',newline=''))
+csvWriter = csv.writer(open('./data/prediction'+outputIdx+'.csv','w',newline=''))
 abort = True
 for row in csvReader:
 	if abort:
