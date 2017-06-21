@@ -117,14 +117,22 @@ def chooseK(data,n=10):
 	csvWriter = csv.writer(open('./log/k.csv','w',newline=''))
 	csvWriter.writerow(['k','RMSE'])
 	for k in range(20,1001,20):
+		startTime = time.time()
 		print('k =',k)
-		train, testMask = splitData(data,n)
-		fillInMissing(train)
-		U, S, Vt = SVD(train)
-		Ak = prediction(U, S, Vt, k)
-		score = evaluation(data,Ak,testMask)
-		print('RMSE =',score)
-		csvWriter.writerow([k,score])
+		scores = []
+		for i in range(n):
+			print('round',i+1)
+			train, testMask = splitData(data,n)
+			fillInMissing(train)
+			U, S, Vt = SVD(train)
+			Ak = prediction(U, S, Vt, k)
+			score = evaluation(data,Ak,testMask)
+			print(i+1,'RMSE =',score)
+			scores.append(score)
+		ave = np.mean(scores)
+		endTime = time.time()
+		print('average RMSE =', ave, int(endTime-startTime), 's')
+		csvWriter.writerow([k,ave])
 
 
 if __name__ == "__main__":
