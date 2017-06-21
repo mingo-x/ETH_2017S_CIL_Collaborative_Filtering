@@ -57,7 +57,7 @@ def splitData(data, n = 10):
 					trainMask[i,j] = False
 	train = data.copy()
 	train[testMask] = 0
-	print('finish splitting data train num:',np.sum(trainMask),'test num:', np.sum(testMask))
+	print('finish splitting data train num:',np.count_nonzero(train),'test num:', np.sum(testMask))
 	return train, testMask
 
 def fillInMissing(data):
@@ -88,6 +88,11 @@ def prediction(U,S,Vt):
 	print('finish matrix multiplication')
 	return Ak
 
+def evaluation(data,Ak,testMask):
+	sumSquare = np.sum(np.square(Ak-data)[testMask])
+	res = np.sqrt(sumSquare/np.count_nonzero(testMask))
+	return res
+
 def writeOutData(samplePath = './data/sampleSubmission.csv'):
 # write prediction
 	print('start writing data')
@@ -117,5 +122,6 @@ if __name__ == "__main__":
 	fillInMissing(train)
 	U, S, Vt = SVD(train)
 	Ak = prediction(U, S, Vt)
-	writeOutData()
+	print(evaluation(data,Ak,testMask))
+	# writeOutData()
 
