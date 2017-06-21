@@ -49,13 +49,12 @@ endTime = time.time()
 print('finish SVD', U.shape, s.shape, Vt.shape, int(endTime-startTime), 's')
 S = np.zeros((10000, 1000))
 S[:1000, :1000] = np.diag(s)
-A = U.dot(S).dot(Vt)
+# A = U.dot(S).dot(Vt)
 # whether two arrays are element-wise equal within a tolerance
-print('close?', np.allclose(data, A))
+# print('close?', np.allclose(data, A))
 print('start matrix multiplication')
-Sk = S.copy()
-Sk[k:, k:] = 0
-Ak = U.dot(Sk).dot(Vt)
+Sk = S[:k,:k]
+Ak = U[:,:k].dot(Sk).dot(Vt[:k,:])
 print('finish matrix multiplication')
 
 # write prediction
