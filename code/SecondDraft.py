@@ -3,6 +3,7 @@ import numpy as np
 import csv
 from sys import argv
 import time
+import random
 
 # globals
 global k, outputIdx
@@ -42,9 +43,21 @@ def readInData(inPath):
 	return data
 
 def splitData(data, n = 10):
-
-	return train, test
-
+	p = 1.0/n
+	trainMask = data[:,i]!=0
+	testMask = trainMask.copy()
+	for i in range(nUsers):
+		for j in range(nItems):
+			if trainMask[i,j]:
+				r = random.random()
+				if r > p:
+					testMask[i,j] = False
+				else:
+					trainMask[i,j] = False
+	train = data.copy()
+	train[testMask] = 0
+	print('train num:',np.sum(trainMask),'test num:', np.sum(testMask))
+	return train, testMask
 
 def fillInMissing(data):
 # fill in missing data
@@ -99,8 +112,9 @@ if __name__ == "__main__":
 	print('k =',k)
 	print('output idx =',outputIdx)
 	data = readInData('./data/data_train.csv')
-	fillInMissing(data)
-	U, S, Vt = SVD(data)
+	train, testMask = splitData(data)
+	fillInMissing(train)
+	U, S, Vt = SVD(train)
 	Ak = prediction(U, S, Vt)
 	writeOutData()
 
