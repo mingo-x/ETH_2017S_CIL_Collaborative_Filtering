@@ -27,7 +27,7 @@ for i in range(1000):
 	missing = data[:,i]==0
 	known = missing==False
 	mean_of_known = np.mean(data[known,i])
-	print("mean of col ",i+1,mean_of_known)
+	# print("mean of col ",i+1,mean_of_known)
 	data[missing,i] = mean_of_known
 print('finish filling in missing data')
 
@@ -39,13 +39,13 @@ endTime = time.time()
 print('finish SVD', U.shape, s.shape, Vt.shape, int(endTime-startTime), 's')
 S = np.zeros((10000, 1000))
 S[:1000, :1000] = np.diag(s)
-# whether two arrays are element-wise equal within a tolerance
 A = U.dot(S).dot(Vt)
-print('close?', np.allclose(data, U.dot(S).dot(Vt)))
-# k = 2
-# Sk = S.copy()
-# Sk[k:, k:] = 0
-# Ak = U.dot(Sk).dot(Vt)
+# whether two arrays are element-wise equal within a tolerance
+print('close?', np.allclose(data, A))
+k = 1000
+Sk = S.copy()
+Sk[k:, k:] = 0
+Ak = U.dot(Sk).dot(Vt)
 
 # write prediction
 print('start writing data')
@@ -64,5 +64,5 @@ for row in csvReader:
 	npos = idx.index('_')
 	i = int(idx[1:npos])-1
 	j = int(idx[npos+2:])-1
-	csvWriter.writerow([idx,A[i,j]])
+	csvWriter.writerow([idx,Ak[i,j]])
 	# print(idx,data[i,j])
