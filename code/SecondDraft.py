@@ -41,6 +41,11 @@ def readInData(inPath):
 	print('finish reading data', int(endTime-startTime), 's')
 	return data
 
+def splitData(data, n = 10):
+
+	return train, test
+
+
 def fillInMissing(data):
 # fill in missing data
 	print('start filling in missing data')
@@ -59,7 +64,7 @@ def SVD(data):
 	endTime = time.time()
 	print('finish SVD', U.shape, s.shape, Vt.shape, int(endTime-startTime), 's')
 	S = np.zeros((nUsers, nItems))
-	S[:nUsers, :nItems] = np.diag(s)
+	S[:min(nUsers,nItems), :min(nUsers,nItems)] = np.diag(s)
 	return U, S, Vt
 
 def prediction(U,S,Vt):
