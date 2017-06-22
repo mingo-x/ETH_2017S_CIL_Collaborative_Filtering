@@ -5,6 +5,7 @@
 
 import Initialization
 import Globals
+import numpy as np
 
 def p1(inData, n = Globals.nUsers):
 	data = inData.copy()

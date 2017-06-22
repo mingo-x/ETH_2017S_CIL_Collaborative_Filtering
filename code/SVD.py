@@ -5,6 +5,7 @@ import time
 import random
 import Initialization
 import Globals
+import numpy as np
 
 def splitData(data, n = 10):
 	print('start splitting data')
