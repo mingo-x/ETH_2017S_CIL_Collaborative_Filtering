@@ -10,11 +10,11 @@ import time
 
 def SGD(data,train,testMask,k=96):
 	# initialization
-	# normal distr? N(0,1)
+	# normal distr? N(3,1)
 	print('start initialization')
 	lrate = 0.001
 	lamb = 0.02
-	mu = 0
+	mu = 3
 	sigma = 1
 	U = np.empty((Globals.nUsers,k))
 	Vt = np.empty((k,Globals.nItems))
