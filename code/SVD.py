@@ -84,7 +84,7 @@ def predictionWithClippingByStep(U,S,Vt,k):
 	return Ak
 
 def evaluation(data,Ak,testMask):
-	sumSquare = np.sum(np.square(Ak-data)[testMask])
+	sumSquare = np.sum(np.square((Ak-data)[testMask]))
 	res = np.sqrt(sumSquare/np.count_nonzero(testMask))
 	return res
 
