@@ -72,12 +72,28 @@ def p5(inData, n = Globals.nUsers):
 		data[i,:] = p
 	return data
 
+def p6(inData, nu = Globals.nUsers, ni = Globals.nItems):
+	data = inData.copy()
+	# mean of users
+	meanu = np.empty(nu)
+	for i in range(nu):
+		meanu[i] = np.mean(data[i,:])
+	meani = np.empty(ni)
+	for i in range(ni):
+		meani[i] = np.mean(data[:,i])
+	for i in range(nu):
+		for j in range(ni):
+			data[i,j] = meani[j] - meanu[i]
+	return data
+
 if __name__ == "__main__":
 	Initialization.initialization()
 	data = Initialization.readInData('./data/data_train.csv')
-	pred1 = p1(data)
-	pred2 = p2(data)
-	pred3 = p3(data)
-	pred4 = p4(data)
-	pred5 = p5(data)
-	print(pred1[0,0], pred2[0,0], pred3[0,0], pred4[0,0], pred5[0,0])
+	# pred1 = p1(data)
+	# pred2 = p2(data)
+	# pred3 = p3(data)
+	# pred4 = p4(data)
+	# pred5 = p5(data)
+	# print(pred1[0,0], pred2[0,0], pred3[0,0], pred4[0,0], pred5[0,0])
+	pred6 = p6(data)
+	print(pred6[0,:])
