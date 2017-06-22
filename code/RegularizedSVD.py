@@ -42,7 +42,7 @@ def SGD(data,train,testMask,k=96):
 		Vt[:,j] += lrate*(r*U[i,:].T-lamb*Vt[:,j])
 
 		# evaluation
-		if t%1000 == 0:
+		if t%5000 == 0:
 			A = U.dot(Vt)
 			score = SVD.evaluation(data,A,testMask)
 			endTime = time.time()
