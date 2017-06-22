@@ -11,10 +11,12 @@ def kmeans(inData,k):
 	data = inData.copy()
 	nObs = np.count_nonzero(data)
 	known = data!=0
+	missing = known == False
 	uMean = np.empty(Globals.nUsers)
 	for i in range(Globals.nUsers):
 		uMean[i] = np.mean(data[i])
 		data[i] -= uMean[i]
+	data[missing] = 0
 	center = np.empty((k,Globals.nItems))
 	for i in range(k):
 		# for j in range(Globals.nItems):
