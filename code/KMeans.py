@@ -32,9 +32,9 @@ def kmeans(data,k):
 				if dist < minDist:
 					minDist = dist
 					aidx = j
-			assignment[j].append(i)
+			assignment[aidx].append(i)
 			sumMinDist += minDist
-		print(assignment)
+		# print(assignment)
 		# mean
 		for i in range(k):
 			newCenter[i] = np.mean(data[assignment[i]],axis=0)
