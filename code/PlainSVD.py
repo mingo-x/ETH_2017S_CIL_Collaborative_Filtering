@@ -1,4 +1,5 @@
 # current best k = 20. can try with smaller ks
+# add clipping?
 import Initialization
 import SVD
 
