@@ -19,8 +19,8 @@ def SGD(data,train,testMask,k=96):
 	sigma = 1
 	if Globals.warmStart:
 		print('warm start')
-		U = np.load('./log/RSVD_U_'+k+'.npy')
-		Vt = np.load('./log/RSVD_Vt_'+k+'.npy')
+		U = np.load('./log/RSVD_U_'+str(k)+'.npy')
+		Vt = np.load('./log/RSVD_Vt_'+str(k)+'.npy')
 	else:
 		U = np.empty((Globals.nUsers,k))
 		Vt = np.empty((k,Globals.nItems))
@@ -60,14 +60,14 @@ def SGD(data,train,testMask,k=96):
 
 		# auto save
 		if t%500000 == 0:
-			np.save('./log/RSVD_U_'+k+'.npy',U)
-			np.save('./log/RSVD_Vt_'+k+'.npy',Vt)
+			np.save('./log/RSVD_U_'+str(k)+'.npy',U)
+			np.save('./log/RSVD_Vt_'+str(k)+'.npy',Vt)
 			print('intermediate result saved')
 		t += 1
 	endTime = time.time()
 	print('finish SGD',int(endTime-startTime),'s')
-	np.save('./log/RSVD_U_'+k+'.npy',U)
-	np.save('./log/RSVD_Vt_'+k+'.npy',Vt)
+	np.save('./log/RSVD_U_'+str(k)+'.npy',U)
+	np.save('./log/RSVD_Vt_'+str(k)+'.npy',Vt)
 
 	# clipping
 	print('start clipping')
@@ -91,5 +91,5 @@ if __name__ == "__main__":
 	data = Initialization.readInData('./data/data_train.csv')
 	train, testMask = SVD.splitData(data,10)
 	A = SGD(data,train,testMask,Globals.k)
-	np.save('./log/RSVD_A_'+k+'.npy',A)
+	np.save('./log/RSVD_A_'+str(k)+'.npy',A)
 	SVD.writeOutData(A)
