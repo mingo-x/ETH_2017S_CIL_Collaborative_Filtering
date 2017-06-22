@@ -50,7 +50,11 @@ def kmeans(inData,k):
 			print(len(assignment[i]),)
 			if len(assignment[i])!= 0:
 				for j in range(Globals.nItems):
-					center[i][j] = np.sum(data[assignment[i],j])/np.count_nonzero(known[assignment[i],j])
+					c = np.count_nonzero(known[assignment[i],j])
+					if c!=0:
+						center[i][j] = np.sum(data[assignment[i],j])/c
+					else:
+						center[i][j] = 0
 		# print(center[0],center[1])
 
 		# if t%1000 == 0:
