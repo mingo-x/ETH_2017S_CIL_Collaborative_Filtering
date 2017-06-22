@@ -81,7 +81,7 @@ def SVD(data):
 	S[:min(nUsers,nItems), :min(nUsers,nItems)] = np.diag(s)
 	return U, S, Vt
 
-def prediction(U,S,Vt,k):
+def prediction(U,S,Vt,k=k):
 	print('start matrix multiplication')
 	Sk = S[:k,:k]
 	Ak = U[:,:k].dot(Sk).dot(Vt[:k,:])
