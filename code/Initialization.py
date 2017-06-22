@@ -9,8 +9,10 @@ def initialization():
 	for i in range(1,len(argv)):
 		if argv[i].startswith('-k='):
 			k = int(argv[i][3:])
+			print('k =',k)
 		elif argv[i].startswith('-o='):
 			outputIdx = argv[i][3:]
+			print('output idx =', outputIdx)
 
 def readInData(inPath):
 # read in data
