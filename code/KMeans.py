@@ -17,8 +17,9 @@ def kmeans(inData,k):
 		data[i] -= uMean[i]
 	center = np.empty((k,Globals.nItems))
 	for i in range(k):
-		idx = random.randint(0,Globals.nUsers-1)
-		center[i] = data[idx]
+		center[i] = random.normalvariate(0,1)
+		# idx = random.randint(0,Globals.nUsers-1)
+		# center[i] = data[idx]
 	prev = 1e10
 	curr = 1e9
 
