@@ -6,10 +6,12 @@ import SVD
 import numpy as np
 import Globals
 import random
+import time
 
 def SGD(data,train,testMask,k=96):
 	# initialization
 	# normal distr? N(0,1)
+	print('start initialization')
 	lrate = 0.001
 	lamb = 0.02
 	mu = 0
@@ -21,13 +23,16 @@ def SGD(data,train,testMask,k=96):
 			U[j,i] = random.normalvariate(mu,sigma)
 		for j in range(Globals.nItems):
 			Vt[i,j] = random.normalvariate(mu,sigma)
+	print('finish initialization')
 
+	print('start SGD')
+	startTime = time.time()
 	known = train!=0
 	for t in range(1000000):
 		# random choice of training sample
 		i = random.randint(0,Globals.nUsers-1)
 		j = random.randint(0,Globals.nItems-1)
-		while !known[i,j]:
+		while not known[i,j]:
 			i = random.randint(0,Globals.nUsers-1)
 			j = random.randint(0,Globals.nItems-1)
 
@@ -40,8 +45,13 @@ def SGD(data,train,testMask,k=96):
 		if t%1000 == 0:
 			A = U.dot(Vt)
 			score = SVD.evaluation(data,A,testMask)
-			print('t =',t,'score =',score)
+			endTime = time.time()
+			print('t =',t,'score =',score, 'time =', int(endTime-startTime), 's')
+			startTime = time.time()
+	print('finish SGD')
+
 	# clipping
+	print('start clipping')
 	A = np.zeros((Globals.nUsers,Globals.nItems))
 	for m in range(k):
 		T = U[:,m].dot(Vt[m,:])
@@ -52,7 +62,7 @@ def SGD(data,train,testMask,k=96):
 		# below 1
 		mask = A<1
 		A[mask] = 1
-		
+	print('finish clipping')
 	score = SVD.evaluation(data,A,testMask)
 	print('after clipping score =',score)
 	return A
