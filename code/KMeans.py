@@ -36,10 +36,12 @@ def kmeans(data,k):
 			assignment[aidx].append(i)
 			curr += minDist
 		curr = np.sqrt(curr/nObs)
+		print(len(assignment[0]),len(assignment[1]))
 
 		# mean
 		for i in range(k):
 			center[i] = np.mean(data[assignment[i]],axis=0)
+		print('ddd')
 
 		if t%5000 == 0:
 			print('t =',t,'rmse =',curr)
