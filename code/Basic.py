@@ -18,7 +18,7 @@ def p1(inData, n = Globals.nUsers):
 		t = np.count_nonzero(data[mask])
 		p = 1.0*t/c
 		data[i,:] = p
-	reutrn data
+	return data
 
 
 if __name__ == "__main__":
