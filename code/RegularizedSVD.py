@@ -91,5 +91,5 @@ if __name__ == "__main__":
 	data = Initialization.readInData('./data/data_train.csv')
 	train, testMask = SVD.splitData(data,10)
 	A = SGD(data,train,testMask,Globals.k)
-	np.save('./log/RSVD_A_'+str(k)+'.npy',A)
+	np.save('./log/RSVD_A_'+str(Globals.k)+'.npy',A)
 	SVD.writeOutData(A)
