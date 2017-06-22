@@ -81,8 +81,8 @@ def SGD(data,train,testMask,k=96):
 		mask = A>5
 		A[mask] = 5
 		# below 1
-		# mask = A<1
-		# A[mask] = 1
+		mask = A<1
+		A[mask] = 1
 	print('finish clipping')
 	score = SVD.evaluation(data,A,testMask)
 	print('after clipping score =',score)
@@ -104,7 +104,7 @@ def predictionWithClipping(data,k,testMask):
 	print('after clipping score =',score)
 	return A
 
-def predictionCombi(data,k,testMask):
+def predictionWithCombi(data,k,testMask):
 	A1 = np.load('./log/RSVD_A_'+str(k)+'_clip.npy')
 	A2 = np.load('./log/RSVD_A_'+str(k)+'_2_clip.npy')
 	A = 0.5*A1 + 0.5*A2
