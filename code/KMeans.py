@@ -42,7 +42,7 @@ def kmeans(data,k):
 		# mean
 		for i in range(k):
 			center[i] = np.mean(data[assignment[i]],axis=0)
-		print(center[0],center[1])
+		# print(center[0],center[1])
 
 		# if t%5000 == 0:
 		print('t =',t,'rmse =',curr)
