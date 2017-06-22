@@ -3,6 +3,7 @@
 import Initialization
 import SVD
 import numpy as np
+import Globals
 
 if __name__ == "__main__":
 	Initialization.initialization()
