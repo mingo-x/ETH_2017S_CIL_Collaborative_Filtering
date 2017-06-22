@@ -34,7 +34,7 @@ def kmeans(data,k):
 					aidx = j
 			assignment[aidx].append(i)
 			sumMinDist += minDist
-		print(assignment)
+		print(len(assignment[0]),len(assignment[1]))
 		# mean
 		for i in range(k):
 			newCenter[i] = np.mean(data[assignment[i]],axis=0)
