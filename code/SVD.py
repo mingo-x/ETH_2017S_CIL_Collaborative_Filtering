@@ -42,9 +42,9 @@ def SVD(data):
 	U, s, Vt = np.linalg.svd(data, full_matrices=True)
 	endTime = time.time()
 	print('finish SVD', U.shape, s.shape, Vt.shape, int(endTime-startTime), 's')
-	print(s)
+	# print(s)
 	S = np.zeros((Globals.nUsers, Globals.nItems))
-	S[:min(nUsers,nItems), :min(Globals.nUsers,Globals.nItems)] = np.diag(s)
+	S[:min(Globals.nUsers,Globals.nItems), :min(Globals.nUsers,Globals.nItems)] = np.diag(s)
 	return U, S, Vt
 
 def prediction(U,S,Vt,k):

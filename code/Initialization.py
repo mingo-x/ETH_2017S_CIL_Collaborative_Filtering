@@ -5,7 +5,7 @@ import time
 import Globals
 
 def initialization():
-	global k, outputIdx
+	global k, outputIdx, warmStart
 	for i in range(1,len(argv)):
 		if argv[i].startswith('-k='):
 			k = int(argv[i][3:])
@@ -13,6 +13,9 @@ def initialization():
 		elif argv[i].startswith('-o='):
 			outputIdx = argv[i][3:]
 			print('output idx =', outputIdx)
+		elif argv[i].startswith('-w='):
+			warmStart = argv[i][3] == 't'
+			print('warm start =', warmStart)
 
 def readInData(inPath):
 # read in data
