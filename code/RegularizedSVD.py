@@ -14,7 +14,7 @@ def SGD(data,train,testMask,k=96):
 	print('start initialization')
 	lrate = 0.001
 	lamb = 0.02
-	mu = 3
+	mu = 0
 	sigma = 1
 	U = np.empty((Globals.nUsers,k))
 	Vt = np.empty((k,Globals.nItems))
