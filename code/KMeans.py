@@ -12,6 +12,7 @@ def kmeans(data,k):
 	center = np.empty((k,Globals.nItems))
 	for i in range(k):
 		idx = random.randint(0,Globals.nUsers-1)
+		print(idx)
 		center[i] = data[idx]
 	prev = 1e10
 	curr = 1e9
@@ -43,8 +44,8 @@ def kmeans(data,k):
 			center[i] = np.mean(data[assignment[i]],axis=0)
 		print('ddd')
 
-		if t%5000 == 0:
-			print('t =',t,'rmse =',curr)
+		# if t%5000 == 0:
+		print('t =',t,'rmse =',curr)
 		if t%100000 == 0:
 			np.save('./log/KMeans_center_'+str(k)+'.npy',center)
 			print('auto save')
