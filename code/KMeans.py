@@ -27,7 +27,7 @@ def kmeans(inData,k):
 	print('start kmeans')
 	startTime = time.time()
 	t = 0
-	while prev-curr>1e-7:
+	while np.abs(prev-curr)>1e-7:
 		prev = curr
 		# assign
 		assignment = [[] for i in range(k)]
@@ -64,7 +64,7 @@ def kmeans(inData,k):
 			print('auto save')
 		t += 1
 
-	print('t =',t,'rmse =', curr)
+	# print('t =',t,'rmse =', curr)
 	endTime = time.time()
 	print('finish kmeans ', int(endTime-startTime), 's')
 
