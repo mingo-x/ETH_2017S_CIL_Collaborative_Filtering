@@ -77,10 +77,10 @@ def evaluation(data,Ak,testMask):
 
 def writeOutData(Ak,samplePath = './data/sampleSubmission.csv'):
 # write prediction
-	global outputIdx
 	print('start writing data')
 	startTime = time.time()
 	csvReader = csv.reader(open(samplePath,encoding='utf-8'))
+	global outputIdx
 	csvWriter = csv.writer(open('./data/prediction'+outputIdx+'.csv','w',newline=''))
 	abort = True
 	for row in csvReader:

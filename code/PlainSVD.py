@@ -6,6 +6,8 @@ import numpy as np
 
 if __name__ == "__main__":
 	Initialization.initialization()
+	global outputIdx
+	print(outputIdx)
 	data = Initialization.readInData('./data/data_train.csv')
 	SVD.fillInMissing(data)
 	U, S, Vt = SVD.SVD(data)
