@@ -28,7 +28,7 @@ def splitData(data, n = 10):
 def fillInMissing(data):
 # fill in missing data
 	print('start filling in missing data')
-	for i in range(nItems):
+	for i in range(Globals.nItems):
 		missing = data[:,i]==0
 		known = missing==False
 		mean_of_known = np.mean(data[known,i])
