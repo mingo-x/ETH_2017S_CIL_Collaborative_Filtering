@@ -9,20 +9,21 @@ import SVD
 
 def kmeans(data,k):
 	nObs = np.count_nonzero(data)
-	newCenter = np.empty((k,Globals.nItems))
+	center = np.empty((k,Globals.nItems))
 	for i in range(k):
 		idx = random.randint(0,Globals.nUsers-1)
-		newCenter[i] = data[idx]
-	dist = 1e10
+		center[i] = data[idx]
+	prev = 1e10
+	curr = 1e9
 
 	print('start kmeans')
 	startTime = time.time()
 	t = 0
-	while dist>1e-6:
-		center = newCenter.copy()
+	while prev-curr>1e-7:
+		prev = curr
 		# assign
 		assignment = [[] for i in range(k)]
-		sumMinDist = 0
+		curr = 0
 		for i in range(Globals.nUsers):
 			minDist = 1e10
 			known = data[i]!=0
@@ -33,27 +34,24 @@ def kmeans(data,k):
 					minDist = dist
 					aidx = j
 			assignment[aidx].append(i)
-			sumMinDist += minDist
-		# print(len(assignment[0]),len(assignment[1]))
+			curr += minDist
+		curr = np.sqrt(curr/nObs)
+
 		# mean
 		for i in range(k):
-			newCenter[i] = np.mean(data[assignment[i]],axis=0)
+			center[i] = np.mean(data[assignment[i]],axis=0)
 
-		dist = np.linalg.norm(newCenter-center)
 		if t%5000 == 0:
-			RMSE = np.sqrt(sumMinDist/nObs)
-			print('t =',t,'rmse =',RMSE, 'dist =', dist)
+			print('t =',t,'rmse =',curr)
 		if t%100000 == 0:
 			np.save('./log/KMeans_center_'+str(k)+'.npy',center)
 			print('auto save')
-		
 		t += 1
-	RMSE = np.sqrt(sumMinDist/nObs)
-	print('t =',t,'rmse =',RMSE, 'dist =', dist)
+
+	print('t =',t,'rmse =', curr)
 	endTime = time.time()
 	print('finish kmeans ', int(endTime-startTime), 's')
 
-	center = newCenter.copy()
 	A = np.empty((Globals.nUsers,Globals.nItems))
 	for i in range(k):
 		A[assignment[i]] = center[i]
