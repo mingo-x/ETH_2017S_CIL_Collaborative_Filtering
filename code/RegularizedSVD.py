@@ -17,8 +17,7 @@ def SGD(data,train,testMask,k=96):
 	lamb = 0.02
 	mu = 0
 	sigma = 1
-	global warmStart
-	if warmStart:
+	if Globals.warmStart:
 		print('warm start')
 		U = np.load('./log/RSVD_U_'+k+'.npy')
 		Vt = np.load('./log/RSVD_Vt_'+k+'.npy')
