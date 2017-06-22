@@ -3,8 +3,8 @@ import numpy as np
 
 if __name__ == "__main__":
 	SVD.initialization()
-	print('k =',k)
-	print('output idx =',outputIdx)
+	print('k =',SVD.k)
+	print('output idx =',SVD.outputIdx)
 	data = SVD.readInData('./data/data_train.csv')
 	# train, testMask = SVD.splitData(data)
 	print('num of data =', np.count_nonzero(data))
