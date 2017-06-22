@@ -7,7 +7,6 @@ import Globals
 
 if __name__ == "__main__":
 	Initialization.initialization()
-	print(Globals.outputIdx)
 	data = Initialization.readInData('./data/data_train.csv')
 	SVD.fillInMissing(data)
 	U, S, Vt = SVD.SVD(data)
