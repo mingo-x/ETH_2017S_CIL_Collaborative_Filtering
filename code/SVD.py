@@ -116,7 +116,7 @@ def writeOutData(samplePath = './data/sampleSubmission.csv'):
 def chooseK(data,n=10):
 	csvWriter = csv.writer(open('./log/k.csv','w',newline=''))
 	csvWriter.writerow(['k','RMSE'])
-	for k in range(20,1001,20):
+	for k in range(440,1001,20):
 		startTime = time.time()
 		print('k =',k)
 		scores = []
