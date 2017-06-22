@@ -88,10 +88,30 @@ def SGD(data,train,testMask,k=96):
 	print('after clipping score =',score)
 	return A
 
+def predictionWithClipping(data,k,testMask):
+	U = np.load('./log/RSVD_U_'+str(k)+'.npy')
+	Vt = np.load('./log/RSVD_Vt_'+str(k)+'.npy')
+	A = U.dot(Vt)
+	score = SVD.evaluation(data,A,testMask)
+	print('before clipping score =',score)
+	# over 5
+	mask = A>5
+	A[mask] = 5
+	# below 1
+	mask = A<1
+	A[mask] = 1
+	score = SVD.evaluation(data,A,testMask)
+	print('after clipping score =',score)
+	return A
+
 if __name__ == "__main__":
 	Initialization.initialization()
 	data = Initialization.readInData('./data/data_train.csv')
 	train, testMask = SVD.splitData(data,10)
-	A = SGD(data,train,testMask,Globals.k)
-	np.save('./log/RSVD_A_'+str(Globals.k)+'.npy',A)
+	if Globals.predict:
+		A = predictionWithClipping(Globals.k)
+		np.save('./log/RSVD_A_'+str(Globals.k)+'_clip.npy',A)
+	else:
+		A = SGD(data,train,testMask,Globals.k)
+		np.save('./log/RSVD_A_'+str(Globals.k)+'.npy',A)
 	SVD.writeOutData(A)

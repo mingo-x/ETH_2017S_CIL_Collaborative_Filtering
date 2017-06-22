@@ -5,3 +5,4 @@ k = 1000
 outputIdx = ''
 warmStart = False
 lrate = 0.001
+predict = False

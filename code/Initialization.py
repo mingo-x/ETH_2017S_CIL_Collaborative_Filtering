@@ -18,6 +18,9 @@ def initialization():
 		elif argv[i].startswith('-l='):
 			Globals.lrate = float(argv[i][3:])
 			print('learning rate =', Globals.lrate)
+		elif argv[i].startswith('-p='):
+			Globals.predict = argv[i][3] == 't'
+			print('predict =', Globals.predict)
 
 
 def readInData(inPath):
