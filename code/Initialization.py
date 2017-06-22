@@ -6,6 +6,9 @@ import Globals
 
 def initialization():
 	global k, outputIdx, warmStart
+	k = 1000
+	outputIdx = ''
+	warmStart = False
 	for i in range(1,len(argv)):
 		if argv[i].startswith('-k='):
 			k = int(argv[i][3:])
