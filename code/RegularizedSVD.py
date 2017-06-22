@@ -70,6 +70,6 @@ def SGD(data,train,testMask,k=96):
 
 if __name__ == "__main__":
 	data = Initialization.readInData('./data/data_train.csv')
-	train, testMask = splitData(data,10)
+	train, testMask = SVD.splitData(data,10)
 	A = SGD(data,train,testMask)
 	SVD.writeOutData(A)
