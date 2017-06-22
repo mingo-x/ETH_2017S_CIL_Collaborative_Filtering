@@ -7,8 +7,14 @@ import random
 import time
 import SVD
 
-def kmeans(data,k):
+def kmeans(inData,k):
+	data = inData.copy()
 	nObs = np.count_nonzero(data)
+	known = data!=0
+	uMean = np.empty(Globals.nUsers)
+	for i in range(Globals.nUsers):
+		uMean[i] = np.mean(data[i])
+		data[i] -= uMean[i]
 	center = np.empty((k,Globals.nItems))
 	for i in range(k):
 		idx = random.randint(0,Globals.nUsers-1)
@@ -27,10 +33,9 @@ def kmeans(data,k):
 		curr = 0
 		for i in range(Globals.nUsers):
 			minDist = 1e10
-			known = data[i]!=0
 			aidx = 0
 			for j in range(k):
-				dist = np.sum(np.square((data[i]-center[j])[known]))
+				dist = np.sum(np.square((data[i]-center[j])[known[i]]))
 				if dist < minDist:
 					minDist = dist
 					aidx = j
@@ -60,7 +65,7 @@ def kmeans(data,k):
 
 	A = np.empty((Globals.nUsers,Globals.nItems))
 	for i in range(k):
-		A[assignment[i]] = center[i]
+		A[assignment[i]] = center[i]+uMean[i]
 
 	#clipping
 	# over 5
