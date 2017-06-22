@@ -48,9 +48,25 @@ def SVD(data):
 	return U, S, Vt
 
 def prediction(U,S,Vt,k):
-	print('start matrix multiplication')
+	print('start matrix multiplication k =',k)
 	Sk = S[:k,:k]
 	Ak = U[:,:k].dot(Sk).dot(Vt[:k,:])
+	print('finish matrix multiplication')
+	return Ak
+
+def predictionWithClipping(U,S,Vt,k):
+	print('start matrix multiplication k =',k)
+	Sk = S[:k,:k]
+	Ak = np.zeros((Globals.nUsers,Globals.nItems))
+	for i in range(k):
+		Tk = U[:, i:i+1].dot(Sk[i:i+1,i:i+1]).dot(Vt[i:i+1,:])
+		Ak += Tk
+		# over 5
+		mask = Ak>5
+		Ak[mask] = 5
+		# below 1
+		mask = Ak<1
+		Ak[mask] = 1
 	print('finish matrix multiplication')
 	return Ak
 
@@ -61,10 +77,11 @@ def evaluation(data,Ak,testMask):
 
 def writeOutData(Ak,samplePath = './data/sampleSubmission.csv'):
 # write prediction
+	global outputIdx
 	print('start writing data')
 	startTime = time.time()
 	csvReader = csv.reader(open(samplePath,encoding='utf-8'))
-	csvWriter = csv.writer(open('./data/prediction'+Globals.outputIdx+'.csv','w',newline=''))
+	csvWriter = csv.writer(open('./data/prediction'+outputIdx+'.csv','w',newline=''))
 	abort = True
 	for row in csvReader:
 		if abort:

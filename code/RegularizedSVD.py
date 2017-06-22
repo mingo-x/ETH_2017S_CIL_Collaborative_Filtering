@@ -1,5 +1,6 @@
 # using gradient descent with
 # regularization and early stopping
+# choose K?
 
 import Initialization
 import SVD
@@ -56,6 +57,7 @@ def SGD(data,train,testMask,k=96):
 		if t%500000 == 0:
 			np.save('./log/RSVD_U.npy',U)
 			np.save('./log/RSVD_Vt.npy',Vt)
+			print('intermediate result saved')
 		t += 1
 	endTime = time.time()
 	print('finish SGD',int(endTime-startTime),'s')
