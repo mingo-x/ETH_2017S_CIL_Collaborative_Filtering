@@ -109,7 +109,7 @@ if __name__ == "__main__":
 	data = Initialization.readInData('./data/data_train.csv')
 	train, testMask = SVD.splitData(data,10)
 	if Globals.predict:
-		A = predictionWithClipping(Globals.k)
+		A = predictionWithClipping(data,Globals.k,testMask)
 		np.save('./log/RSVD_A_'+str(Globals.k)+'_clip.npy',A)
 	else:
 		A = SGD(data,train,testMask,Globals.k)
