@@ -4,6 +4,7 @@ from sys import argv
 import time
 import random
 import Initialization
+import Globals
 
 def splitData(data, n = 10):
 	print('start splitting data')

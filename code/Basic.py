@@ -4,8 +4,9 @@
 # subtracting the mean rating of each member.
 
 import Initialization
+import Globals
 
-def p1(inData, n ):
+def p1(inData, n = Globals.nUsers):
 	data = inData.copy()
 	for i in range(n):
 		c = np.count_nonzero(data[i,:])
@@ -22,6 +23,6 @@ def p1(inData, n ):
 if __name__ == "__main__":
 	Initialization.initialization()
 	data = Initialization.readInData('./data/data_train.csv')
-	pred1 = p1(data,10000)
+	pred1 = p1(data)
 	print(pred1[0,:])
 	print(pred1[1,:])

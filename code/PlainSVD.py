@@ -1,5 +1,7 @@
 # current best k = 20. can try with smaller ks
+import Initialization
 import SVD
+
 
 if __name__ == "__main__":
 	Initialization.initialization()
