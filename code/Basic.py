@@ -15,7 +15,7 @@ def p1(inData, n = Globals.nUsers):
 			data[i,:] = 0
 			continue
 		mask = data[i,:]==1
-		t = np.count_nonzero(data[mask])
+		t = np.count_nonzero(data[i,mask])
 		p = 1.0*t/c
 		data[i,:] = p
 	return data
