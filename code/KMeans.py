@@ -37,7 +37,7 @@ def kmeans(data,k):
 			assignment[aidx].append(i)
 			curr += minDist
 		curr = np.sqrt(curr/nObs)
-		print(len(assignment[0]),len(assignment[1]),len(assignment[2]),,len(assignment[3]))
+		print(len(assignment[0]),len(assignment[1]),len(assignment[2]),len(assignment[3]))
 
 		# mean
 		for i in range(k):
