@@ -19,8 +19,8 @@ def SGD(data,train,testMask,k=96):
 	sigma = 1
 	if Globals.warmStart:
 		print('warm start')
-		U = np.load('./log/RSVD_U_'+str(k)+'.npy')
-		Vt = np.load('./log/RSVD_Vt_'+str(k)+'.npy')
+		U = np.load('./log/RSVD_U_'+str(k)+Globals.modelIdx+'.npy')
+		Vt = np.load('./log/RSVD_Vt_'+str(k)+Globals.modelIdx+'.npy')
 	else:
 		U = np.empty((Globals.nUsers,k))
 		Vt = np.empty((k,Globals.nItems))
@@ -62,14 +62,14 @@ def SGD(data,train,testMask,k=96):
 
 		# auto save
 		if t%500000 == 0:
-			np.save('./log/RSVD_U_'+str(k)+'.npy',U)
-			np.save('./log/RSVD_Vt_'+str(k)+'.npy',Vt)
+			np.save('./log/RSVD_U_'+str(k)+Globals.modelIdx+'.npy',U)
+			np.save('./log/RSVD_Vt_'+str(k)+Globals.modelIdx+'.npy',Vt)
 			print('intermediate result saved')
 		t += 1
 	endTime = time.time()
 	print('finish SGD',int(endTime-startTime),'s')
-	np.save('./log/RSVD_U_'+str(k)+'.npy',U)
-	np.save('./log/RSVD_Vt_'+str(k)+'.npy',Vt)
+	np.save('./log/RSVD_U_'+str(k)+Globals.modelIdx+'.npy',U)
+	np.save('./log/RSVD_Vt_'+str(k)+Globals.modelIdx+'.npy',Vt)
 
 	# clipping
 	print('start clipping')
@@ -89,8 +89,8 @@ def SGD(data,train,testMask,k=96):
 	return A
 
 def predictionWithClipping(data,k,testMask):
-	U = np.load('./log/RSVD_U_'+str(k)+'.npy')
-	Vt = np.load('./log/RSVD_Vt_'+str(k)+'.npy')
+	U = np.load('./log/RSVD_U_'+str(k)+Globals.modelIdx+'.npy')
+	Vt = np.load('./log/RSVD_Vt_'+str(k)+Globals.modelIdx+'.npy')
 	A = U.dot(Vt)
 	score = SVD.evaluation(data,A,testMask)
 	print('before clipping score =',score)
@@ -110,8 +110,8 @@ if __name__ == "__main__":
 	train, testMask = SVD.splitData(data,10)
 	if Globals.predict:
 		A = predictionWithClipping(data,Globals.k,testMask)
-		np.save('./log/RSVD_A_'+str(Globals.k)+'_clip.npy',A)
+		np.save('./log/RSVD_A_'+str(Globals.k)+Globals.modelIdx+'_clip.npy',A)
 	else:
 		A = SGD(data,train,testMask,Globals.k)
-		np.save('./log/RSVD_A_'+str(Globals.k)+'.npy',A)
+		np.save('./log/RSVD_A_'+str(Globals.k)+Globals.modelIdx+'.npy',A)
 	SVD.writeOutData(A)

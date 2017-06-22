@@ -6,3 +6,4 @@ outputIdx = ''
 warmStart = False
 lrate = 0.001
 predict = False
+modelIdx = ''

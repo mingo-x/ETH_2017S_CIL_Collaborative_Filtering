@@ -21,6 +21,9 @@ def initialization():
 		elif argv[i].startswith('-p='):
 			Globals.predict = argv[i][3] == 't'
 			print('predict =', Globals.predict)
+		elif argv[i].startswith('-i='):
+			Globals.modelIdx = '_'+argv[i][3:]
+			print('model idx =', Globals.modelIdx)
 
 
 def readInData(inPath):
