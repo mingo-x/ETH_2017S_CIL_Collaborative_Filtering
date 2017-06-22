@@ -49,7 +49,7 @@ def kmeans(inData,k):
 		for i in range(k):
 			print(len(assignment[i]),)
 			if len(assignment[i])!= 0:
-				for j in range(Globals.nItems)
+				for j in range(Globals.nItems):
 					center[i][j] = np.sum(data[assignment[i],j])/np.count_nonzero(known[assignment[i],j])
 		# print(center[0],center[1])
 
