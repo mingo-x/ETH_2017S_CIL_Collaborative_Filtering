@@ -9,4 +9,4 @@ if __name__ == "__main__":
 	SVD.fillInMissing(data)
 	U, S, Vt = SVD.SVD(data)
 	Ak = SVD.prediction(U, S, Vt)
-	SVD.writeOutData()
+	SVD.writeOutData(Ak)

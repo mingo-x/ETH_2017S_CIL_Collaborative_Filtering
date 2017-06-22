@@ -93,7 +93,7 @@ def evaluation(data,Ak,testMask):
 	res = np.sqrt(sumSquare/np.count_nonzero(testMask))
 	return res
 
-def writeOutData(samplePath = './data/sampleSubmission.csv'):
+def writeOutData(Ak,samplePath = './data/sampleSubmission.csv'):
 # write prediction
 	print('start writing data')
 	startTime = time.time()
@@ -137,15 +137,6 @@ def chooseK(data,n=10):
 
 if __name__ == "__main__":
 	initialization()
-	# print('k =',k)
-	# print('output idx =',outputIdx)
-	# data = readInData('./data/data_train.csv')
-	# train, testMask = splitData(data)
-	# fillInMissing(train)
-	# U, S, Vt = SVD(train)
-	# Ak = prediction(U, S, Vt)
-	# print('RMSE =',evaluation(data,Ak,testMask))
-	# writeOutData()
 	data = readInData('./data/data_train.csv')
 	chooseK(data)
 
