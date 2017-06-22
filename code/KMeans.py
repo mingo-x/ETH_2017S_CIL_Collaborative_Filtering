@@ -37,16 +37,17 @@ def kmeans(data,k):
 			assignment[aidx].append(i)
 			curr += minDist
 		curr = np.sqrt(curr/nObs)
-		print(len(assignment[0]),len(assignment[1]),len(assignment[2]),len(assignment[3]))
+		# print(len(assignment[0]),len(assignment[1]),len(assignment[2]),len(assignment[3]))
 
 		# mean
 		for i in range(k):
-			center[i] = np.mean(data[assignment[i]],axis=0)
+			if len(assignment[i])!= 0:
+				center[i] = np.mean(data[assignment[i]],axis=0)
 		# print(center[0],center[1])
 
-		# if t%5000 == 0:
-		print('t =',t,'rmse =',curr)
-		if t%100000 == 0:
+		if t%1000 == 0:
+			print('t =',t,'rmse =',curr)
+		if t%10000 == 0:
 			np.save('./log/KMeans_center_'+str(k)+'.npy',center)
 			print('auto save')
 		t += 1
