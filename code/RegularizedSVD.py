@@ -28,7 +28,7 @@ def SGD(data,train,testMask,k=96):
 	print('start SGD')
 	startTime = time.time()
 	known = train!=0
-	for t in range(1000000):
+	for t in range(10000000):
 		# random choice of training sample
 		i = random.randint(0,Globals.nUsers-1)
 		j = random.randint(0,Globals.nItems-1)
@@ -42,7 +42,7 @@ def SGD(data,train,testMask,k=96):
 		Vt[:,j] += lrate*(r*U[i,:].T-lamb*Vt[:,j])
 
 		# evaluation
-		if t%5000 == 0:
+		if t%10000 == 0:
 			A = U.dot(Vt)
 			score = SVD.evaluation(data,A,testMask)
 			endTime = time.time()
@@ -54,7 +54,7 @@ def SGD(data,train,testMask,k=96):
 	print('start clipping')
 	A = np.zeros((Globals.nUsers,Globals.nItems))
 	for m in range(k):
-		T = U[:,m].dot(Vt[m,:])
+		T = U[:,m:m+1].dot(Vt[m:m+1,:])
 		A += T
 		# over 5
 		mask = A>5
