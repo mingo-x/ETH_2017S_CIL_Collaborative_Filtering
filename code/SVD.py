@@ -57,6 +57,19 @@ def prediction(U,S,Vt,k):
 def predictionWithClipping(U,S,Vt,k):
 	print('start matrix multiplication k =',k)
 	Sk = S[:k,:k]
+	Ak = U[:,:k].dot(Sk).dot(Vt[:k,:])
+	# over 5
+	mask = Ak>5
+	Ak[mask] = 5
+	# below 1
+	mask = Ak<1
+	Ak[mask] = 1
+	print('finish matrix multiplication')
+	return Ak
+
+def predictionWithClippingByStep(U,S,Vt,k):
+	print('start matrix multiplication k =',k)
+	Sk = S[:k,:k]
 	Ak = np.zeros((Globals.nUsers,Globals.nItems))
 	for i in range(k):
 		Tk = U[:, i:i+1].dot(Sk[i:i+1,i:i+1]).dot(Vt[i:i+1,:])

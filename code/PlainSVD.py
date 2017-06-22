@@ -1,5 +1,5 @@
 # current best k = 20. can try with smaller ks
-# add clipping?
+# with clipping 1.00505 without clipping by step 1.00501
 import Initialization
 import SVD
 import numpy as np
