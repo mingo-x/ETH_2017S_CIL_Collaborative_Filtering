@@ -77,6 +77,7 @@ def SVD(data):
 	U, s, Vt = np.linalg.svd(data, full_matrices=True)
 	endTime = time.time()
 	print('finish SVD', U.shape, s.shape, Vt.shape, int(endTime-startTime), 's')
+	print(s)
 	S = np.zeros((nUsers, nItems))
 	S[:min(nUsers,nItems), :min(nUsers,nItems)] = np.diag(s)
 	return U, S, Vt
