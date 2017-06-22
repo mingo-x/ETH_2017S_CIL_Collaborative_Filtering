@@ -82,9 +82,24 @@ def kmeans(inData,k):
 	A[mask] = 1
 	return A
 
+def predictionWithCombi(data):
+	known = data!=0
+	A = np.zeros((Globals.nUsers,Globals.nItems))
+	for k in range(4,25,2):
+		A1 = np.load('./log/Kmeans_A_'+str(k)+'.npy')
+		A += A1
+	A /= 10.0
+	score = np.sqrt(np.mean(np.square((data-A)[known])))
+	print('after combination score =',score)
+	return A
+
 if __name__ == "__main__":
 	Initialization.initialization()
 	data = Initialization.readInData('./data/data_train.csv')
-	A = kmeans(data,Globals.k)
-	np.save('./log/Kmeans_A_'+str(Globals.k)+Globals.modelIdx+'.npy',A)
+	if Globals.predict=='c':
+		A = predictionWithCombi(data)
+		np.save('./log/Kmeans_A_combi.npy',A)
+	else:
+		A = kmeans(data,Globals.k)
+		np.save('./log/Kmeans_A_'+str(Globals.k)+Globals.modelIdx+'.npy',A)
 	SVD.writeOutData(A)
