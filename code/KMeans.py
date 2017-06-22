@@ -29,17 +29,15 @@ def kmeans(data,k):
 			aidx = 0
 			for j in range(k):
 				dist = np.sum(np.square((data[i]-center[j])[known]))
-				print(dist)
 				if dist < minDist:
 					minDist = dist
 					aidx = j
 			assignment[j].append(i)
 			sumMinDist += minDist
-
+		print(assignment)
 		# mean
 		for i in range(k):
 			newCenter[i] = np.mean(data[assignment[i]],axis=0)
-			tsum = 0
 
 		dist = np.linalg.norm(newCenter-center)
 		if t%5000 == 0:
