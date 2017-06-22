@@ -28,7 +28,9 @@ def SGD(data,train,testMask,k=96):
 	print('start SGD')
 	startTime = time.time()
 	known = train!=0
-	for t in range(10000000):
+	t = 0
+	prev = 1000000
+	while True:
 		# random choice of training sample
 		i = random.randint(0,Globals.nUsers-1)
 		j = random.randint(0,Globals.nItems-1)
@@ -45,10 +47,20 @@ def SGD(data,train,testMask,k=96):
 		if t%10000 == 0:
 			A = U.dot(Vt)
 			score = SVD.evaluation(data,A,testMask)
-			endTime = time.time()
-			print('t =',t,'score =',score, 'time =', int(endTime-startTime), 's')
-			startTime = time.time()
-	print('finish SGD')
+			print('t =',t,'score =',score)
+			if score > prev:
+				break
+			prev = score
+
+		# auto save
+		if t%500000 == 0:
+			np.save('./log/RSVD_U.npy',U)
+			np.save('./log/RSVD_Vt.npy',Vt)
+		t += 1
+	endTime = time.time()
+	print('finish SGD',int(endTime-startTime),'s')
+	np.save('./log/RSVD_U.npy',U)
+	np.save('./log/RSVD_Vt.npy',Vt)
 
 	# clipping
 	print('start clipping')
@@ -67,10 +79,10 @@ def SGD(data,train,testMask,k=96):
 	print('after clipping score =',score)
 	return A
 
-
 if __name__ == "__main__":
 	Initialization.initialization()
 	data = Initialization.readInData('./data/data_train.csv')
 	train, testMask = SVD.splitData(data,10)
 	A = SGD(data,train,testMask)
+	np.save('./log/RSVD_A.npy',A)
 	SVD.writeOutData(A)
