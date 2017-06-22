@@ -15,7 +15,7 @@ def readInData(inPath):
 # read in data
 	print('start reading data')
 	startTime = time.time()
-	data = np.zeros((nUsers,nItems))
+	data = np.zeros((Globals.nUsers,Globals.nItems))
 	csvReader = csv.reader(open(inPath,encoding='utf-8'))
 	abort = True
 	for row in csvReader:
