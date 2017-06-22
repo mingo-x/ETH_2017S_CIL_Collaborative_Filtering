@@ -21,7 +21,7 @@ def kmeans(data,k):
 	while dist>1e-6:
 		center = newCenter.copy()
 		# assign
-		assignment = [[]]*k
+		assignment = [[] for i in range(k)]
 		sumMinDist = 0
 		for i in range(Globals.nUsers):
 			minDist = 1e10
@@ -34,7 +34,7 @@ def kmeans(data,k):
 					aidx = j
 			assignment[aidx].append(i)
 			sumMinDist += minDist
-		print(len(assignment[0]),len(assignment[1]))
+		# print(len(assignment[0]),len(assignment[1]))
 		# mean
 		for i in range(k):
 			newCenter[i] = np.mean(data[assignment[i]],axis=0)
