@@ -1,10 +1,8 @@
 # continuous rating for prediction
-import numpy as np
 import csv
 from sys import argv
 import time
 import random
-import Globals
 import Initialization
 
 def splitData(data, n = 10):

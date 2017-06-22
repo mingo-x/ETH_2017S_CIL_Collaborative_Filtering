@@ -1,8 +1,5 @@
 # current best k = 20. can try with smaller ks
-import Initialization
 import SVD
-import Globals
-import numpy as np
 
 if __name__ == "__main__":
 	Initialization.initialization()

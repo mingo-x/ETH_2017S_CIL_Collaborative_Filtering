@@ -3,9 +3,7 @@
 # The sixth predictor is the mean rating of movie j, after
 # subtracting the mean rating of each member.
 
-import Globals
 import Initialization
-import numpy as np
 
 def p1(inData, n = Globals.nUsers):
 	data = inData.copy()

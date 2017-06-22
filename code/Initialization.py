@@ -2,6 +2,7 @@ import numpy as np
 import csv
 from sys import argv
 import time
+import Globals
 
 def initialization():
 	global k, outputIdx
