@@ -47,7 +47,6 @@ def kmeans(inData,k):
 
 		# mean
 		for i in range(k):
-			print(len(assignment[i]),)
 			if len(assignment[i])!= 0:
 				for j in range(Globals.nItems):
 					c = np.count_nonzero(known[assignment[i],j])
