@@ -77,10 +77,12 @@ def p6(inData, nu = Globals.nUsers, ni = Globals.nItems):
 	# mean of users
 	meanu = np.empty(nu)
 	for i in range(nu):
-		meanu[i] = np.mean(data[i,:])
+		mask = data[i,:]!=0
+		meanu[i] = np.mean(data[i,mask])
 	meani = np.empty(ni)
 	for i in range(ni):
-		meani[i] = np.mean(data[:,i])
+		mask = data[:,i]!=0
+		meani[i] = np.mean(data[mask,i])
 	for i in range(nu):
 		for j in range(ni):
 			data[i,j] = meani[j] - meanu[i]
