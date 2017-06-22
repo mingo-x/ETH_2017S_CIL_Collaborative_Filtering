@@ -64,7 +64,12 @@ def biasedRSVD(data,train,testMask,k=96):
 
 		# evaluation
 		if t%10000 == 0:
-			A = np.add(np.add(U.dot(Vt),c),d)
+			A = U.dot(Vt)
+			C = np.reshape(c,(Globals.nUsers,1))
+			D = np.reshape(d,(1,Globals.nItems))
+			C = np.repeat(C,Globals.nItems,axis=1)
+			D = np.repeat(D,Globals.nUsers,axis=0)
+			A += C+D
 			score = SVD.evaluation(data,A,testMask)
 			print('t =',t,'score =',score)
 			if score > prev2 and prev2 > prev1:
@@ -89,7 +94,12 @@ def biasedRSVD(data,train,testMask,k=96):
 
 	# end clipping
 	print('start clipping')
-	A = np.add(np.add(U.dot(Vt),c),d)
+	A = U.dot(Vt)
+	C = np.reshape(c,(Globals.nUsers,1))
+	D = np.reshape(d,(1,Globals.nItems))
+	C = np.repeat(C,Globals.nItems,axis=1)
+	D = np.repeat(D,Globals.nUsers,axis=0)
+	A += C+D
 	# over 5
 	mask = A>5
 	A[mask] = 5
