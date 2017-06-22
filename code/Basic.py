@@ -5,7 +5,7 @@
 
 import Initialization
 
-def p1(inData, n = Globals.nUsers):
+def p1(inData, n ):
 	data = inData.copy()
 	for i in range(n):
 		c = np.count_nonzero(data[i,:])
@@ -22,6 +22,6 @@ def p1(inData, n = Globals.nUsers):
 if __name__ == "__main__":
 	Initialization.initialization()
 	data = Initialization.readInData('./data/data_train.csv')
-	pred1 = p1(data)
+	pred1 = p1(data,Globals.nUsers)
 	print(pred1[0,:])
 	print(pred1[1,:])
