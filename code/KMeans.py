@@ -29,6 +29,7 @@ def kmeans(data,k):
 			aidx = 0
 			for j in range(k):
 				dist = np.sum(np.square((data[i]-center[j])[known]))
+				print(dist)
 				if dist < minDist:
 					minDist = dist
 					aidx = j
