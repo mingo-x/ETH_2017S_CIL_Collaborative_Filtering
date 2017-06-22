@@ -6,12 +6,10 @@ import numpy as np
 
 if __name__ == "__main__":
 	Initialization.initialization()
-	global outputIdx
-	print(outputIdx)
+	print(Globals.outputIdx)
 	data = Initialization.readInData('./data/data_train.csv')
 	SVD.fillInMissing(data)
 	U, S, Vt = SVD.SVD(data)
-	global k
 	Ak = SVD.predictionWithClipping(U, S, Vt, k=20)
 	np.save('./log/PSVD_A20_clip.npy',Ak)
 	SVD.writeOutData(Ak)

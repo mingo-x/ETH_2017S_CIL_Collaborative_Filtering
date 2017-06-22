@@ -80,8 +80,7 @@ def writeOutData(Ak,samplePath = './data/sampleSubmission.csv'):
 	print('start writing data')
 	startTime = time.time()
 	csvReader = csv.reader(open(samplePath,encoding='utf-8'))
-	global outputIdx
-	csvWriter = csv.writer(open('./data/prediction'+outputIdx+'.csv','w',newline=''))
+	csvWriter = csv.writer(open('./data/prediction'+Globals.outputIdx+'.csv','w',newline=''))
 	abort = True
 	for row in csvReader:
 		if abort:

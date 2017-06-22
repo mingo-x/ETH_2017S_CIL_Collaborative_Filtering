@@ -5,20 +5,16 @@ import time
 import Globals
 
 def initialization():
-	global k, outputIdx, warmStart
-	k = 1000
-	outputIdx = ''
-	warmStart = False
 	for i in range(1,len(argv)):
 		if argv[i].startswith('-k='):
-			k = int(argv[i][3:])
-			print('k =',k)
+			Globals.k = int(argv[i][3:])
+			print('k =',Globals.k)
 		elif argv[i].startswith('-o='):
-			outputIdx = argv[i][3:]
-			print('output idx =', outputIdx)
+			Globals.outputIdx = argv[i][3:]
+			print('output idx =', Globals.outputIdx)
 		elif argv[i].startswith('-w='):
-			warmStart = argv[i][3] == 't'
-			print('warm start =', warmStart)
+			Globals.warmStart = argv[i][3] == 't'
+			print('warm start =', Globals.warmStart)
 
 def readInData(inPath):
 # read in data
