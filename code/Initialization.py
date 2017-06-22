@@ -15,6 +15,10 @@ def initialization():
 		elif argv[i].startswith('-w='):
 			Globals.warmStart = argv[i][3] == 't'
 			print('warm start =', Globals.warmStart)
+		elif argv[i].startswith('-l='):
+			Globals.lrate = float(argv[i][3:])
+			print('learning rate =', Globals.lrate)
+
 
 def readInData(inPath):
 # read in data

@@ -13,7 +13,7 @@ def SGD(data,train,testMask,k=96):
 	# initialization
 	# normal distr? N(3,1)
 	print('start initialization k =',k)
-	lrate = 0.001
+	lrate = Globals.lrate
 	lamb = 0.02
 	mu = 0
 	sigma = 1
@@ -35,7 +35,8 @@ def SGD(data,train,testMask,k=96):
 	startTime = time.time()
 	known = train!=0
 	t = 0
-	prev = 1000000
+	prev1 = 1000000
+	prev2 = 1000000
 	while True:
 		# random choice of training sample
 		i = random.randint(0,Globals.nUsers-1)
@@ -54,9 +55,10 @@ def SGD(data,train,testMask,k=96):
 			A = U.dot(Vt)
 			score = SVD.evaluation(data,A,testMask)
 			print('t =',t,'score =',score)
-			if score > prev:
+			if score > prev2 and prev2 > prev1:
 				break
-			prev = score
+			prev1 = prev2
+			prev2 = score
 
 		# auto save
 		if t%500000 == 0:
