@@ -41,8 +41,10 @@ def kmeans(data,k):
 
 		# mean
 		for i in range(k):
+			print(len(assignment[i]),)
 			if len(assignment[i])!= 0:
 				center[i] = np.mean(data[assignment[i]],axis=0)
+		print()
 		# print(center[0],center[1])
 
 		if t%1000 == 0:
