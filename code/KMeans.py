@@ -38,6 +38,7 @@ def kmeans(data,k):
 		# mean
 		for i in range(k):
 			newCenter[i] = np.mean(data[assignment[i]],axis=0)
+			tsum = 0
 
 		dist = np.linalg.norm(newCenter-center)
 		if t%5000 == 0:
@@ -48,6 +49,8 @@ def kmeans(data,k):
 			print('auto save')
 		
 		t += 1
+	RMSE = np.sqrt(sumMinDist/nObs)
+	print('t =',t,'rmse =',RMSE, 'dist =', dist)
 	endTime = time.time()
 	print('finish kmeans ', int(endTime-startTime), 's')
 
