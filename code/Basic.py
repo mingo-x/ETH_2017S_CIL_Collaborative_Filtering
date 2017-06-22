@@ -22,6 +22,6 @@ def p1(inData, n ):
 if __name__ == "__main__":
 	Initialization.initialization()
 	data = Initialization.readInData('./data/data_train.csv')
-	pred1 = p1(data,Globals.nUsers)
+	pred1 = p1(data,10000)
 	print(pred1[0,:])
 	print(pred1[1,:])
