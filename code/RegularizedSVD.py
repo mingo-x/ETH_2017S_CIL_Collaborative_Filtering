@@ -81,8 +81,8 @@ def SGD(data,train,testMask,k=96):
 		mask = A>5
 		A[mask] = 5
 		# below 1
-		mask = A<1
-		A[mask] = 1
+		# mask = A<1
+		# A[mask] = 1
 	print('finish clipping')
 	score = SVD.evaluation(data,A,testMask)
 	print('after clipping score =',score)
@@ -104,13 +104,24 @@ def predictionWithClipping(data,k,testMask):
 	print('after clipping score =',score)
 	return A
 
+def predictionCombi(data,k,testMask):
+	A1 = np.load('./log/RSVD_A_'+str(k)+'_clip.npy')
+	A2 = np.load('./log/RSVD_A_'+str(k)+'_2_clip.npy')
+	A = 0.5*A1 + 0.5*A2
+	score = SVD.evaluation(data,A,testMask)
+	print('after combination score =',score)
+	return A
+
 if __name__ == "__main__":
 	Initialization.initialization()
 	data = Initialization.readInData('./data/data_train.csv')
 	train, testMask = SVD.splitData(data,10)
-	if Globals.predict:
+	if Globals.predict=='p':
 		A = predictionWithClipping(data,Globals.k,testMask)
 		np.save('./log/RSVD_A_'+str(Globals.k)+Globals.modelIdx+'_clip.npy',A)
+	elif Globals.predict=='c':
+		A = predictionWithCombi(data,Globals.k,testMask)
+		np.save('./log/RSVD_A_'+str(Globals.k)+'_combi.npy',A)
 	else:
 		A = SGD(data,train,testMask,Globals.k)
 		np.save('./log/RSVD_A_'+str(Globals.k)+Globals.modelIdx+'.npy',A)
