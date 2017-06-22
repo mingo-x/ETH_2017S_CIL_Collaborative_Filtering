@@ -82,7 +82,7 @@ def SVD(data):
 	return U, S, Vt
 
 def prediction(U,S,Vt,k=k):
-	print('start matrix multiplication k =',k)
+	print('start matrix multiplication')
 	Sk = S[:k,:k]
 	Ak = U[:,:k].dot(Sk).dot(Vt[:k,:])
 	print('finish matrix multiplication')

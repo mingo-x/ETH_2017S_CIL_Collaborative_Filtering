@@ -8,5 +8,5 @@ if __name__ == "__main__":
 	data = SVD.readInData('./data/data_train.csv')
 	SVD.fillInMissing(data)
 	U, S, Vt = SVD.SVD(data)
-	Ak = SVD.prediction(U, S, Vt)
+	Ak = SVD.prediction(U, S, Vt,SVD.k)
 	SVD.writeOutData(Ak)
