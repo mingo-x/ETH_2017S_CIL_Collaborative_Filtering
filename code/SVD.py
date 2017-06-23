@@ -21,9 +21,11 @@ def splitData(data, n = 10):
 				else:
 					trainMask[i,j] = False
 	train = data.copy()
+	test = data.copy()
 	train[testMask] = 0
+	test[trainMask] = 0
 	print('finish splitting data train num:',np.count_nonzero(train),'test num:', np.sum(testMask))
-	return train, testMask
+	return train, test
 
 def splitData2(data, n = 10):
 	print('start splitting data')
@@ -107,6 +109,11 @@ def predictionWithClippingByStep(U,S,Vt,k):
 def evaluation(data,Ak,testMask):
 	sumSquare = np.sum(np.square((Ak-data)[testMask]))
 	res = np.sqrt(sumSquare/np.count_nonzero(testMask))
+	return res
+
+def evaluation2(A,test):
+	mask = test!=0
+	res = np.sqrt(np.mean(np.square((A-test)[mask])))
 	return res
 
 def writeOutData(Ak,samplePath = './data/sampleSubmission.csv'):
