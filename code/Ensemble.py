@@ -3,6 +3,7 @@ import SVD
 import numpy as np
 import Globals
 import time
+import Initialization
 
 def ensemble(data):
 	print('start initialization')
