@@ -8,7 +8,7 @@ import Globals
 if __name__ == "__main__":
 	Initialization.initialization()
 	if Globals.fixed:
-		data = Initialization.readInData2()
+		data, test = Initialization.readInData2()
 	else:
 		data = Initialization.readInData('./data/data_train.csv')
 	SVD.fillInMissing(data)
