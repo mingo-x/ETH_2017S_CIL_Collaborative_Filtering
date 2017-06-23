@@ -77,7 +77,7 @@ def predictionWithCombi(test):
 if __name__ == "__main__":
 	Initialization.initialization()
 	if Globals.fixed:
-		data, test = Initialization.readInData2()
+		train, test = Initialization.readInData2()
 		A = gradientDescent(train,test)
 		np.save('./log/LM_A_fixed.npy',A)
 	else:
