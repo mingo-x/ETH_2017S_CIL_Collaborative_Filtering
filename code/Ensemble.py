@@ -7,10 +7,8 @@ import Initialization
 
 def ensemble(data):
 	print('start initialization')
-	A = data.copy()
 	startTime = time.time()
 	known = data!=0
-	missing = known==False
 	nObs = np.count_nonzero(data)
 	target = np.reshape(data[known],(nObs,1))
 
@@ -48,21 +46,21 @@ def ensemble(data):
 
 	print('start predicting')
 	startTime = time.time()
-	test = np.append([Basic1_A[missing]],[Basic2_A[missing]],axis=0)
-	test = np.append(test,[Basic3_A[missing]],axis=0)
-	test = np.append(test,[Basic4_A[missing]],axis=0)
-	test = np.append(test,[Basic5_A[missing]],axis=0)
-	test = np.append(test,[Basic6_A[missing]],axis=0)
-	test = np.append(test,[KMeans_A[missing]],axis=0)
-	test = np.append(test,[PSVD_A[missing]],axis=0)
-	test = np.append(test,[RSVD_A[missing]],axis=0)
-	test = np.append(test,[RSVD2_A[missing]],axis=0)
+	test = np.append([Basic1_A.flatten()],[Basic2_A.flatten()],axis=0)
+	test = np.append(test,[Basic3_A.flatten()],axis=0)
+	test = np.append(test,[Basic4_A.flatten()],axis=0)
+	test = np.append(test,[Basic5_A.flatten()],axis=0)
+	test = np.append(test,[Basic6_A.flatten()],axis=0)
+	test = np.append(test,[KMeans_A.flatten()],axis=0)
+	test = np.append(test,[PSVD_A.flatten()],axis=0)
+	test = np.append(test,[RSVD_A.flatten()],axis=0)
+	test = np.append(test,[RSVD2_A.flatten()],axis=0)
 	test = test.T
 
-	pred = regr.predict(test)
+	A = regr.predict(test)
 	endTime = time.time()
-	print('finish predicting',int(endTime-startTime),'s',pred.shape)
-	A[missing] = pred
+	print('finish predicting',int(endTime-startTime),'s',A.shape)
+	A = np.reshape(A,(Globals.nUsers,Globals.nItems))
 
 	#clipping
 	# over 5

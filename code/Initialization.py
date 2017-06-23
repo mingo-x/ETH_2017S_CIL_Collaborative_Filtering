@@ -24,6 +24,9 @@ def initialization():
 		elif argv[i].startswith('-i='):
 			Globals.modelIdx = '_'+argv[i][3:]
 			print('model idx =', Globals.modelIdx)
+		elif argv[i].startswith('-s='):
+			Globals.step = int(argv[i][3:])
+			print('starting step =', Globals.step)
 
 
 def readInData(inPath):
