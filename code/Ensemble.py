@@ -18,7 +18,7 @@ def ensemble(data):
 	Basic4_A = np.load('./log/Basic4_A_fixed.npy')
 	Basic5_A = np.load('./log/Basic5_A_fixed.npy')
 	Basic6_A = np.load('./log/Basic6_A_fixed.npy')
-	KMeans_A = np.load('./log/Kmeans_A_combi.npy')
+	KMeans_A = np.load('./log/Kmeans_A_combi_fixed.npy')
 	PSVD_A = np.load('./log/PSVD_A20_clip.npy')
 	RSVD_A = np.load('./log/RSVD_A_20_combi.npy')
 	RSVD2_A = np.load('./log/RSVD2_A_20_combi.npy')
