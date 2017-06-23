@@ -112,7 +112,7 @@ if __name__ == "__main__":
 	if Globals.fixed:
 		train, test = Initialization.readInData2()
 		A = SGD(train,test,Globals.k)
-		np.save('./log/RSVD_A_'+str(Globals.k)+Globals.modelIdx+'.npy',A)
+		np.save('./log/RSVD_A_'+str(Globals.k)+'_fixed.npy',A)
 	else:
 		data = Initialization.readInData('./data/data_train.csv')
 		train, test = SVD.splitData(data,10)
