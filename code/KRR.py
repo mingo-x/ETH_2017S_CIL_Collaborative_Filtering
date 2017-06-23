@@ -8,7 +8,7 @@ def kernel(x1,x2):
 
 def KRR(data):
 	A = data.copy()
-	Vt = np.load('./log/RSVD_Vt_'+str(k)+Globals.modelIdx+'.npy')
+	Vt = np.load('./log/RSVD_Vt_'+str(Globals.k)+Globals.modelIdx+'.npy')
 	V = Vt.T
 	# normalize
 	V = [V[i]/np.linalg.norm(V[i]) for i in range(Globals.nItems)]
