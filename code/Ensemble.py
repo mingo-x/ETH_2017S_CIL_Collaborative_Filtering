@@ -34,7 +34,7 @@ def ensemble(data):
 	train = np.append(train,[RSVD2_A[known]],axis=0)
 	train = train.T
 	endTime = time.time()
-	print('finish initialization',int(endTime-startTime),'s')
+	print('finish initialization',int(endTime-startTime),'s',train.shape)
 
 	print('start training')
 	startTime = time.time()
@@ -58,8 +58,8 @@ def ensemble(data):
 
 	A = regr.predict(test)
 	endTime = time.time()
-	print('finish predicting',int(endTime-startTime),'s')
-	A = np.reshape(pres,(Globals.nUsers,Globals.nItems))
+	print('finish predicting',int(endTime-startTime),'s',A.shape)
+	A = np.reshape(A,(Globals.nUsers,Globals.nItems))
 	return A
 
 if __name__ == "__main__":
