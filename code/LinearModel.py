@@ -61,7 +61,7 @@ def gradientDescent(train,test):
 	# below 1
 	mask = A<1
 	A[mask] = 1
-	score = SVD.evaluation(A,test)
+	score = SVD.evaluation2(A,test)
 	print('after clipping score =',score)
 	return A
 
