@@ -83,10 +83,13 @@ def kmeans(inData,k):
 	return A
 
 def predictionWithCombi(data):
+	suffix = '.npy'
+	if Globals.fixed:
+		suffix = '_fixed.npy'
 	known = data!=0
 	A = np.zeros((Globals.nUsers,Globals.nItems))
 	for k in range(4,25,2):
-		A1 = np.load('./log/Kmeans_A_'+str(k)+'.npy')
+		A1 = np.load('./log/Kmeans_A_'+str(k)+suffix)
 		A += A1
 	A /= 10.0
 	score = np.sqrt(np.mean(np.square((data-A)[known])))
@@ -95,11 +98,20 @@ def predictionWithCombi(data):
 
 if __name__ == "__main__":
 	Initialization.initialization()
-	data = Initialization.readInData('./data/data_train.csv')
-	if Globals.predict=='c':
-		A = predictionWithCombi(data)
-		np.save('./log/Kmeans_A_combi.npy',A)
+	if Globals.fixed:
+		data, test = Initialization.readInData2()
+		if Globals.predict=='c':
+			A = predictionWithCombi(data)
+			np.save('./log/Kmeans_A_combi_fixed.npy',A)
+		else:
+			A = kmeans(data,Globals.k)
+			np.save('./log/Kmeans_A_'+str(Globals.k)+'_fixed.npy',A)
 	else:
-		A = kmeans(data,Globals.k)
-		np.save('./log/Kmeans_A_'+str(Globals.k)+Globals.modelIdx+'.npy',A)
+		data = Initialization.readInData('./data/data_train.csv')
+		if Globals.predict=='c':
+			A = predictionWithCombi(data)
+			np.save('./log/Kmeans_A_combi.npy',A)
+		else:
+			A = kmeans(data,Globals.k)
+			np.save('./log/Kmeans_A_'+str(Globals.k)+'.npy',A)
 	SVD.writeOutData(A)
