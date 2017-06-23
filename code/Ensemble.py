@@ -22,7 +22,7 @@ def ensemble(data):
 	PSVD_A = np.load('./log/PSVD_A_20_fixed.npy')
 	RSVD_A = np.load('./log/RSVD_A_20_fixed.npy')
 	RSVD2_A = np.load('./log/RSVD2_A_20_fixed.npy')
-	KRR_A = np.load('./log/KRR_A_20_combi.npy')
+	KRR_A = np.load('./log/KRR_A_20_fixed.npy')
 	LM_A = np.load('./log/LM_A_combi.npy')
 
 	train = np.append([Basic1_A[known]],[Basic2_A[known]],axis=0)
