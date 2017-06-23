@@ -24,6 +24,7 @@ def ensemble(data):
 	RSVD2_A = np.load('./log/RSVD2_A_20_fixed.npy')
 	KRR_A = np.load('./log/KRR_A_20_fixed.npy')
 	LM_A = np.load('./log/LM_A_fixed.npy')
+	NSVD2_A = np.load('./log/NSVD_A_fixed.npy')
 
 	train = np.append([Basic1_A[known]],[Basic2_A[known]],axis=0)
 	train = np.append(train,[Basic3_A[known]],axis=0)
@@ -36,6 +37,7 @@ def ensemble(data):
 	train = np.append(train,[RSVD2_A[known]],axis=0)
 	train = np.append(train,[KRR_A[known]],axis=0)
 	train = np.append(train,[LM_A[known]],axis=0)
+	train = np.append(train,[NSVD2_A[known]],axis=0)
 	train = train.T
 	endTime = time.time()
 	print('finish initialization',int(endTime-startTime),'s',train.shape)
@@ -61,6 +63,7 @@ def ensemble(data):
 	test = np.append(test,[RSVD2_A.flatten()],axis=0)
 	test = np.append(test,[KRR_A.flatten()],axis=0)
 	test = np.append(test,[LM_A.flatten()],axis=0)
+	test = np.append(test,[NSVD2_A.flatten()],axis=0)
 	test = test.T
 
 	A = regr.predict(test)
