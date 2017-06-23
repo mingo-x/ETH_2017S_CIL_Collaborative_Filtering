@@ -34,7 +34,7 @@ def ensemble(data):
 	train = np.append(train,[PSVD_A[known]],axis=0)
 	train = np.append(train,[RSVD_A[known]],axis=0)
 	train = np.append(train,[RSVD2_A[known]],axis=0)
-	train = np.append(train,[KRR_A[known]],axis=0)
+	# train = np.append(train,[KRR_A[known]],axis=0)
 	train = np.append(train,[LM_A[known]],axis=0)
 	train = train.T
 	endTime = time.time()
@@ -59,7 +59,7 @@ def ensemble(data):
 	test = np.append(test,[PSVD_A.flatten()],axis=0)
 	test = np.append(test,[RSVD_A.flatten()],axis=0)
 	test = np.append(test,[RSVD2_A.flatten()],axis=0)
-	test = np.append(test,[KRR_A.flatten()],axis=0)
+	# test = np.append(test,[KRR_A.flatten()],axis=0)
 	test = np.append(test,[LM_A.flatten()],axis=0)
 	test = test.T
 
