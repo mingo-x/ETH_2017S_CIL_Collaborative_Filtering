@@ -44,7 +44,7 @@ def ensemble(data):
 
 	print('start training')
 	startTime = time.time()
-	regr = linear_model.LinearRegression(normalize=True)
+	regr = linear_model.LinearRegression()
 	regr.fit(train, target)
 	endTime = time.time()
 	print('finish training',int(endTime-startTime),'s')
@@ -82,7 +82,7 @@ def ensemble(data):
 
 if __name__ == "__main__":
 	Initialization.initialization()
-	data = Initialization.readInData('./data/data_train.csv')
+	train, data = Initialization.readInData2()
 	A = ensemble(data)
 	np.save('./log/Ensemble_A.npy',A)
 	SVD.writeOutData(A)

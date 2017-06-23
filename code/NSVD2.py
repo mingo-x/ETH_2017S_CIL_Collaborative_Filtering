@@ -42,11 +42,12 @@ def gradientDescent(train,test):
 		D = np.repeat(D,Globals.nUsers,axis=0)
 		A = C+D
 		for i in range(Globals.nUsers):
+			term = np.sum(v[known[i]],axis=0)
 			for j in range(Globals.nItems):
-				A[i,j] += np.dot(v[j],np.sum(v[known[i]],axis=0))
+				A[i,j] += np.dot(v[j],term)
+		c *= 1-lamb
+		d *= 1-lamb
 		v *= 1-lamb
-		c -= lamb*(c+d-globalMean)
-		d -= lamb*(c+d-globalMean)
 		
 		for i in range(Globals.nUsers):
 			r = train[i] - A[i]
