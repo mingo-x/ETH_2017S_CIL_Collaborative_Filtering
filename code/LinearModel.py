@@ -10,11 +10,15 @@ def gradientDescent(data,train,testMask):
 	sigma = 1
 	lrate = Globals.lrate
 	lamb = 0.02
-	w = np.empty(Globals.nItems)
+	if Globals.warmStart:
+		w = np.load('./log/LM_w'+Globals.modelIdx+'.npy')
+	else:
+		w = np.empty(Globals.nItems)
+		for i in range(Globals.nItems):
+			w[i] = random.normalvariate(mu,sigma)
 	m = np.empty(Globals.nItems)
 	known = train!=0
 	for i in range(Globals.nItems):
-		w[i] = random.normalvariate(mu,sigma)
 		m[i] = np.mean(train[known[:,i],i])
 	e = np.empty(Globals.nUsers)
 	for i in range(Globals.nUsers):
