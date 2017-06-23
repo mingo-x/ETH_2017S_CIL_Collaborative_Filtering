@@ -25,7 +25,7 @@ def gradientDescent(train,test):
 			c[i] = random.normalvariate(mu,sigma)
 		for i in range(Globals.nItems):
 			for j in range(Globals.k):
-				v[i,k] = random.normalvariate(mu,sigma)
+				v[i,j] = random.normalvariate(mu,sigma)
 			d[i] = random.normalvariate(mu,sigma)
 	known = train!=0
 	globalMean = np.mean(train[mask])
