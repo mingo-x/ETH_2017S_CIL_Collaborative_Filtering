@@ -82,7 +82,8 @@ def ensemble(data):
 
 if __name__ == "__main__":
 	Initialization.initialization()
-	train, data = Initialization.readInData2()
+	# train, data = Initialization.readInData2()
+	data = Initialization.readInData('./data/data_train.csv')
 	A = ensemble(data)
 	np.save('./log/Ensemble_A.npy',A)
 	SVD.writeOutData(A)
