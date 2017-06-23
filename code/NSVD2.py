@@ -14,29 +14,40 @@ def gradientDescent(train,test):
 	lrate = Globals.lrate
 	lamb = 0.02
 	if Globals.warmStart:
-		print('warm start','./log/LM_w'+Globals.modelIdx+suffix)
-		w = np.load('./log/LM_w'+Globals.modelIdx+suffix)
+		print('warm start','./log/NSVD2_v'+Globals.modelIdx+suffix)
+		v = np.load('./log/NSVD2_v'+Globals.modelIdx+suffix)
+		c = np.load('./log/NSVD2_c'+Globals.modelIdx+suffix)
+		d = np.load('./log/NSVD2_d'+Globals.modelIdx+suffix)
 	else:
-		w = np.empty(Globals.nItems)
+		v = np.empty((Globals.nItems,Globals.k))
+		c = np.empty(Globals.nUsers)
+		d = np.empty(Globals.nItems)
+		for i in range(Globals.nUsers):
+			c[i] = random.normalvariate(mu,sigma)
 		for i in range(Globals.nItems):
-			w[i] = random.normalvariate(mu,sigma)
-	m = np.empty(Globals.nItems)
+			for j in range(Globals.k):
+				v[i,k] = random.normalvariate(mu,sigma)
+			d[i] = random.normalvariate(mu,sigma)
 	known = train!=0
-	for i in range(Globals.nItems):
-		m[i] = np.mean(train[known[:,i],i])
-	e = np.empty(Globals.nUsers)
-	for i in range(Globals.nUsers):
-		e[i] = 1.0/np.sqrt(1+np.count_nonzero(train[i]))
+	globalMean = np.mean(train[mask])
 
 	print('start training')
 	prev = 1e9
 	curr = 1e8
 	t = 0
-	A = np.empty((Globals.nUsers,Globals.nItems))
 	startTime = time.time()
 	while prev-curr > 1e-9:
-		w *= 1-lamb
+		C = np.reshape(c,(Globals.nUsers,1))
+		D = np.reshape(d,(1,Globals.nItems))
+		C = np.repeat(C,Globals.nItems,axis=1)
+		D = np.repeat(D,Globals.nUsers,axis=0)
+		A = C+D+np.dot(v[],np.sum(v[known[i]],axis=0))
+		v *= 1-lamb
+		c -= lamb*(c+d-globalMean)
+		d -= lamb*(c+d-globalMean)
+		
 		for i in range(Globals.nUsers):
+			
 			yp = m.copy()
 			yp += e[i]*np.sum(w[known[i]])
 			A[i] = yp
