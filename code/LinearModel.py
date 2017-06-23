@@ -44,12 +44,12 @@ def gradientDescent(data,train,testMask):
 		curr = SVD.evaluation(data,A,testMask)
 		print('t =',t,'score =',curr)
 		if t%1000 == 0:
-			np.save('./log/LM_w.npy',w)
+			np.save('./log/LM_w'+Globals.modelIdx+'.npy',w)
 			print('auto save')
 		t += 1
 	endTime = time.time()
 	print('finish training ',int(endTime-startTime),'s')
-	np.save('./log/LM_w.npy',w)
+	np.save('./log/LM_w'+Globals.modelIdx+'.npy',w)
 	# over 5
 	mask = A>5
 	A[mask] = 5
@@ -65,5 +65,5 @@ if __name__ == "__main__":
 	data = Initialization.readInData('./data/data_train.csv')
 	train, testMask = SVD.splitData(data,10)
 	A = gradientDescent(data,train,testMask)
-	np.save('./log/LM_A.npy',A)
+	np.save('./log/LM_A'+Globals.modelIdx+'.npy',A)
 	SVD.writeOutData(A)
