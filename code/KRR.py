@@ -11,7 +11,8 @@ def KRR(data):
 	Vt = np.load('./log/RSVD_Vt_'+str(Globals.k)+Globals.modelIdx+'.npy')
 	V = Vt.T
 	# normalize
-	V = [V[i]/np.linalg.norm(V[i]) for i in range(Globals.nItems)]
+	for i in range(Globals.nItems):
+		V[i] /= np.linalg.norm(V[i])
 	for i in range(Globals.nUsers):
 		print('user ',i+1)
 		known = data[i]!=0
