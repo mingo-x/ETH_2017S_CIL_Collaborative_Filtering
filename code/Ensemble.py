@@ -42,7 +42,7 @@ def ensemble(data):
 
 	print('start training')
 	startTime = time.time()
-	regr = linear_model.LinearRegression()
+	regr = linear_model.LinearRegression(normalize=True)
 	regr.fit(train, target)
 	endTime = time.time()
 	print('finish training',int(endTime-startTime),'s')
