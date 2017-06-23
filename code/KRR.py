@@ -41,9 +41,9 @@ def KRR(data):
 	return A
 
 def predictionWithCombi():
-	A1 = np.load('./log/KRR_A_'+str(k)+'.npy')
-	A2 = np.load('./log/KRR_A_'+str(k)+'_2.npy')
-	A3 = np.load('./log/KRR_A_'+str(k)+'_3.npy')
+	A1 = np.load('./log/KRR_A_'+str(Globals.k)+'.npy')
+	A2 = np.load('./log/KRR_A_'+str(Globals.k)+'_2.npy')
+	A3 = np.load('./log/KRR_A_'+str(Globals.k)+'_3.npy')
 	A = (A1+A2+A3)/3.0
 	return A
 
