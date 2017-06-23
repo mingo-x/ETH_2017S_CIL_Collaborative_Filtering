@@ -8,7 +8,7 @@ import Globals
 import random
 import time
 
-def biasedRSVD(data,train,testMask,k=96):
+def biasedRSVD(train,test,k=96):
 	# initialization
 	# normal distr? N(0,1)
 	print('start initialization k =',k)
@@ -17,12 +17,15 @@ def biasedRSVD(data,train,testMask,k=96):
 	lamb2 = 0.05
 	mu = 0
 	sigma = 1
+	suffix = '_fixed.npy'
+	if not Globals.fixed:
+		suffix = '.npy'
 	if Globals.warmStart:
 		print('warm start')
-		U = np.load('./log/RSVD2_U_'+str(k)+Globals.modelIdx+'.npy')
-		Vt = np.load('./log/RSVD2_Vt_'+str(k)+Globals.modelIdx+'.npy')
-		c = np.load('./log/RSVD2_c_'+str(k)+Globals.modelIdx+'.npy')
-		d = np.load('./log/RSVD2_d_'+str(k)+Globals.modelIdx+'.npy')
+		U = np.load('./log/RSVD2_U_'+str(k)+Globals.modelIdx+suffix)
+		Vt = np.load('./log/RSVD2_Vt_'+str(k)+Globals.modelIdx+suffix)
+		c = np.load('./log/RSVD2_c_'+str(k)+Globals.modelIdx+suffix)
+		d = np.load('./log/RSVD2_d_'+str(k)+Globals.modelIdx+suffix)
 	else:
 		U = np.empty((Globals.nUsers,k))
 		Vt = np.empty((k,Globals.nItems))
@@ -70,7 +73,7 @@ def biasedRSVD(data,train,testMask,k=96):
 			C = np.repeat(C,Globals.nItems,axis=1)
 			D = np.repeat(D,Globals.nUsers,axis=0)
 			A += C+D
-			score = SVD.evaluation(data,A,testMask)
+			score = SVD.evaluation2(A,test)
 			print('t =',t,'score =',score)
 			if score > prev2 and prev2 > prev1:
 				break
@@ -79,18 +82,18 @@ def biasedRSVD(data,train,testMask,k=96):
 
 		# auto save
 		if t%500000 == 0:
-			np.save('./log/RSVD2_U_'+str(k)+Globals.modelIdx+'.npy',U)
-			np.save('./log/RSVD2_Vt_'+str(k)+Globals.modelIdx+'.npy',Vt)
-			np.save('./log/RSVD2_c_'+str(k)+Globals.modelIdx+'.npy',c)
-			np.save('./log/RSVD2_d_'+str(k)+Globals.modelIdx+'.npy',d)
+			np.save('./log/RSVD2_U_'+str(k)+Globals.modelIdx+suffix,U)
+			np.save('./log/RSVD2_Vt_'+str(k)+Globals.modelIdx+suffix,Vt)
+			np.save('./log/RSVD2_c_'+str(k)+Globals.modelIdx+suffix,c)
+			np.save('./log/RSVD2_d_'+str(k)+Globals.modelIdx+suffix,d)
 			print('intermediate result saved')
 		t += 1
 	endTime = time.time()
 	print('finish SGD',int(endTime-startTime),'s')
-	np.save('./log/RSVD2_U_'+str(k)+Globals.modelIdx+'.npy',U)
-	np.save('./log/RSVD2_Vt_'+str(k)+Globals.modelIdx+'.npy',Vt)
-	np.save('./log/RSVD2_c_'+str(k)+Globals.modelIdx+'.npy',c)
-	np.save('./log/RSVD2_d_'+str(k)+Globals.modelIdx+'.npy',d)
+	np.save('./log/RSVD2_U_'+str(k)+Globals.modelIdx+suffix,U)
+	np.save('./log/RSVD2_Vt_'+str(k)+Globals.modelIdx+suffix,Vt)
+	np.save('./log/RSVD2_c_'+str(k)+Globals.modelIdx+suffix,c)
+	np.save('./log/RSVD2_d_'+str(k)+Globals.modelIdx+suffix,d)
 
 	# end clipping
 	print('start clipping')
@@ -107,27 +110,32 @@ def biasedRSVD(data,train,testMask,k=96):
 	mask = A<1
 	A[mask] = 1
 	print('finish clipping')
-	score = SVD.evaluation(data,A,testMask)
+	score = SVD.evaluation2(A,test)
 	print('after clipping score =',score)
 	return A
 
-def predictionWithCombi(data,k,testMask):
+def predictionWithCombi(k,test):
 	A1 = np.load('./log/RSVD2_A_'+str(k)+'_clip.npy')
 	A2 = np.load('./log/RSVD2_A_'+str(k)+'_2_clip.npy')
 	A3 = np.load('./log/RSVD2_A_'+str(k)+'_3_clip.npy')
 	A = (A1+A2+A3)/3.0
-	score = SVD.evaluation(data,A,testMask)
+	score = SVD.evaluation2(A,test)
 	print('after combination score =',score)
 	return A
 
 if __name__ == "__main__":
 	Initialization.initialization()
 	data = Initialization.readInData('./data/data_train.csv')
-	train, testMask = SVD.splitData(data,10)
-	if Globals.predict=='c':
-		A = predictionWithCombi(data,Globals.k,testMask)
-		np.save('./log/RSVD2_A_'+str(Globals.k)+'_combi.npy',A)
+	if Globals.fixed:
+		train, test = Initialization.readInData2()
+		A = biasedRSVD(train,test,Globals.k)
+		np.save('./log/RSVD2_A_'+str(Globals.k)+'_fixed.npy',A)
 	else:
-		A = biasedRSVD(data,train,testMask,Globals.k)
-		np.save('./log/RSVD2_A_'+str(Globals.k)+Globals.modelIdx+'_clip.npy',A)
-	SVD.writeOutData(A)
+		train, test = SVD.splitData(data,10)
+		if Globals.predict=='c':
+			A = predictionWithCombi(Globals.k,test)
+			np.save('./log/RSVD2_A_'+str(Globals.k)+'_combi.npy',A)
+		else:
+			A = biasedRSVD(train,test,Globals.k)
+			np.save('./log/RSVD2_A_'+str(Globals.k)+Globals.modelIdx+'_clip.npy',A)
+		SVD.writeOutData(A)
