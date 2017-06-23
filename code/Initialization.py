@@ -60,5 +60,5 @@ def readInData2(trainPath='./data/train.npy',testPath='./data/test.npy'):
 	train = np.load(trainPath)
 	test = np.load(testPath)
 	endTime = time.time()
-	print('finish reading data', int(endTime-startTime), 's')
+	print('finish reading data', int(endTime-startTime), 's', train.shape, test.shape)
 	return train,test
