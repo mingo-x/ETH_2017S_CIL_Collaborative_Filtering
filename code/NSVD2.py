@@ -14,10 +14,9 @@ def gradientDescent(train,test):
 	lrate = Globals.lrate
 	lamb = 0.02
 	if Globals.warmStart:
-		print('warm start','./log/NSVD2_v'+Globals.modelIdx+suffix)
-		v = np.load('./log/NSVD2_v'+Globals.modelIdx+suffix)
-		c = np.load('./log/NSVD2_c'+Globals.modelIdx+suffix)
-		d = np.load('./log/NSVD2_d'+Globals.modelIdx+suffix)
+		v = np.load('./log/NSVD2_v_'+str(Globals.k)+Globals.modelIdx+suffix)
+		c = np.load('./log/NSVD2_c_'+str(Globals.k)+Globals.modelIdx+suffix)
+		d = np.load('./log/NSVD2_d_'+str(Globals.k)+Globals.modelIdx+suffix)
 	else:
 		v = np.empty((Globals.nItems,Globals.k))
 		c = np.empty(Globals.nUsers)
@@ -63,16 +62,16 @@ def gradientDescent(train,test):
 		curr = SVD.evaluation2(A,test)
 		print('t =',t,'score =',curr)
 		if t%1000 == 0:
-			np.save('./log/NSVD2_v'+Globals.modelIdx+suffix,v)
-			np.save('./log/NSVD2_c'+Globals.modelIdx+suffix,c)
-			np.save('./log/NSVD2_d'+Globals.modelIdx+suffix,d)
+			np.save('./log/NSVD2_v_'+str(Globals.k)+Globals.modelIdx+suffix,v)
+			np.save('./log/NSVD2_c_'+str(Globals.k)+Globals.modelIdx+suffix,c)
+			np.save('./log/NSVD2_d_'+str(Globals.k)+Globals.modelIdx+suffix,d)
 			print('auto save')
 		t += 1
 	endTime = time.time()
 	print('finish training ',int(endTime-startTime),'s')
-	np.save('./log/NSVD2_v'+Globals.modelIdx+suffix,v)
-	np.save('./log/NSVD2_c'+Globals.modelIdx+suffix,c)
-	np.save('./log/NSVD2_d'+Globals.modelIdx+suffix,d)
+	np.save('./log/NSVD2_v_'+str(Globals.k)+Globals.modelIdx+suffix,v)
+	np.save('./log/NSVD2_c_'+str(Globals.k)+Globals.modelIdx+suffix,c)
+	np.save('./log/NSVD2_d_'+str(Globals.k)+Globals.modelIdx+suffix,d)
 	# over 5
 	mask = A>5
 	A[mask] = 5
@@ -88,4 +87,4 @@ if __name__ == "__main__":
 	if Globals.fixed:
 		train, test = Initialization.readInData2()
 		A = gradientDescent(train,test)
-		np.save('./log/NSVD2_A_fixed.npy',A)
+		np.save('./log/NSVD2_A_'+str(Globals.k)+'_fixed.npy',A)
