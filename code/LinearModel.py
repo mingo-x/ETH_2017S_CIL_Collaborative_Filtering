@@ -38,12 +38,12 @@ def gradientDescent(data,train,testMask):
 			for j in range(Globals.nItems):
 				if known[i,j]:
 					w[j] += term
+		# if t%1000 == 0:
+		prev1 = prev0
+		prev0 = curr
+		curr = SVD.evaluation(data,A,testMask)
+		print('t =',t,'score =',curr)
 		if t%1000 == 0:
-			prev1 = prev0
-			prev0 = curr
-			curr = SVD.evaluation(data,A,testMask)
-			print('t =',t,'score =',curr)
-		if t%10000 == 0:
 			np.save('./log/LM_w.npy',w)
 			print('auto save')
 		t += 1
