@@ -58,7 +58,7 @@ if __name__ == '__main__':
 	if Globals.fixed:
 		data, test = Initialization.readInData2()
 		A = KRR(data,test)
-		np.save('./log/KRR_A_'+str(Globals.k)+'_fixed.npy',A)
+		np.save('./log/KRR_A_'+str(Globals.k)+'_fixed1.npy',A)
 	else:
 		data = Initialization.readInData('./data/data_train.csv')
 		data, test = SVD.splitData(data,10)
