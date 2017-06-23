@@ -28,8 +28,6 @@ def gradientDescent(data,train,testMask):
 	A = np.empty((Globals.nUsers,Globals.nItems))
 	startTime = time.time()
 	while prev1>prev0 and prev0>curr:
-		prev1 = prev0
-		prev0 = curr
 		w *= 1-lamb
 		for i in range(Globals.nUsers):
 			yp = m.copy()
@@ -41,6 +39,8 @@ def gradientDescent(data,train,testMask):
 				if known[i,j]:
 					w[j] += term
 		if t%1000 == 0:
+			prev1 = prev0
+			prev0 = curr
 			curr = SVD.evaluation(data,A,testMask)
 			print('t =',t,'score =',curr)
 		if t%10000 == 0:
