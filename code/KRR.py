@@ -10,7 +10,7 @@ def kernel(x1,x2):
 def KRR(data):
 	if Globals.step == 0:
 		A = data.copy()
-	else
+	else:
 		A = np.load('./log/KRR_A_'+str(Globals.k)+Globals.modelIdx+'_'+Globals.step+'.npy')
 	Vt = np.load('./log/RSVD_Vt_'+str(Globals.k)+Globals.modelIdx+'.npy')
 	V = Vt.T
