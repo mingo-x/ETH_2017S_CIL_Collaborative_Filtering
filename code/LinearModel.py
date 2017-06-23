@@ -60,10 +60,23 @@ def gradientDescent(data,train,testMask):
 	print('after clipping score =',score)
 	return A
 
+def predictionWithCombi(data,testMask):
+	A1 = np.load('./log/LM_A.npy')
+	A2 = np.load('./log/LM_A_2.npy')
+	A3 = np.load('./log/LM_A_3.npy')
+	A = (A1+A2+A3)/3.0
+	score = SVD.evaluation(data,A,testMask)
+	print('after combination score =',score)
+	return A
+
 if __name__ == "__main__":
 	Initialization.initialization()
 	data = Initialization.readInData('./data/data_train.csv')
 	train, testMask = SVD.splitData(data,10)
-	A = gradientDescent(data,train,testMask)
-	np.save('./log/LM_A'+Globals.modelIdx+'.npy',A)
+	if Globals.predict=='c':
+		A = predictionWithCombi(data,testMask)
+		np.save('./log/LM_A_combi.npy',A)
+	else:
+		A = gradientDescent(data,train,testMask)
+		np.save('./log/LM_A'+Globals.modelIdx+'.npy',A)
 	SVD.writeOutData(A)
