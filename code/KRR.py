@@ -17,27 +17,25 @@ def KRR(data):
 	# normalize
 	for i in range(Globals.nItems):
 		V[i] /= np.linalg.norm(V[i])
-	for i in range(Globals.nUsers):
+	for i in range(Globals.step,Globals.nUsers):
 		print('user ',i+1)
 		known = data[i]!=0
-		missing = known==False
 		y = data[i,known]
 		X = V[known]
 
 		clf = KernelRidge(alpha=0.5,kernel=kernel)
 		clf.fit(X, y)
-		pred = clf.predict(V[missing])
+		pred = clf.predict(V)
 		#clipping
 		mask = pred>5
 		pred[mask] = 5
 		mask = pred<1
 		pred[mask] = 1
-		A[i,missing] = pred
+		A[i] = pred
 
 		if i%1000 == 0:
 			np.save('./log/KRR_A_'+str(Globals.k)+Globals.modelIdx+'_'+i+'.npy',A)
 
-	known = data!=0
 	return A
 
 def predictionWithCombi():
