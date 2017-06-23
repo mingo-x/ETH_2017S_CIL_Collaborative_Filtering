@@ -60,6 +60,14 @@ def ensemble(data):
 	endTime = time.time()
 	print('finish predicting',int(endTime-startTime),'s',A.shape)
 	A = np.reshape(A,(Globals.nUsers,Globals.nItems))
+	
+	#clipping
+	# over 5
+	mask = A>5
+	A[mask] = 5
+	# below 1
+	mask = A<1
+	A[mask] = 1
 	return A
 
 if __name__ == "__main__":
