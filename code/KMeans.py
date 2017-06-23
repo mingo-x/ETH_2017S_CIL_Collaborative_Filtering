@@ -114,4 +114,4 @@ if __name__ == "__main__":
 		else:
 			A = kmeans(data,Globals.k)
 			np.save('./log/Kmeans_A_'+str(Globals.k)+'.npy',A)
-	SVD.writeOutData(A)
+	#SVD.writeOutData(A)
