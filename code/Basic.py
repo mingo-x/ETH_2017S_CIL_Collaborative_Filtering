@@ -8,6 +8,7 @@ import Globals
 import numpy as np
 
 def p1(inData, n = Globals.nUsers):
+	print('basic predictor 1')
 	data = inData.copy()
 	for i in range(n):
 		c = np.count_nonzero(data[i,:])
@@ -21,6 +22,7 @@ def p1(inData, n = Globals.nUsers):
 	return data
 
 def p2(inData, n = Globals.nUsers):
+	print('basic predictor 2')
 	data = inData.copy()
 	for i in range(n):
 		c = np.count_nonzero(data[i,:])
@@ -34,6 +36,7 @@ def p2(inData, n = Globals.nUsers):
 	return data
 
 def p3(inData, n = Globals.nUsers):
+	print('basic predictor 3')
 	data = inData.copy()
 	for i in range(n):
 		c = np.count_nonzero(data[i,:])
@@ -47,6 +50,7 @@ def p3(inData, n = Globals.nUsers):
 	return data
 
 def p4(inData, n = Globals.nUsers):
+	print('basic predictor 4')
 	data = inData.copy()
 	for i in range(n):
 		c = np.count_nonzero(data[i,:])
@@ -60,6 +64,7 @@ def p4(inData, n = Globals.nUsers):
 	return data
 
 def p5(inData, n = Globals.nUsers):
+	print('basic predictor 5')
 	data = inData.copy()
 	for i in range(n):
 		c = np.count_nonzero(data[i,:])
@@ -73,6 +78,7 @@ def p5(inData, n = Globals.nUsers):
 	return data
 
 def p6(inData, nu = Globals.nUsers, ni = Globals.nItems):
+	print('basic predictor 6')
 	data = inData.copy()
 	# mean of users
 	meanu = np.empty(nu)
