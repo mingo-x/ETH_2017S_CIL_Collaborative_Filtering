@@ -18,7 +18,7 @@ def gradientDescent(data,train,testMask):
 		m[i] = np.mean(train[known[:,i],i])
 	e = np.empty(Globals.nUsers)
 	for i in range(Globals.nUsers):
-		e[i] = 1.0/np.sqrt(1+np.count_nonzero(data[i]))
+		e[i] = 1.0/np.sqrt(1+np.count_nonzero(train[i]))
 
 	print('start training')
 	prev0 = 1e9
