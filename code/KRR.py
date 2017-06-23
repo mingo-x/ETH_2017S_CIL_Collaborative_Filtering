@@ -7,7 +7,7 @@ import SVD
 def kernel(x1,x2):
 	return np.exp(2*(np.dot(x1,x2)-1))
 
-def KRR(data):
+def KRR(data,test):
 	suffix = '_fixed.npy'
 	if not Globals.fixed:
 		suffix = '.npy'
@@ -21,7 +21,7 @@ def KRR(data):
 	for i in range(Globals.nItems):
 		V[i] /= np.linalg.norm(V[i])
 	for i in range(Globals.step,Globals.nUsers):
-		print('user ',i+1)
+		print('user ',i+1,)
 		known = data[i]!=0
 		y = data[i,known]
 		X = V[known]
@@ -35,10 +35,15 @@ def KRR(data):
 		mask = pred<1
 		pred[mask] = 1
 		A[i] = pred
+		mask = test[i]!=0
+		score = np.sqrt(np.mean(np.square(pred[mask]-test[i,mask])))
+		print('score =',score)
 
 		if i%1000 == 0:
 			np.save('./log/KRR_A_'+str(Globals.k)+Globals.modelIdx+'_'+str(i)+suffix,A)
 
+	score = SVD.evaluation2(A,test)
+	print('test error =',score)
 	return A
 
 def predictionWithCombi():
@@ -52,14 +57,15 @@ if __name__ == '__main__':
 	Initialization.initialization()
 	if Globals.fixed:
 		data, test = Initialization.readInData2()
-		A = KRR(data)
+		A = KRR(data,test)
 		np.save('./log/KRR_A_'+str(Globals.k)'_fixed.npy',A)
 	else:
 		data = Initialization.readInData('./data/data_train.csv')
+		data, test = SVD.splitData(data,10)
 		if Globals.predict=='c':
 			A = predictionWithCombi()
 			np.save('./log/KRR_A_'+str(Globals.k)+'_combi.npy',A)
 		else:
-			A = KRR(data)
+			A = KRR(data,test)
 			np.save('./log/KRR_A_'+str(Globals.k)+Globals.modelIdx+'.npy',A)
 		SVD.writeOutData(A)

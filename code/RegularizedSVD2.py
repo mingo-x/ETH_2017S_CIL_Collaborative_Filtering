@@ -125,12 +125,12 @@ def predictionWithCombi(k,test):
 
 if __name__ == "__main__":
 	Initialization.initialization()
-	data = Initialization.readInData('./data/data_train.csv')
 	if Globals.fixed:
 		train, test = Initialization.readInData2()
 		A = biasedRSVD(train,test,Globals.k)
 		np.save('./log/RSVD2_A_'+str(Globals.k)+'_fixed.npy',A)
 	else:
+		data = Initialization.readInData('./data/data_train.csv')
 		train, test = SVD.splitData(data,10)
 		if Globals.predict=='c':
 			A = predictionWithCombi(Globals.k,test)
