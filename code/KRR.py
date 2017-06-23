@@ -14,7 +14,7 @@ def KRR(data):
 	for i in range(Globals.nItems):
 		V[i] /= np.linalg.norm(V[i])
 	for i in range(Globals.nUsers):
-		print('user ',i+1,)
+		print('user ',i+1)
 		known = data[i]!=0
 		missing = known==False
 		y = data[i,known]
@@ -29,12 +29,8 @@ def KRR(data):
 		mask = pred<1
 		pred[mask] = 1
 		A[i,missing] = pred
-		score = np.sqrt(np.mean(np.square((data-A)[i,known])))
-		print('score =',score)
 
 	known = data!=0
-	trainigErr = np.sqrt(np.mean(np.square((data-A)[known])))
-	print('training error =',trainigErr)
 	return A
 
 if __name__ == '__main__':
