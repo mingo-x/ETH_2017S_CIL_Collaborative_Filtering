@@ -21,8 +21,8 @@ def gradientDescent(data,train,testMask):
 		e[i] = 1.0/np.sqrt(1+np.count_nonzero(data[i]))
 
 	print('start training')
-	prev0 = 1e10
-	prev1 = 1e9
+	prev0 = 1e9
+	prev1 = 1e10
 	curr = 1e8
 	t = 0
 	A = np.empty((Globals.nUsers,Globals.nItems))
