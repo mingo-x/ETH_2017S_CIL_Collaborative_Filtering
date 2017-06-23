@@ -96,16 +96,19 @@ def p6(inData, nu = Globals.nUsers, ni = Globals.nItems):
 
 if __name__ == "__main__":
 	Initialization.initialization()
-	data = Initialization.readInData('./data/data_train.csv')
+	if Globals.fixed:
+		data, test = Initialization.readInData2()
+	else:
+		data = Initialization.readInData('./data/data_train.csv')
 	A = p1(data)
-	np.save('./log/Basic1_A.npy',A)
+	np.save('./log/Basic1_A_fixed.npy',A)
 	A = p2(data)
-	np.save('./log/Basic2_A.npy',A)
+	np.save('./log/Basic2_A_fixed.npy',A)
 	A = p3(data)
-	np.save('./log/Basic3_A.npy',A)
+	np.save('./log/Basic3_A_fixed.npy',A)
 	A = p4(data)
-	np.save('./log/Basic4_A.npy',A)
+	np.save('./log/Basic4_A_fixed.npy',A)
 	A = p5(data)
-	np.save('./log/Basic5_A.npy',A)
+	np.save('./log/Basic5_A_fixed.npy',A)
 	A = p6(data)
-	np.save('./log/Basic6_A.npy',A)
+	np.save('./log/Basic6_A_fixed.npy',A)

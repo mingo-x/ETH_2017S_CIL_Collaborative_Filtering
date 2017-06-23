@@ -27,6 +27,9 @@ def initialization():
 		elif argv[i].startswith('-s='):
 			Globals.step = int(argv[i][3:])
 			print('starting step =', Globals.step)
+		elif argv[i].startswith('-f='):
+			Globals.fixed = argv[i][3] == 't'
+			print('fixed split =', Globals.fixed)
 
 
 def readInData(inPath):
@@ -49,3 +52,13 @@ def readInData(inPath):
 	endTime = time.time()
 	print('finish reading data', int(endTime-startTime), 's')
 	return data
+
+def readInData2(trainPath='./data/train.npy',testPath='./data/test.npy'):
+	# read in data
+	print('start reading data')
+	startTime = time.time()
+	train = np.load(trainPath)
+	test = np.load(testPath)
+	endTime = time.time()
+	print('finish reading data', int(endTime-startTime), 's')
+	return train,test

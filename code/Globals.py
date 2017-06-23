@@ -8,3 +8,4 @@ lrate = 0.001
 predict = ''
 modelIdx = ''
 step = 0
+fixed = True
