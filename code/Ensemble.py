@@ -42,6 +42,7 @@ def ensemble(data):
 	regr.fit(train, target)
 	endTime = time.time()
 	print('finish training',int(endTime-startTime),'s')
+	print('Coefficients: \n', regr.coef_)
 
 	print('start predicting')
 	startTime = time.time()
@@ -60,7 +61,7 @@ def ensemble(data):
 	endTime = time.time()
 	print('finish predicting',int(endTime-startTime),'s',A.shape)
 	A = np.reshape(A,(Globals.nUsers,Globals.nItems))
-	
+
 	#clipping
 	# over 5
 	mask = A>5
