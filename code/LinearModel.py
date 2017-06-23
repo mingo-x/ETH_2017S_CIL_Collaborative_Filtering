@@ -30,7 +30,7 @@ def gradientDescent(data,train,testMask):
 	t = 0
 	A = np.empty((Globals.nUsers,Globals.nItems))
 	startTime = time.time()
-	while prev-curr > 1e-8:
+	while prev-curr > 1e-9:
 		w *= 1-lamb
 		for i in range(Globals.nUsers):
 			yp = m.copy()
