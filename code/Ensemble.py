@@ -2,8 +2,11 @@ from sklearn import linear_model
 import SVD
 import numpy as np
 import Globals
+import time
 
 def ensemble(data):
+	print('start initialization')
+	startTime = time.time()
 	known = data!=0
 	nObs = np.count_nonzero(data)
 	target = np.reshape(data[known],(nObs,1))
@@ -29,10 +32,18 @@ def ensemble(data):
 	train = np.append(train,[RSVD_A[known]],axis=0)
 	train = np.append(train,[RSVD2_A[known]],axis=0)
 	train = train.T
+	endTime = time.time()
+	print('finish initialization',int(endTime-startTime),'s')
 
+	print('start training')
+	startTime = time.time()
 	regr = linear_model.LinearRegression()
 	regr.fit(train, target)
+	endTime = time.time()
+	print('finish training',int(endTime-startTime),'s')
 
+	print('start predicting')
+	startTime = time.time()
 	test = np.append([Basic1_A.flatten()],[Basic2_A.flatten()],axis=0)
 	test = np.append(test,[Basic3_A.flatten()],axis=0)
 	test = np.append(test,[Basic4_A.flatten()],axis=0)
@@ -45,6 +56,8 @@ def ensemble(data):
 	test = test.T
 
 	A = regr.predict(test)
+	endTime = time.time()
+	print('finish predicting',int(endTime-startTime),'s')
 	A = np.reshape(pres,(Globals.nUsers,Globals.nItems))
 	return A
 
