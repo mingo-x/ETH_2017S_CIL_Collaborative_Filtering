@@ -55,7 +55,7 @@ def KRR(data,test, a=0.5):
 	return A
 
 def chooseAlpha(data,test):
-	for a in np.arange(0.1,1.6,0.2):
+	for a in np.arange(0.5,0.9,0.1):
 		KRR(data,test,a)
 
 def predictionWithCombi():
