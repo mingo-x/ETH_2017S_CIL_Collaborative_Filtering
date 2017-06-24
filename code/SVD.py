@@ -77,10 +77,12 @@ def prediction(U,S,Vt,k):
 	print('finish matrix multiplication')
 	return Ak
 
-def predictionWithClipping(U,S,Vt,k):
+def predictionWithClipping(U,S,Vt,k,test):
 	print('start matrix multiplication k =',k)
 	Sk = S[:k,:k]
 	Ak = U[:,:k].dot(Sk).dot(Vt[:k,:])
+	score = evaluation2(Ak,test)
+	print('test error =',score)
 	# over 5
 	mask = Ak>5
 	Ak[mask] = 5
@@ -88,6 +90,8 @@ def predictionWithClipping(U,S,Vt,k):
 	mask = Ak<1
 	Ak[mask] = 1
 	print('finish matrix multiplication')
+	score = evaluation2(Ak,test)
+	print('after clipping test error =',score)
 	return Ak
 
 def predictionWithClippingByStep(U,S,Vt,k):

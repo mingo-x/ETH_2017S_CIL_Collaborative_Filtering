@@ -86,7 +86,7 @@ if __name__ == "__main__":
 		if Globals.predict == 'l':
 			chooseLamb(train,test)
 		else:
-			A = gradientDescent(train,test)
+			A = gradientDescent(train,test,lamb=0.01)
 			np.save('./log/LM_A_fixed'+Globals.dataIdx+'.npy',A)
 	else:
 		data = Initialization.readInData('./data/data_train.csv')
