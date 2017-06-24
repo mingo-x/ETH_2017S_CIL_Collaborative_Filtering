@@ -66,7 +66,7 @@ def gradientDescent(train,test,lamb=0.02):
 	return A
 
 def chooseLamb(train,test):
-	for lamb in range(0,0.11,0.01):
+	for lamb in np.range(0,0.11,0.01):
 		print('lambda =', lamb)
 		A = gradientDescent(train,test,lamb)
 
