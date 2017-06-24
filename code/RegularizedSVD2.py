@@ -135,7 +135,7 @@ if __name__ == "__main__":
 			chooseK(train,test)
 		else:
 			A = biasedRSVD(train,test,Globals.k)
-			np.save('./log/RSVD2_A_'+str(Globals.k)+'_fixed.npy',A)
+			np.save('./log/RSVD2_A_'+str(Globals.k)+'_fixed'+Globals.dataIdx+'.npy',A)
 	else:
 		data = Initialization.readInData('./data/data_train.csv')
 		train, test = SVD.splitData(data,10)
