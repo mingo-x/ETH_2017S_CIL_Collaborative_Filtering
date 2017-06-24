@@ -87,18 +87,28 @@ def kmeans(inData,test,k):
 	print('after clipping test error =',score)
 	return A
 
-def predictionWithCombi(data):
+def predictionWithCombi(data,test):
 	suffix = '_fixed'+Globals.dataIdx+'.npy'
 	if not Globals.fixed:
 		suffix = '.npy'
 	known = data!=0
 	A = np.zeros((Globals.nUsers,Globals.nItems))
 	for k in range(4,25,2):
+		print('read k =', k,)
 		A1 = np.load('./log/Kmeans_A_'+str(k)+suffix)
+		print(A.shape)
 		A += A1
 	A /= 10.0
-	score = np.sqrt(np.mean(np.square((data-A)[known])))
+	score = SVD.evaluation2(A,test)
 	print('after combination score =',score)
+	# over 5
+	mask = A>5
+	A[mask] = 5
+	# below 1
+	mask = A<1
+	A[mask] = 1
+	score = SVD.evaluation2(A,test)
+	print('after clipping score =',score)
 	return A
 
 if __name__ == "__main__":
