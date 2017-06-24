@@ -7,8 +7,12 @@ import SVD
 def kernel(x1,x2):
 	return np.exp(2*(np.dot(x1,x2)-1))
 
+def topRatedMovies(data):
+	count = np.count_nonzero(data,axis=0)
+	print(count)
+
 def KRR(data,test):
-	suffix = '_fixed.npy'
+	suffix = '_fixed'+Globals.dataIdx+'.npy'
 	if not Globals.fixed:
 		suffix = '.npy'
 	if Globals.step == 0:
@@ -29,21 +33,23 @@ def KRR(data,test):
 		clf = KernelRidge(alpha=0.5,kernel=kernel)
 		clf.fit(X, y)
 		pred = clf.predict(V)
-		#clipping
-		mask = pred>5
-		pred[mask] = 5
-		mask = pred<1
-		pred[mask] = 1
 		A[i] = pred
 		mask = test[i]!=0
-		score = np.sqrt(np.mean(np.square(pred[mask]-test[i,mask])))
-		print('score =',score)
+		# score = np.sqrt(np.mean(np.square(pred[mask]-test[i,mask])))
+		# print('score =',score)
 
 		if i%1000 == 0:
 			np.save('./log/KRR_A_'+str(Globals.k)+Globals.modelIdx+'_'+str(i)+suffix,A)
 
 	score = SVD.evaluation2(A,test)
 	print('test error =',score)
+	#clipping
+	mask = A>5
+	A[mask] = 5
+	mask = A<1
+	A[mask] = 1
+	score = SVD.evaluation2(A,test)
+	print('after clipping test error =',score)
 	return A
 
 def predictionWithCombi():
@@ -56,7 +62,9 @@ def predictionWithCombi():
 if __name__ == '__main__':
 	Initialization.initialization()
 	if Globals.fixed:
-		data, test = Initialization.readInData2()
+		data, test = Initialization.readInData2(idx=Globals.dataIdx)
+		topRatedMovies(data)
+		return
 		A = KRR(data,test)
 		np.save('./log/KRR_A_'+str(Globals.k)+'_fixed1.npy',A)
 	else:

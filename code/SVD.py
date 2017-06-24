@@ -157,7 +157,6 @@ def chooseK(data,n=10):
 		print('k =',k, 'average RMSE =', ave, int(endTime-startTime), 's')
 		csvWriter.writerow([k,ave])
 
-
 if __name__ == "__main__":
 	Initialization.initialization()
 	data = Initialization.readInData('./data/data_train.csv')
