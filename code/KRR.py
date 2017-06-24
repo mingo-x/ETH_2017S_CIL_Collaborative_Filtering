@@ -8,8 +8,9 @@ def kernel(x1,x2):
 	return np.exp(2*(np.dot(x1,x2)-1))
 
 def topRatedMovies(data):
-	count = np.count_nonzero(data,axis=0)
-	print(count)
+	for i in range(Globals.nItems):
+		count = np.count_nonzero(data[,i])
+		print(count,)
 
 def KRR(data,test):
 	suffix = '_fixed'+Globals.dataIdx+'.npy'
