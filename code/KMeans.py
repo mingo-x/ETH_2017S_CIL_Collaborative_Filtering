@@ -75,16 +75,15 @@ def kmeans(inData,test,k):
 	score = SVD.evaluation2(A,test)
 	print('test error =',score)
 
-
 	#clipping
 	# over 5
-	mask = A>5
-	A[mask] = 5
+	# mask = A>5
+	# A[mask] = 5
 	# below 1
-	mask = A<1
-	A[mask] = 1
-	score = SVD.evaluation2(A,test)
-	print('after clipping test error =',score)
+	# mask = A<1
+	# A[mask] = 1
+	# score = SVD.evaluation2(A,test)
+	# print('after clipping test error =',score)
 	return A
 
 def predictionWithCombi(data,test):
@@ -117,7 +116,7 @@ if __name__ == "__main__":
 		data, test = Initialization.readInData2(idx = Globals.dataIdx)
 		if Globals.predict=='c':
 			A = predictionWithCombi(data,test)
-			np.save('./log/Kmeans_A_combi_fixed'+Globals.dataIdx+'.npy',A)
+			np.save('./log/Kmeans_A_combi_fixed'+Globals.dataIdx+'_2.npy',A)
 		else:
 			A = kmeans(data,test,Globals.k)
 			np.save('./log/Kmeans_A_'+str(Globals.k)+'_fixed'+Globals.dataIdx+'.npy',A)
