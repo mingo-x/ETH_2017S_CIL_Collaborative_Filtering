@@ -73,6 +73,19 @@ def ensemble(data):
 
 	#clipping
 	# over 5
+	# mask = A>5
+	# A[mask] = 5
+	# below 1
+	# mask = A<1
+	# A[mask] = 1
+	return A
+
+def average():
+	A0 = np.load('./log/Ensemble_A.npy')
+	A1 = np.load('./log/Ensemble_A1.npy')
+	A = (A0+A1)/2.0
+	#clipping
+	# over 5
 	mask = A>5
 	A[mask] = 5
 	# below 1
@@ -82,8 +95,12 @@ def ensemble(data):
 
 if __name__ == "__main__":
 	Initialization.initialization()
-	train, data = Initialization.readInData2(idx = Globals.dataIdx)
-	# data = Initialization.readInData('./data/data_train.csv')
-	A = ensemble(data)
-	np.save('./log/Ensemble_A'+Globals.dataIdx+'.npy',A)
+	if Globals.predict == 'a':
+		A = average()
+		np.save('./log/Ensemble_A_ave.npy',A)
+	else:
+		train, data = Initialization.readInData2(idx = Globals.dataIdx)
+		# data = Initialization.readInData('./data/data_train.csv')
+		A = ensemble(data)
+		np.save('./log/Ensemble_A'+Globals.dataIdx+'.npy',A)
 	SVD.writeOutData(A)
