@@ -9,7 +9,7 @@ def kernel(x1,x2):
 
 def topRatedMovies(data):
 	for i in range(Globals.nItems):
-		count = np.count_nonzero(data[,i])
+		count = np.count_nonzero(data[:,i])
 		print(count,)
 
 def KRR(data,test):
