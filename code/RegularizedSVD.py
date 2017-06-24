@@ -17,9 +17,9 @@ def SGD(train,test,k=96):
 	lamb = 0.02
 	mu = 0
 	sigma = 1
-	suffix = '.npy'
-	if Globals.fixed:
-		suffix = '_fixed.npy'
+	suffix = '_fixed'+Globals.dataIdx+'.npy'
+	if not Globals.fixed:
+		suffix = '.npy'
 	if Globals.warmStart:
 		print('warm start')
 		U = np.load('./log/RSVD_U_'+str(k)+Globals.modelIdx+suffix)
@@ -98,6 +98,11 @@ def SGD(train,test,k=96):
 	print('after clipping score =',score)
 	return A
 
+def chooseK(train,test):
+	for k in range(5,26,5):
+		SGD(train,test,k)
+
+
 def predictionWithCombi(k,test):
 	A1 = np.load('./log/RSVD_A_'+str(k)+'_clip.npy')
 	A2 = np.load('./log/RSVD_A_'+str(k)+'_2_clip.npy')
@@ -110,9 +115,12 @@ def predictionWithCombi(k,test):
 if __name__ == "__main__":
 	Initialization.initialization()
 	if Globals.fixed:
-		train, test = Initialization.readInData2()
-		A = SGD(train,test,Globals.k)
-		np.save('./log/RSVD_A_'+str(Globals.k)+'_fixed.npy',A)
+		train, test = Initialization.readInData2(idx=Globals.dataIdx)
+		if Globals.predict == 'k':
+			chooseK(train,test)
+		else:
+			A = SGD(train,test,Globals.k)
+			np.save('./log/RSVD_A_'+str(Globals.k)+'_fixed.npy',A)
 	else:
 		data = Initialization.readInData('./data/data_train.csv')
 		train, test = SVD.splitData(data,10)
