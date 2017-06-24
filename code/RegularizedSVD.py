@@ -1,6 +1,7 @@
 # using gradient descent with
 # regularization and early stopping
 # choose K?
+# subtraction of baseline?
 
 import Initialization
 import SVD
@@ -99,7 +100,7 @@ def SGD(train,test,k=96):
 	return A
 
 def chooseK(train,test):
-	for k in range(5,26,5):
+	for k in range(15,26,5):
 		SGD(train,test,k)
 
 

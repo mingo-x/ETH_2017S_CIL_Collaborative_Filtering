@@ -115,7 +115,7 @@ def biasedRSVD(train,test,k=96):
 	return A
 
 def chooseK(train,test):
-	for k in range(30,4,-5):
+	for k in range(25,4,-5):
 		biasedRSVD(train,test,k)
 
 def predictionWithCombi(k,test):
