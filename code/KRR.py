@@ -64,7 +64,7 @@ if __name__ == '__main__':
 	if Globals.fixed:
 		data, test = Initialization.readInData2(idx=Globals.dataIdx)
 		topRatedMovies(data)
-		return
+		# return
 		A = KRR(data,test)
 		np.save('./log/KRR_A_'+str(Globals.k)+'_fixed1.npy',A)
 	else:
