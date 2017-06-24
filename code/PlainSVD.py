@@ -6,7 +6,7 @@ import numpy as np
 import Globals
 
 def chooseK(U,S,Vt,test):
-	for k in range(5,26,5):
+	for k in range(4,17,2):
 		SVD.predictionWithClipping(U, S, Vt, k, test)
 
 if __name__ == "__main__":
