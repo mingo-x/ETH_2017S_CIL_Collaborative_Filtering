@@ -12,7 +12,7 @@ def topRatedMovies(data):
 		count = np.count_nonzero(data[:,i])
 		print(count,)
 
-def KRR(data,test):
+def KRR(data,test, a=0.5):
 	suffix = '_fixed'+Globals.dataIdx+'.npy'
 	if not Globals.fixed:
 		suffix = '.npy'
@@ -26,12 +26,13 @@ def KRR(data,test):
 	for i in range(Globals.nItems):
 		V[i] /= np.linalg.norm(V[i])
 	for i in range(Globals.step,Globals.nUsers):
-		print('user ',i+1,)
+		if i%100 == 0:
+			print('user ',i+1)
 		known = data[i]!=0
 		y = data[i,known]
 		X = V[known]
 
-		clf = KernelRidge(alpha=0.5,kernel='linear')
+		clf = KernelRidge(alpha=a,kernel='linear')
 		clf.fit(X, y)
 		pred = clf.predict(V)
 		A[i] = pred
@@ -53,6 +54,10 @@ def KRR(data,test):
 	print('after clipping test error =',score)
 	return A
 
+def chooseAlpha(data,test):
+	for a in np.arange(0.1,1.6,0.2):
+		KRR(data,test,a)
+
 def predictionWithCombi():
 	A1 = np.load('./log/KRR_A_'+str(Globals.k)+'.npy')
 	A2 = np.load('./log/KRR_A_'+str(Globals.k)+'_2.npy')
@@ -64,8 +69,11 @@ if __name__ == '__main__':
 	Initialization.initialization()
 	if Globals.fixed:
 		data, test = Initialization.readInData2(idx=Globals.dataIdx)
-		A = KRR(data,test)
-		np.save('./log/KRR_A_'+str(Globals.k)+'_fixed'+Globals.dataIdx+'_lin.npy',A)
+		if Globals.predict == 'a':
+			chooseAlpha(data,test)
+		else:
+			A = KRR(data,test)
+			np.save('./log/KRR_A_'+str(Globals.k)+'_fixed'+Globals.dataIdx+'_lin.npy',A)
 	else:
 		data = Initialization.readInData('./data/data_train.csv')
 		data, test = SVD.splitData(data,10)
