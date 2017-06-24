@@ -20,9 +20,9 @@ if __name__ == "__main__":
 	if Globals.predict == 'k':
 		chooseK(U,S,Vt,test)
 	else:
-		Ak = SVD.predictionWithClipping(U, S, Vt, 12,test)
+		Ak = SVD.predictionWithClipping(U, S, Vt, Globals.k,test)
 		if Globals.fixed:
-			np.save('./log/PSVD_A_20_fixed'+Globals.dataIdx+'.npy',Ak)
+			np.save('./log/PSVD_A_'+str(Globals.k)+'_fixed'+Globals.dataIdx+'.npy',Ak)
 		else:
-			np.save('./log/PSVD_A_20.npy',Ak)
+			np.save('./log/PSVD_A_'+str(Globals.k)+'.npy',Ak)
 		# SVD.writeOutData(Ak)
