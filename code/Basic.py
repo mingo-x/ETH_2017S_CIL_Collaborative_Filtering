@@ -6,6 +6,7 @@
 import Initialization
 import Globals
 import numpy as np
+import SVD
 
 def p1(inData, n = Globals.nUsers):
 	print('basic predictor 1')
@@ -97,18 +98,30 @@ def p6(inData, nu = Globals.nUsers, ni = Globals.nItems):
 if __name__ == "__main__":
 	Initialization.initialization()
 	if Globals.fixed:
-		data, test = Initialization.readInData2()
+		data, test = Initialization.readInData2(idx=Globals.dataIdx)
 	else:
 		data = Initialization.readInData('./data/data_train.csv')
 	A = p1(data)
-	np.save('./log/Basic1_A_fixed.npy',A)
+	np.save('./log/Basic1_A_fixed'+Globals.dataIdx+'.npy',A)
+	score = SVD.evaluation2(A,test)
+	print('test error =', score)
 	A = p2(data)
-	np.save('./log/Basic2_A_fixed.npy',A)
+	np.save('./log/Basic2_A_fixed'+Globals.dataIdx+'.npy',A)
+	score = SVD.evaluation2(A,test)
+	print('test error =', score)
 	A = p3(data)
-	np.save('./log/Basic3_A_fixed.npy',A)
+	np.save('./log/Basic3_A_fixed'+Globals.dataIdx+'.npy',A)
+	score = SVD.evaluation2(A,test)
+	print('test error =', score)
 	A = p4(data)
-	np.save('./log/Basic4_A_fixed.npy',A)
+	np.save('./log/Basic4_A_fixed'+Globals.dataIdx+'.npy',A)
+	score = SVD.evaluation2(A,test)
+	print('test error =', score)
 	A = p5(data)
-	np.save('./log/Basic5_A_fixed.npy',A)
+	np.save('./log/Basic5_A_fixed'+Globals.dataIdx+'.npy',A)
+	score = SVD.evaluation2(A,test)
+	print('test error =', score)
 	A = p6(data)
-	np.save('./log/Basic6_A_fixed.npy',A)
+	np.save('./log/Basic6_A_fixed'+Globals.dataIdx+'.npy',A)
+	score = SVD.evaluation2(A,test)
+	print('test error =', score)

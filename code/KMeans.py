@@ -20,12 +20,13 @@ def kmeans(inData,test,k):
 		uMean[i] = np.mean(data[i])
 		data[i] -= uMean[i]
 	data[missing] = 0
-	center = np.empty((k,Globals.nItems))
-	for i in range(k):
-		# for j in range(Globals.nItems):
-		# 	center[i,j] = random.normalvariate(0,1)
-		idx = random.randint(0,Globals.nUsers-1)
-		center[i] = data[idx]
+	if Globals.warmStart:
+		center = np.load('./log/KMeans_center_'+str(k)+suffix)
+	else:
+		center = np.empty((k,Globals.nItems))
+		for i in range(k):
+			idx = random.randint(0,Globals.nUsers-1)
+			center[i] = data[idx]
 	prev = 1e10
 	curr = 1e9
 
@@ -60,7 +61,7 @@ def kmeans(inData,test,k):
 						center[i][j] = 0
 
 		print('t =',t,'rmse =',curr)
-		if t%10000 == 0:
+		if t%100 == 0:
 			np.save('./log/KMeans_center_'+str(k)+suffix,center)
 			print('auto save')
 		t += 1
