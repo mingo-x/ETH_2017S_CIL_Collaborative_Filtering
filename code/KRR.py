@@ -31,7 +31,7 @@ def KRR(data,test):
 		y = data[i,known]
 		X = V[known]
 
-		clf = KernelRidge(alpha=0.5,kernel=kernel)
+		clf = KernelRidge(alpha=0.5,kernel='linear')
 		clf.fit(X, y)
 		pred = clf.predict(V)
 		A[i] = pred
@@ -64,10 +64,8 @@ if __name__ == '__main__':
 	Initialization.initialization()
 	if Globals.fixed:
 		data, test = Initialization.readInData2(idx=Globals.dataIdx)
-		# topRatedMovies(data)
-		# return
 		A = KRR(data,test)
-		np.save('./log/KRR_A_'+str(Globals.k)+'_fixed1.npy',A)
+		np.save('./log/KRR_A_'+str(Globals.k)+'_fixed'+Globals.dataIdx+'_lin.npy',A)
 	else:
 		data = Initialization.readInData('./data/data_train.csv')
 		data, test = SVD.splitData(data,10)

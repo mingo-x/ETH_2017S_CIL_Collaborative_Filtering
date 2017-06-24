@@ -25,7 +25,7 @@ def ensemble(data):
 	# RSVD_A = np.load('./log/RSVD_A_20_fixed'+Globals.dataIdx+'.npy')
 	RSVD_A = np.load('./log/RSVD_A_15_fixed'+Globals.dataIdx+'.npy')
 	# RSVD2_A = np.load('./log/RSVD2_A_20_fixed'+Globals.dataIdx+'.npy')
-	RSVD2_A = np.load('./log/RSVD2_A_10_fixed'+Globals.dataIdx+'.npy')
+	RSVD2_A = np.load('./log/RSVD2_A_5_fixed'+Globals.dataIdx+'.npy')
 	# KRR_A = np.load('./log/KRR_A_20_fixed'+Globals.dataIdx+'.npy')
 	KRR_A = np.load('./log/KRR_A_15_fixed'+Globals.dataIdx+'.npy')
 	LM_A = np.load('./log/LM_A_fixed'+Globals.dataIdx+'.npy')
