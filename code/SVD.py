@@ -27,7 +27,7 @@ def splitData(data, n = 10):
 	print('finish splitting data train num:',np.count_nonzero(train),'test num:', np.sum(testMask))
 	return train, test
 
-def splitData2(data, n = 10):
+def splitData2(data, n = 10,idx=''):
 	print('start splitting data')
 	p = 1.0/n
 	trainMask = data!=0
@@ -45,8 +45,8 @@ def splitData2(data, n = 10):
 	train[testMask] = 0
 	test[trainMask] = 0
 	print('finish splitting data train num:',np.count_nonzero(train),'test num:', np.sum(test))
-	np.save('./data/train.npy',train)
-	np.save('./data/test.npy',test)
+	np.save('./data/train'+idx+'.npy',train)
+	np.save('./data/test'+idx+'.npy',test)
 
 def fillInMissing(data):
 # fill in missing data
@@ -162,5 +162,5 @@ if __name__ == "__main__":
 	Initialization.initialization()
 	data = Initialization.readInData('./data/data_train.csv')
 	# chooseK(data)
-	splitData2(data)
+	splitData2(data,idx='1')
 

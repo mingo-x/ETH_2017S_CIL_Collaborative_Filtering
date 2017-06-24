@@ -7,7 +7,7 @@ import random
 import time
 import SVD
 
-def kmeans(inData,k):
+def kmeans(inData,test,k):
 	data = inData.copy()
 	nObs = np.count_nonzero(data)
 	known = data!=0
@@ -29,7 +29,7 @@ def kmeans(inData,k):
 	print('start kmeans')
 	startTime = time.time()
 	t = 0
-	while np.abs(prev-curr)>1e-7:
+	while np.abs(prev-curr)>1e-8:
 		prev = curr
 		# assign
 		assignment = [[] for i in range(k)]
@@ -45,7 +45,6 @@ def kmeans(inData,k):
 			assignment[aidx].append(i)
 			curr += minDist
 		curr = np.sqrt(curr/nObs)
-		# print(len(assignment[0]),len(assignment[1]),len(assignment[2]),len(assignment[3]))
 
 		# mean
 		for i in range(k):
@@ -56,7 +55,6 @@ def kmeans(inData,k):
 						center[i][j] = np.sum(data[assignment[i],j])/c
 					else:
 						center[i][j] = 0
-		# print(center[0],center[1])
 
 		# if t%1000 == 0:
 		print('t =',t,'rmse =',curr)
@@ -72,6 +70,9 @@ def kmeans(inData,k):
 	A = np.empty((Globals.nUsers,Globals.nItems))
 	for i in range(k):
 		A[assignment[i]] = center[i]+uMean[i]
+	score = SVD.evaluation2(A,test)
+	print('test error =',score)
+
 
 	#clipping
 	# over 5
@@ -80,6 +81,8 @@ def kmeans(inData,k):
 	# below 1
 	mask = A<1
 	A[mask] = 1
+	score = SVD.evaluation2(A,test)
+	print('after clipping test error =',score)
 	return A
 
 def predictionWithCombi(data):
@@ -104,7 +107,7 @@ if __name__ == "__main__":
 			A = predictionWithCombi(data)
 			np.save('./log/Kmeans_A_combi_fixed.npy',A)
 		else:
-			A = kmeans(data,Globals.k)
+			A = kmeans(data,test,Globals.k)
 			np.save('./log/Kmeans_A_'+str(Globals.k)+'_fixed.npy',A)
 	else:
 		data = Initialization.readInData('./data/data_train.csv')
@@ -112,6 +115,6 @@ if __name__ == "__main__":
 			A = predictionWithCombi(data)
 			np.save('./log/Kmeans_A_combi.npy',A)
 		else:
-			A = kmeans(data,Globals.k)
+			A = kmeans(data,test,Globals.k)
 			np.save('./log/Kmeans_A_'+str(Globals.k)+'.npy',A)
 	#SVD.writeOutData(A)
