@@ -83,7 +83,7 @@ if __name__ == "__main__":
 	Initialization.initialization()
 	if Globals.fixed:
 		train, test = Initialization.readInData2(idx=Globals.dataIdx)
-		if Globals.predict = 'l':
+		if Globals.predict == 'l':
 			chooseLamb(train,test)
 		else:
 			A = gradientDescent(train,test)
