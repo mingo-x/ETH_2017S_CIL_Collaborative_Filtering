@@ -20,7 +20,7 @@ if __name__ == "__main__":
 	if Globals.predict == 'k':
 		chooseK(U,S,Vt,test)
 	else:
-		Ak = SVD.predictionWithClipping(U, S, Vt, 20,test)
+		Ak = SVD.predictionWithClipping(U, S, Vt, 12,test)
 		if Globals.fixed:
 			np.save('./log/PSVD_A_20_fixed'+Globals.dataIdx+'.npy',Ak)
 		else:
