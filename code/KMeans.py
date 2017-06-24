@@ -116,7 +116,7 @@ if __name__ == "__main__":
 	if Globals.fixed:
 		data, test = Initialization.readInData2(idx = Globals.dataIdx)
 		if Globals.predict=='c':
-			A = predictionWithCombi(data)
+			A = predictionWithCombi(data,test)
 			np.save('./log/Kmeans_A_combi_fixed'+Globals.dataIdx+'.npy',A)
 		else:
 			A = kmeans(data,test,Globals.k)
@@ -124,7 +124,7 @@ if __name__ == "__main__":
 	else:
 		data = Initialization.readInData('./data/data_train.csv')
 		if Globals.predict=='c':
-			A = predictionWithCombi(data)
+			A = predictionWithCombi(data,data)
 			np.save('./log/Kmeans_A_combi.npy',A)
 		else:
 			A = kmeans(data,test,Globals.k)
