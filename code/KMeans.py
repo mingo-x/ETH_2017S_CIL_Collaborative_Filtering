@@ -8,6 +8,9 @@ import time
 import SVD
 
 def kmeans(inData,test,k):
+	suffix = '_fixed'+Globals.dataIdx+'.npy'
+	if not Globals.fixed:
+		suffix = '.npy'
 	data = inData.copy()
 	nObs = np.count_nonzero(data)
 	known = data!=0
@@ -56,14 +59,12 @@ def kmeans(inData,test,k):
 					else:
 						center[i][j] = 0
 
-		# if t%1000 == 0:
 		print('t =',t,'rmse =',curr)
 		if t%10000 == 0:
-			np.save('./log/KMeans_center_'+str(k)+'.npy',center)
+			np.save('./log/KMeans_center_'+str(k)+suffix,center)
 			print('auto save')
 		t += 1
 
-	# print('t =',t,'rmse =', curr)
 	endTime = time.time()
 	print('finish kmeans ', int(endTime-startTime), 's')
 
@@ -86,9 +87,9 @@ def kmeans(inData,test,k):
 	return A
 
 def predictionWithCombi(data):
-	suffix = '.npy'
-	if Globals.fixed:
-		suffix = '_fixed.npy'
+	suffix = '_fixed'+Globals.dataIdx+'.npy'
+	if not Globals.fixed:
+		suffix = '.npy'
 	known = data!=0
 	A = np.zeros((Globals.nUsers,Globals.nItems))
 	for k in range(4,25,2):
@@ -102,13 +103,13 @@ def predictionWithCombi(data):
 if __name__ == "__main__":
 	Initialization.initialization()
 	if Globals.fixed:
-		data, test = Initialization.readInData2()
+		data, test = Initialization.readInData2(idx = Globals.dataIdx)
 		if Globals.predict=='c':
 			A = predictionWithCombi(data)
-			np.save('./log/Kmeans_A_combi_fixed.npy',A)
+			np.save('./log/Kmeans_A_combi_fixed'+Globals.dataIdx+'.npy',A)
 		else:
 			A = kmeans(data,test,Globals.k)
-			np.save('./log/Kmeans_A_'+str(Globals.k)+'_fixed.npy',A)
+			np.save('./log/Kmeans_A_'+str(Globals.k)+'_fixed'+Globals.dataIdx+'.npy',A)
 	else:
 		data = Initialization.readInData('./data/data_train.csv')
 		if Globals.predict=='c':
