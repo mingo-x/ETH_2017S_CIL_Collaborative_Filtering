@@ -30,6 +30,9 @@ def initialization():
 		elif argv[i].startswith('-f='):
 			Globals.fixed = argv[i][3] == 't'
 			print('fixed split =', Globals.fixed)
+		elif argv[i].startswith('-d='):
+			Globals.dataIdx = argv[i][3:]
+			print('data idx =', Globals.dataIdx)
 
 
 def readInData(inPath):
@@ -53,12 +56,12 @@ def readInData(inPath):
 	print('finish reading data', int(endTime-startTime), 's')
 	return data
 
-def readInData2(trainPath='./data/train.npy',testPath='./data/test.npy'):
+def readInData2(trainPath='./data/train',testPath='./data/test',idx=''):
 	# read in data
 	print('start reading data')
 	startTime = time.time()
-	train = np.load(trainPath)
-	test = np.load(testPath)
+	train = np.load(trainPath+idx+'.npy')
+	test = np.load(testPath+idx+'.npy')
 	endTime = time.time()
 	print('finish reading data', int(endTime-startTime), 's', train.shape, test.shape)
 	return train,test

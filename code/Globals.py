@@ -9,3 +9,4 @@ predict = ''
 modelIdx = ''
 step = 0
 fixed = True
+dataIdx = ''

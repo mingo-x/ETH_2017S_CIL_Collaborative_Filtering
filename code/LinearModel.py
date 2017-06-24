@@ -5,14 +5,13 @@ import SVD
 import Initialization
 import time
 
-def gradientDescent(train,test):
-	suffix ='_fixed.npy'
+def gradientDescent(train,test,lamb=0.02):
+	suffix ='_fixed'+Globals.dataIdx+'.npy'
 	if not Globals.fixed:
 		suffix = '.npy'
 	mu = 0
 	sigma = 1
 	lrate = Globals.lrate
-	lamb = 0.02
 	if Globals.warmStart:
 		print('warm start','./log/LM_w'+Globals.modelIdx+suffix)
 		w = np.load('./log/LM_w'+Globals.modelIdx+suffix)
@@ -66,6 +65,11 @@ def gradientDescent(train,test):
 	print('after clipping score =',score)
 	return A
 
+def chooseLamb(train,test):
+	for lamb in range(0,0.11,0.01):
+		print('lambda =', lamb)
+		A = gradientDescent(train,test,lamb)
+
 def predictionWithCombi(test):
 	A1 = np.load('./log/LM_A.npy')
 	A2 = np.load('./log/LM_A_2.npy')
@@ -78,9 +82,12 @@ def predictionWithCombi(test):
 if __name__ == "__main__":
 	Initialization.initialization()
 	if Globals.fixed:
-		train, test = Initialization.readInData2()
-		A = gradientDescent(train,test)
-		np.save('./log/LM_A_fixed.npy',A)
+		train, test = Initialization.readInData2(idx=Globals.dataIdx)
+		if Globals.predict = 'l':
+			chooseLamb(train,test)
+		else:
+			A = gradientDescent(train,test)
+			np.save('./log/LM_A_fixed'+Globals.dataIdx+'.npy',A)
 	else:
 		data = Initialization.readInData('./data/data_train.csv')
 		train, test = SVD.splitData(data,10)

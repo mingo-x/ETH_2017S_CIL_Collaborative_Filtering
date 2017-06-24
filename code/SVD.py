@@ -44,7 +44,7 @@ def splitData2(data, n = 10,idx=''):
 	test = data.copy()
 	train[testMask] = 0
 	test[trainMask] = 0
-	print('finish splitting data train num:',np.count_nonzero(train),'test num:', np.sum(test))
+	print('finish splitting data train num:',np.count_nonzero(train),'test num:', np.count_nonzero(test))
 	np.save('./data/train'+idx+'.npy',train)
 	np.save('./data/test'+idx+'.npy',test)
 
