@@ -44,7 +44,7 @@ def KRR(data,test, a=0.5):
 			np.save('./log/KRR_A_'+str(Globals.k)+Globals.modelIdx+'_'+str(i)+suffix,A)
 
 	score = SVD.evaluation2(A,test)
-	print('test error =',score)
+	print('alpha =', a, 'test error =',score)
 	#clipping
 	mask = A>5
 	A[mask] = 5
