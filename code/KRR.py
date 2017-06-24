@@ -12,7 +12,7 @@ def topRatedMovies(data):
 		count = np.count_nonzero(data[:,i])
 		print(count,)
 
-def KRR(data,test, a=0.5):
+def KRR(data,test, a=0.7):
 	suffix = '_fixed'+Globals.dataIdx+'.npy'
 	if not Globals.fixed:
 		suffix = '.npy'
@@ -32,7 +32,7 @@ def KRR(data,test, a=0.5):
 		y = data[i,known]
 		X = V[known]
 
-		clf = KernelRidge(alpha=a,kernel='linear')
+		clf = KernelRidge(alpha=a,kernel='rbf')
 		clf.fit(X, y)
 		pred = clf.predict(V)
 		A[i] = pred
@@ -73,7 +73,7 @@ if __name__ == '__main__':
 			chooseAlpha(data,test)
 		else:
 			A = KRR(data,test)
-			np.save('./log/KRR_A_'+str(Globals.k)+'_fixed'+Globals.dataIdx+'_lin.npy',A)
+			np.save('./log/KRR_A_'+str(Globals.k)+'_fixed'+Globals.dataIdx+'_rbf.npy',A)
 	else:
 		data = Initialization.readInData('./data/data_train.csv')
 		data, test = SVD.splitData(data,10)
