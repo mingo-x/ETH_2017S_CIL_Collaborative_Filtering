@@ -122,8 +122,11 @@ def ensembleRR(train, target, test):
 	return A
 
 def average():
-	A0 = np.load('./log/Ensemble_A'+Globals.dataIdx+'.npy')
-	A1 = np.load('./log/Ensemble_A1'+Globals.dataIdx+'.npy')
+	suffix = '.npy'
+	if Globals.dataIdx!= '':
+		suffix = '_'+Globals.dataIdx+'.npy'
+	A0 = np.load('./log/Ensemble_A'+suffix)
+	A1 = np.load('./log/Ensemble_A1'+suffix)
 	A = (A0+A1)/2.0
 	#clipping
 	# over 5
