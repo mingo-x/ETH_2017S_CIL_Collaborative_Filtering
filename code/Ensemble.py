@@ -80,9 +80,9 @@ def loadData(data):
 	test = test.T
 	endTime = time.time()
 	print('finish initialization',int(endTime-startTime),'s',train.shape, test.shape)
-	return train, test
+	return train, target, test
 
-def ensemble(train, test):
+def ensemble(train, target, test):
 	print('start training')
 	startTime = time.time()
 	regr = linear_model.LinearRegression()
@@ -100,7 +100,7 @@ def ensemble(train, test):
 
 	return A
 
-def ensembleRR(train,test):
+def ensembleRR(train, target, test):
 	print('start ridge regression')
 	startTime = time.time()
 	regr = linear_model.Ridge(alpha=0.5, tol=1e-4)
@@ -139,17 +139,17 @@ if __name__ == "__main__":
 	else:
 		train, data = Initialization.readInData2(idx = Globals.dataIdx)
 		# data = Initialization.readInData('./data/data_train.csv')
-		train, test = loadData(data)
+		train, target, test = loadData(data)
 		if Globals.predict == 'r':
-			A = ensembleRR(train,test)
+			A = ensembleRR(train,target,test)
 			np.save('./log/Ensemble_A'+Globals.dataIdx+'_r.npy',A)
 		elif Globals.predict == 'tr':
-			A = ensembleRR(train,test)
+			A = ensembleRR(train,target,test)
 			np.save('./log/Ensemble_A'+Globals.dataIdx+'_tr.npy',A)
 		elif Globals.predict == 't':
-			A = ensemble(train,test)
+			A = ensemble(train,target,test)
 			np.save('./log/Ensemble_A'+Globals.dataIdx+'_t.npy',A)
 		else:
-			A = ensemble(train,test)
+			A = ensemble(train,target,test)
 			np.save('./log/Ensemble_A'+Globals.dataIdx+'.npy',A)
 	SVD.writeOutData(A)
