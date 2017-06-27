@@ -5,7 +5,7 @@ import Globals
 import time
 import Initialization
 
-def ensemble(data):
+def loadData(data):
 	print('start initialization')
 	startTime = time.time()
 	known = data!=0
@@ -44,19 +44,7 @@ def ensemble(data):
 	train = np.append(train,[LM_A[known]],axis=0)
 	#train = np.append(train,[NSVD2_A[known]],axis=0)
 	train = train.T
-	endTime = time.time()
-	print('finish initialization',int(endTime-startTime),'s',train.shape)
 
-	print('start training')
-	startTime = time.time()
-	regr = linear_model.LinearRegression()
-	regr.fit(train, target)
-	endTime = time.time()
-	print('finish training',int(endTime-startTime),'s')
-	print('Coefficients: \n', regr.coef_)
-
-	print('start predicting')
-	startTime = time.time()
 	test = np.append([Basic1_A.flatten()],[Basic2_A.flatten()],axis=0)
 	test = np.append(test,[Basic3_A.flatten()],axis=0)
 	test = np.append(test,[Basic4_A.flatten()],axis=0)
@@ -70,19 +58,44 @@ def ensemble(data):
 	test = np.append(test,[LM_A.flatten()],axis=0)
 	#test = np.append(test,[NSVD2_A.flatten()],axis=0)
 	test = test.T
+	endTime = time.time()
+	print('finish initialization',int(endTime-startTime),'s',train.shape, test.shape)
+	return train, test
 
+def ensemble(train, test):
+	print('start training')
+	startTime = time.time()
+	regr = linear_model.LinearRegression()
+	regr.fit(train, target)
+	endTime = time.time()
+	print('finish training',int(endTime-startTime),'s')
+	print('Coefficients: \n', regr.coef_)
+
+	print('start predicting')
+	startTime = time.time()
 	A = regr.predict(test)
 	endTime = time.time()
 	print('finish predicting',int(endTime-startTime),'s',A.shape)
 	A = np.reshape(A,(Globals.nUsers,Globals.nItems))
 
-	#clipping
-	# over 5
-	# mask = A>5
-	# A[mask] = 5
-	# below 1
-	# mask = A<1
-	# A[mask] = 1
+	return A
+
+def ensembleRR(data):
+	print('start ridge regression')
+	startTime = time.time()
+	regr = linear_model.Ridge(alpha=0.5, tol=1e-8)
+	regr.fit(train, target)
+	endTime = time.time()
+	print('finish training',int(endTime-startTime),'s')
+	print('Coefficients: \n', regr.coef_)
+
+	print('start predicting')
+	startTime = time.time()
+	A = regr.predict(test)
+	endTime = time.time()
+	print('finish predicting',int(endTime-startTime),'s',A.shape)
+	A = np.reshape(A,(Globals.nUsers,Globals.nItems))
+
 	return A
 
 def average():

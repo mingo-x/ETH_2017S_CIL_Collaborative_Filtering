@@ -32,7 +32,7 @@ def KRR(data,test, a=0.7):
 		y = data[i,known]
 		X = V[known]
 
-		clf = KernelRidge(alpha=a,kernel=kernel)
+		clf = KernelRidge(alpha=a,kernel='linear',tol=1e-8)
 		clf.fit(X, y)
 		pred = clf.predict(V)
 		A[i] = pred
@@ -71,7 +71,7 @@ if __name__ == '__main__':
 			chooseAlpha(data,test)
 		else:
 			A = KRR(data,test)
-			np.save('./log/KRR_A_'+str(Globals.k)+'_fixed'+Globals.dataIdx+'.npy',A)
+			np.save('./log/KRR_A_'+str(Globals.k)+'_fixed'+Globals.dataIdx+'_lin.npy',A)
 	else:
 		data = Initialization.readInData('./data/data_train.csv')
 		data, test = SVD.splitData(data,10)
