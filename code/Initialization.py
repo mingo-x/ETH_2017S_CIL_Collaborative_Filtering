@@ -19,7 +19,7 @@ def initialization():
 			Globals.lrate = float(argv[i][3:])
 			print('learning rate =', Globals.lrate)
 		elif argv[i].startswith('-p='):
-			Globals.predict = argv[i][3]
+			Globals.predict = argv[i][3:]
 			print('predict =', Globals.predict)
 		elif argv[i].startswith('-i='):
 			Globals.modelIdx = '_'+argv[i][3:]
