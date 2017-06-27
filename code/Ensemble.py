@@ -19,7 +19,7 @@ def loadData(data):
 	Basic5_A = np.load('./log/Basic5_A_fixed'+Globals.dataIdx+'.npy')
 	Basic6_A = np.load('./log/Basic6_A_fixed'+Globals.dataIdx+'.npy')
 	LM_A = np.load('./log/LM_A_fixed'+Globals.dataIdx+'.npy')
-	if Globals.dataIdx == '_1':
+	if Globals.dataIdx == '1':
 		KMeans_A = np.load('./log/Kmeans_A_combi_fixed'+Globals.dataIdx+'_2.npy')
 		PSVD_A = np.load('./log/PSVD_A_12_fixed'+Globals.dataIdx+'.npy')
 		RSVD_A = np.load('./log/RSVD_A_10_fixed'+Globals.dataIdx+'.npy')
