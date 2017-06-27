@@ -43,6 +43,16 @@ def loadData(data):
 	train = np.append(train,[KRR_A[known]],axis=0)
 	train = np.append(train,[LM_A[known]],axis=0)
 	#train = np.append(train,[NSVD2_A[known]],axis=0)
+	if Globals.predict == 't': # two-way interaction
+		train = np.append(train,[nnp.multuply(PSVD_A[known],RSVD_A[known])],axis=0)
+		train = np.append(train,[nnp.multuply(PSVD_A[known],RSVD2_A[known])],axis=0)
+		train = np.append(train,[nnp.multuply(PSVD_A[known],KRR_A[known])],axis=0)
+		train = np.append(train,[nnp.multuply(PSVD_A[known],LM_A[known])],axis=0)
+		train = np.append(train,[nnp.multuply(RSVD_A[known],RSVD2_A[known])],axis=0)
+		train = np.append(train,[nnp.multuply(RSVD_A[known],KRR_A[known])],axis=0)
+		train = np.append(train,[nnp.multuply(RSVD_A[known],LM_A[known])],axis=0)
+		train = np.append(train,[nnp.multuply(RSVD2_A[known],KRR_A[known])],axis=0)
+		train = np.append(train,[nnp.multuply(RSVD2_A[known],LM_A[known])],axis=0)
 	train = train.T
 
 	test = np.append([Basic1_A.flatten()],[Basic2_A.flatten()],axis=0)
@@ -57,6 +67,16 @@ def loadData(data):
 	test = np.append(test,[KRR_A.flatten()],axis=0)
 	test = np.append(test,[LM_A.flatten()],axis=0)
 	#test = np.append(test,[NSVD2_A.flatten()],axis=0)
+	if Globals.predict == 't':
+		test = np.append(test,[np.multiply(PSVD_A.flatten(),RSVD_A.flatten())],axis=0)
+		test = np.append(test,[np.multiply(PSVD_A.flatten(),RSVD2_A.flatten())],axis=0)
+		test = np.append(test,[np.multiply(PSVD_A.flatten(),KRR_A.flatten())],axis=0)
+		test = np.append(test,[np.multiply(PSVD_A.flatten(),LM_A.flatten())],axis=0)
+		test = np.append(test,[np.multiply(RSVD_A.flatten(),RSVD2_A.flatten())],axis=0)
+		test = np.append(test,[np.multiply(RSVD_A.flatten(),KRR_A.flatten())],axis=0)
+		test = np.append(test,[np.multiply(RSVD_A.flatten(),LM_A.flatten())],axis=0)
+		test = np.append(test,[np.multiply(RSVD2_A.flatten(),KRR_A.flatten())],axis=0)
+		test = np.append(test,[np.multiply(RSVD2_A.flatten(),LM_A.flatten())],axis=0)
 	test = test.T
 	endTime = time.time()
 	print('finish initialization',int(endTime-startTime),'s',train.shape, test.shape)
@@ -80,10 +100,10 @@ def ensemble(train, test):
 
 	return A
 
-def ensembleRR(data):
+def ensembleRR(train,test):
 	print('start ridge regression')
 	startTime = time.time()
-	regr = linear_model.Ridge(alpha=0.5, tol=1e-8)
+	regr = linear_model.Ridge(alpha=0.5, tol=1e-4)
 	regr.fit(train, target)
 	endTime = time.time()
 	print('finish training',int(endTime-startTime),'s')
@@ -119,6 +139,17 @@ if __name__ == "__main__":
 	else:
 		train, data = Initialization.readInData2(idx = Globals.dataIdx)
 		# data = Initialization.readInData('./data/data_train.csv')
-		A = ensemble(data)
-		np.save('./log/Ensemble_A'+Globals.dataIdx+'.npy',A)
+		train, test = loadData(data)
+		if Globals.predict == 'r':
+			A = ensembleRR(train,test)
+			np.save('./log/Ensemble_A'+Globals.dataIdx+'_r.npy',A)
+		elif Globals.predict == 'tr':
+			A = ensembleRR(train,test)
+			np.save('./log/Ensemble_A'+Globals.dataIdx+'_tr.npy',A)
+		elif Globals.predict == 't':
+			A = ensemble(train,test)
+			np.save('./log/Ensemble_A'+Globals.dataIdx+'_t.npy',A)
+		else:
+			A = ensemble(train,test)
+			np.save('./log/Ensemble_A'+Globals.dataIdx+'.npy',A)
 	SVD.writeOutData(A)
