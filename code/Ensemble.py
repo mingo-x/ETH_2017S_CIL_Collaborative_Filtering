@@ -22,7 +22,7 @@ def loadData(data):
 	if Globals.dataIdx == '1':
 		KMeans_A = np.load('./log/Kmeans_A_combi_fixed'+Globals.dataIdx+'_2.npy')
 		PSVD_A = np.load('./log/PSVD_A_12_fixed'+Globals.dataIdx+'.npy')
-		RSVD_A = np.load('./log/RSVD_A_5_fixed'+Globals.dataIdx+'.npy')
+		RSVD_A = np.load('./log/RSVD_A_10_fixed'+Globals.dataIdx+'.npy')
 		RSVD2_A = np.load('./log/RSVD2_A_5_fixed'+Globals.dataIdx+'.npy')
 		KRR_A = np.load('./log/KRR_A_15_fixed'+Globals.dataIdx+'.npy')
 	else:

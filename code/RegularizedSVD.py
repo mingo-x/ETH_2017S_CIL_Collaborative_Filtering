@@ -34,8 +34,8 @@ def SGD(train,test,k=96):
 			for j in range(Globals.nItems):
 				Vt[i,j] = random.normalvariate(mu,sigma)
 	known = train!=0
-	base = SVD.baseline(train,known)
-	train -= base
+	# base = SVD.baseline(train,known)
+	# train -= base
 	print('finish initialization')
 
 	print('start SGD')
@@ -58,7 +58,7 @@ def SGD(train,test,k=96):
 
 		# evaluation
 		if t%10000 == 0:
-			A = U.dot(Vt)+base
+			A = U.dot(Vt)
 			score = SVD.evaluation2(A,test)
 			print('t =',t,'score =',score)
 			if score > prev2 and prev2 > prev1:
@@ -83,7 +83,7 @@ def SGD(train,test,k=96):
 
 	# clipping
 	print('start clipping')
-	A = U.dot(Vt)+base
+	A = U.dot(Vt)
 	# over 5
 	mask = A>5
 	A[mask] = 5
