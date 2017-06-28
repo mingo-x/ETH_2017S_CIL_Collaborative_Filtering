@@ -17,10 +17,11 @@ def KRR(data,test, a=0.7):
 	if not Globals.fixed:
 		suffix = '.npy'
 	known = data!=0
-	base = SVD.baseline(data,known)
-	data -= base
+	# base = SVD.baseline(data,known)
+	# data -= base
 	if Globals.step == 0:
-		A = base.copy()
+		# A = base.copy()
+		A = np.empty((Globals.nUsers,Globals.nItems))
 	else:
 		A = np.load('./log/KRR_A_'+str(Globals.k)+Globals.modelIdx+'_'+str(Globals.step)+suffix)
 	Vt = np.load('./log/RSVD_Vt_'+str(Globals.k)+Globals.modelIdx+suffix)
@@ -37,9 +38,9 @@ def KRR(data,test, a=0.7):
 		clf = KernelRidge(alpha=a,kernel='rbf')
 		clf.fit(X, y)
 		pred = clf.predict(V)
-		A[i] += pred
+		A[i] = pred
 		# mask = test[i]!=0
-		if i%100 == 0:
+		if i%10 == 0:
 			print('user ',i+1)
 			score = SVD.evaluation2(A,test)
 			print('score =',score)
