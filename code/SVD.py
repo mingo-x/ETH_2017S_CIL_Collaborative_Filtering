@@ -6,6 +6,7 @@ import random
 import Initialization
 import Globals
 import numpy as np
+from sklearn import linear_model
 
 def splitData(data, n = 10):
 	print('start splitting data')
