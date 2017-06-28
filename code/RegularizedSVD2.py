@@ -7,6 +7,7 @@ import numpy as np
 import Globals
 import random
 import time
+from sklearn import linear_model
 
 def baseline(train, known):
 	nObs = np.count_nonzero(train)
