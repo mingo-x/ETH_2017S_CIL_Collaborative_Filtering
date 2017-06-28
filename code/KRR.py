@@ -30,18 +30,17 @@ def KRR(data,test, a=0.7):
 		V[i] /= np.linalg.norm(V[i])
 
 	for i in range(Globals.step,Globals.nUsers):
-		if i%100 == 0:
-			print('user ',i+1)
 		known = data[i]!=0
 		y = data[i,known]
 		X = V[known]
 
-		clf = KernelRidge(alpha=a,kernel=kernel)
+		clf = KernelRidge(alpha=a,kernel='rbf')
 		clf.fit(X, y)
 		pred = clf.predict(V)
 		A[i] += pred
-		mask = test[i]!=0
-		if i%10 == 0:
+		# mask = test[i]!=0
+		if i%100 == 0:
+			print('user ',i+1)
 			score = SVD.evaluation2(A,test)
 			print('score =',score)
 		if i%1000 == 0:
