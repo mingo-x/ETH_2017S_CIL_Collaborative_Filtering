@@ -64,7 +64,7 @@ def SGD(train,test,k=96):
 			if score > prev2 and prev2 > prev1:
 				if lrate <= 1e-5:
 					break
-				else
+				else:
 					lrate *= 0.1
 					print('learning rate =',lrate)
 			prev1 = prev2
