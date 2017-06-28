@@ -62,7 +62,10 @@ def SGD(train,test,k=96):
 			score = SVD.evaluation2(A,test)
 			print('t =',t,'score =',score)
 			if score > prev2 and prev2 > prev1:
-				break
+				if lrate <= 1e-5:
+					break
+				else
+					lrate *= 0.1
 			prev1 = prev2
 			prev2 = score
 
