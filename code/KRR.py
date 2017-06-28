@@ -16,8 +16,11 @@ def KRR(data,test, a=0.7):
 	suffix = '_fixed'+Globals.dataIdx+'.npy'
 	if not Globals.fixed:
 		suffix = '.npy'
+	known = data!=0
+	base = SVD.baseline(data,known)
+	data -= base
 	if Globals.step == 0:
-		A = data.copy()
+		A = base.copy()
 	else:
 		A = np.load('./log/KRR_A_'+str(Globals.k)+Globals.modelIdx+'_'+str(Globals.step)+suffix)
 	Vt = np.load('./log/RSVD_Vt_'+str(Globals.k)+Globals.modelIdx+suffix)
@@ -25,6 +28,7 @@ def KRR(data,test, a=0.7):
 	# normalize
 	for i in range(Globals.nItems):
 		V[i] /= np.linalg.norm(V[i])
+
 	for i in range(Globals.step,Globals.nUsers):
 		if i%100 == 0:
 			print('user ',i+1)
@@ -35,7 +39,7 @@ def KRR(data,test, a=0.7):
 		clf = KernelRidge(alpha=a,kernel=kernel)
 		clf.fit(X, y)
 		pred = clf.predict(V)
-		A[i] = pred
+		A[i] += pred
 		mask = test[i]!=0
 
 		if i%1000 == 0:

@@ -9,48 +9,6 @@ import random
 import time
 from sklearn import linear_model
 
-def baseline(train, known):
-	nObs = np.count_nonzero(train)
-	target = np.reshape(train[known],(nObs,1))
-
-	Basic1_A = np.load('./log/Basic1_A_fixed'+Globals.dataIdx+'.npy')
-	Basic2_A = np.load('./log/Basic2_A_fixed'+Globals.dataIdx+'.npy')
-	Basic3_A = np.load('./log/Basic3_A_fixed'+Globals.dataIdx+'.npy')
-	Basic4_A = np.load('./log/Basic4_A_fixed'+Globals.dataIdx+'.npy')
-	Basic5_A = np.load('./log/Basic5_A_fixed'+Globals.dataIdx+'.npy')
-	Basic6_A = np.load('./log/Basic6_A_fixed'+Globals.dataIdx+'.npy')
-
-	train = np.append([Basic1_A[known]],[Basic2_A[known]],axis=0)
-	train = np.append(train,[Basic3_A[known]],axis=0)
-	train = np.append(train,[Basic4_A[known]],axis=0)
-	train = np.append(train,[Basic5_A[known]],axis=0)
-	train = np.append(train,[Basic6_A[known]],axis=0)
-	train = train.T
-
-	test = np.append([Basic1_A.flatten()],[Basic2_A.flatten()],axis=0)
-	test = np.append(test,[Basic3_A.flatten()],axis=0)
-	test = np.append(test,[Basic4_A.flatten()],axis=0)
-	test = np.append(test,[Basic5_A.flatten()],axis=0)
-	test = np.append(test,[Basic6_A.flatten()],axis=0)
-	test = test.T
-
-	print('start ridge regression')
-	startTime = time.time()
-	regr = linear_model.Ridge(alpha=0.5, tol=1e-4)
-	regr.fit(train, target)
-	endTime = time.time()
-	print('finish training',int(endTime-startTime),'s')
-	print('Coefficients: \n', regr.coef_)
-
-	print('start predicting')
-	startTime = time.time()
-	A = regr.predict(test)
-	endTime = time.time()
-	print('finish predicting',int(endTime-startTime),'s',A.shape)
-	A = np.reshape(A,(Globals.nUsers,Globals.nItems))
-
-	return A
-
 def biasedRSVD(train,test,k=96):
 	# initialization
 	# normal distr? N(0,1)
@@ -84,7 +42,7 @@ def biasedRSVD(train,test,k=96):
 		for i in range(Globals.nItems):
 			d[i] = random.normalvariate(mu,sigma)
 	known = train!=0
-	base = baseline(train,known)
+	base = SVD.baseline(train,known)
 	train -= base
 	print('finish initialization')
 
