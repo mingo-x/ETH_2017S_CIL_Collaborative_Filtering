@@ -10,7 +10,7 @@ import random
 import time
 from sklearn import linear_model
 
-def baseline():
+def baseline(known):
 	Basic1_A = np.load('./log/Basic1_A_fixed'+Globals.dataIdx+'.npy')
 	Basic2_A = np.load('./log/Basic2_A_fixed'+Globals.dataIdx+'.npy')
 	Basic3_A = np.load('./log/Basic3_A_fixed'+Globals.dataIdx+'.npy')
@@ -74,7 +74,7 @@ def SGD(train,test,k=96):
 			for j in range(Globals.nItems):
 				Vt[i,j] = random.normalvariate(mu,sigma)
 	known = train!=0
-	base = baseline()
+	base = baseline(known)
 	train -= base
 	print('finish initialization')
 
