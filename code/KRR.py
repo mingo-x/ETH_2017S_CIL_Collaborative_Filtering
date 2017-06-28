@@ -41,7 +41,9 @@ def KRR(data,test, a=0.7):
 		pred = clf.predict(V)
 		A[i] += pred
 		mask = test[i]!=0
-
+		if i%10 == 0:
+			score = SVD.evaluation2(A,test)
+			print('score =',score)
 		if i%1000 == 0:
 			np.save('./log/KRR_A_'+str(Globals.k)+Globals.modelIdx+'_'+str(i)+suffix,A)
 
