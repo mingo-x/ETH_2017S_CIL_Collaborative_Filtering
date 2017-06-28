@@ -3,7 +3,7 @@ import Globals
 import numpy as np
 import csv
 
-if __name__ === '__main__':
+if __name__ == '__main__':
 	Initialization.initialization()
 	data = Initialization.readInData('./data/data_train.csv')
 	c = np.count_nonzero(data,axis=0)
