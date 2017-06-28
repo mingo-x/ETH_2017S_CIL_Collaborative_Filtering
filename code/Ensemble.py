@@ -24,7 +24,7 @@ def loadData(data):
 		PSVD_A = np.load('./log/PSVD_A_12_fixed'+Globals.dataIdx+'.npy')
 		RSVD_A = np.load('./log/RSVD_A_5_fixed'+Globals.dataIdx+'.npy')
 		RSVD2_A = np.load('./log/RSVD2_A_5_fixed'+Globals.dataIdx+'.npy')
-		KRR_A = np.load('./log/KRR_A_5_fixed'+Globals.dataIdx+'.npy')
+		KRR_A = np.load('./log/KRR_A_15_fixed'+Globals.dataIdx+'.npy')
 	else:
 		KMeans_A = np.load('./log/Kmeans_A_combi_fixed'+Globals.dataIdx+'.npy')
 		PSVD_A = np.load('./log/PSVD_A_20_fixed'+Globals.dataIdx+'.npy')
