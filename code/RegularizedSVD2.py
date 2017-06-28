@@ -83,6 +83,7 @@ def biasedRSVD(train,test,k=96):
 					break
 				else
 					lrate *= 0.1
+					print('learning rate =',lrate)
 			prev1 = prev2
 			prev2 = score
 
