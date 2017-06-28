@@ -46,7 +46,7 @@ def loadData(data):
 	train = np.append(train,[KRR_A[known]],axis=0)
 	train = np.append(train,[LM_A[known]],axis=0)
 	#train = np.append(train,[NSVD2_A[known]],axis=0)
-	if Globals.predict == 't': # two-way interaction
+	if Globals.predict == 't' or Globals.predict=='tr': # two-way interaction
 		train = np.append(train,[np.multiply(PSVD_A[known],RSVD_A[known])],axis=0)
 		train = np.append(train,[np.multiply(PSVD_A[known],RSVD2_A[known])],axis=0)
 		train = np.append(train,[np.multiply(PSVD_A[known],KRR_A[known])],axis=0)
@@ -70,7 +70,7 @@ def loadData(data):
 	test = np.append(test,[KRR_A.flatten()],axis=0)
 	test = np.append(test,[LM_A.flatten()],axis=0)
 	#test = np.append(test,[NSVD2_A.flatten()],axis=0)
-	if Globals.predict == 't':
+	if Globals.predict == 't' or Globals.predict=='tr':
 		test = np.append(test,[np.multiply(PSVD_A.flatten(),RSVD_A.flatten())],axis=0)
 		test = np.append(test,[np.multiply(PSVD_A.flatten(),RSVD2_A.flatten())],axis=0)
 		test = np.append(test,[np.multiply(PSVD_A.flatten(),KRR_A.flatten())],axis=0)
