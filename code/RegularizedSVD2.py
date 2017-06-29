@@ -28,19 +28,10 @@ def biasedRSVD(train,test,k=96):
 		c = np.load('./log/RSVD2_c_'+str(k)+Globals.modelIdx+suffix)
 		d = np.load('./log/RSVD2_d_'+str(k)+Globals.modelIdx+suffix)
 	else:
-		U = np.empty((Globals.nUsers,k))
-		Vt = np.empty((k,Globals.nItems))
-		c = np.empty(Globals.nUsers)
-		d = np.empty(Globals.nItems)
-		for i in range(k):
-			for j in range(Globals.nUsers):
-				U[j,i] = random.normalvariate(mu,sigma)
-			for j in range(Globals.nItems):
-				Vt[i,j] = random.normalvariate(mu,sigma)
-		for i in range(Globals.nUsers):
-			c[i] = random.normalvariate(mu,sigma)
-		for i in range(Globals.nItems):
-			d[i] = random.normalvariate(mu,sigma)
+		U = np.random.rand(Globals.nUsers,k)
+		Vt = np.random.rand(k,Globals.nItems)
+		c = np.random.rand(Globals.nUsers)
+		d = np.random.rand(Globals.nItems)
 	known = train!=0
 	# base = SVD.baseline(train,known)
 	# train -= base
@@ -62,11 +53,12 @@ def biasedRSVD(train,test,k=96):
 
 		yp = c[i]+d[j]+U[i,:].dot(Vt[:,j])
 		r = train[i,j] - yp
+		Ut = U[i,:].T
 		U[i,:] += lrate*(r*Vt[:,j].T-lamb*U[i,:])
-		Vt[:,j] += lrate*(r*U[i,:].T-lamb*Vt[:,j])
-		tmp = c[i]+d[j]-globalMean
-		c[i] += lrate*(r-lamb2*tmp)
-		d[j] += lrate*(r-lamb2*tmp)
+		Vt[:,j] += lrate*(r*Ut-lamb*Vt[:,j])
+		tmp = lrate*(r - lamb2*(c[i]+d[j]-globalMean))
+		c[i] += tmp
+		d[j] += tmp
 
 		# evaluation
 		if t%10000 == 0:

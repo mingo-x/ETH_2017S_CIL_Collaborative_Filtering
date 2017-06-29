@@ -1,5 +1,6 @@
 import numpy as np
 import math, random, sys
+import Globals
 
 def sigmoid(x):
 	return math.exp(-np.logaddexp(0, -x))
@@ -170,11 +171,20 @@ class RecommenderSystem:
 			f.write("r" + str(r) + "_c" + str(c) + "," + str(s) + "\n")
 		f.close()
 
+	def predict(self):
+		A = np.empty((Globals.nUsers,Globals.nItems))
+		for r in range(Globals.nUsers):
+			for c in range(Globals.nItems):
+				A[r,c] = self.predict(r,c)
+
+		np.save('./log/GRSVD_A_'+str(Globals.k)+'_fixed'+Globals.dataIdx+'.npy',A)
+
+
 if __name__ == "__main__":
 	random.seed(0)
 	np.random.seed(0)
 	RS = RecommenderSystem()
 	RS.readData("data_train.csv")
-	RS.initParameters(K = int(sys.argv[1]), lrate = float(sys.argv[2]), mu = float(sys.argv[3]))
+	RS.initParameters(K = Globals.k, lrate = Globals.lrate, mu = 0.02)
 	RS.train()
-	RS.writeSubmissionFile("submission.csv")
+	# RS.writeSubmissionFile("submission.csv")
