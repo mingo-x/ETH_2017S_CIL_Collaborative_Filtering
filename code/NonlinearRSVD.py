@@ -21,6 +21,9 @@ def biasedRSVD(train,test,k=96):
 	lamb = 0.02
 	lamb2 = 0.05
 	suffix = '_fixed'+Globals.dataIdx+'.npy'
+	step = 10000
+	if Globals.step != 0:
+		step = Globals.step
 	if not Globals.fixed:
 		suffix = '.npy'
 	if Globals.warmStart:
@@ -63,7 +66,7 @@ def biasedRSVD(train,test,k=96):
 		d[j] += tmp
 
 		# evaluation
-		if t%10000 == 0:
+		if t%step == 0:
 			A = U.dot(Vt)
 			C = np.reshape(c,(Globals.nUsers,1))
 			D = np.reshape(d,(1,Globals.nItems))
