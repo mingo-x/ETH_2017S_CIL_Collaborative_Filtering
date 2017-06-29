@@ -172,7 +172,7 @@ class RecommenderSystem:
 			f.write("r" + str(r) + "_c" + str(c) + "," + str(s) + "\n")
 		f.close()
 
-	def predict(self):
+	def pred(self):
 		A = np.empty((Globals.nUsers,Globals.nItems))
 		for r in range(Globals.nUsers):
 			for c in range(Globals.nItems):
@@ -189,4 +189,5 @@ if __name__ == "__main__":
 	RS.readData("./data/data_train.csv")
 	RS.initParameters(K = Globals.k, lrate = Globals.lrate, mu = 0.02)
 	RS.train()
+	RS.pred()
 	# RS.writeSubmissionFile("submission.csv")
