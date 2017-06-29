@@ -67,3 +67,23 @@ def readInData2(trainPath='./data/train',testPath='./data/test',idx=''):
 	endTime = time.time()
 	print('finish reading data', int(endTime-startTime), 's', train.shape, test.shape)
 	return train,test
+
+def readInData3(trainPath='./data/train',testPath='./data/test',idx=''):
+	# read in data
+	print('start reading data')
+	startTime = time.time()
+	print('train =',trainPath+idx+'.npy')
+	print('test =',testPath+idx+'.npy')
+	train = np.load(trainPath+idx+'.npy')
+	test = np.load(testPath+idx+'.npy')
+	trainData = {}
+	testData = {}
+	for r in range(Globals.nUsers):
+		for c in range(Globals.nItems):
+			if train[r,c]!=0:
+				trainData[(r,c)] = train[r,c]
+			if test[r,c]!=0:
+				testData[(r,c)] = test[r,c]
+	endTime = time.time()
+	print('finish reading data', int(endTime-startTime), 's', train.shape, test.shape)
+	return trainData,testData

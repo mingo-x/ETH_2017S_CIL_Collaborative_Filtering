@@ -10,6 +10,9 @@ import random
 import time
 from sklearn import linear_model
 
+def sigmoid(x):
+	return math.exp(-np.logaddexp(0, -x))
+
 def SGD(train,test,k=96):
 	# initialization
 	# normal distr? N(0,1)
@@ -90,16 +93,7 @@ def SGD(train,test,k=96):
 	# below 1
 	mask = A<1
 	A[mask] = 1
-	# A = np.zeros((Globals.nUsers,Globals.nItems))
-	# for m in range(k):
-	# 	T = U[:,m:m+1].dot(Vt[m:m+1,:])
-	# 	A += T
-	# 	# over 5
-	# 	mask = A>5
-	# 	A[mask] = 5
-	# 	# below 1
-	# 	mask = A<1
-	# 	A[mask] = 1
+	
 	print('finish clipping')
 	score = SVD.evaluation2(A,test)
 	print('after clipping score =',score)
