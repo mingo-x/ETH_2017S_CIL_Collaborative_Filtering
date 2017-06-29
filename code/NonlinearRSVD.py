@@ -54,12 +54,13 @@ def biasedRSVD(train,test,k=96):
 		x = sigmoid(c[i]+d[j]+U[i,:].dot(Vt[:,j]))
 		yp = 4*x+1
 		r = train[i,j] - yp
+		eff = 2*r*4*x*(1-x)
 		Ut = U[i,:].T
-		U[i,:] += lrate*(2*r*4*x*(1-x)*Vt[:,j].T-lamb*U[i,:])
-		Vt[:,j] += lrate*(2*r*4*x*(1-x)*Ut-lamb*Vt[:,j])
-		tmp = c[i]+d[j]-globalMean
-		c[i] += lrate*(2*r*4*x*(1-x)-lamb2*tmp)
-		d[j] += lrate*(2*r*4*x*(1-x)-lamb2*tmp)
+		U[i,:] += lrate*(eff*Vt[:,j].T-lamb*U[i,:])
+		Vt[:,j] += lrate*(eff*Ut-lamb*Vt[:,j])
+		tmp = (eff-(c[i]+d[j]-globalMean)*lamb2)*lrate
+		c[i] += tmp
+		d[j] += tmp
 
 		# evaluation
 		if t%10000 == 0:
