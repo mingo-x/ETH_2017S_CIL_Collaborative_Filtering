@@ -69,6 +69,7 @@ def biasedRSVD(train,test,k=96):
 			C = np.repeat(C,Globals.nItems,axis=1)
 			D = np.repeat(D,Globals.nUsers,axis=0)
 			A += C+D
+			A = 4*np.exp(-np.logaddexp(0,-A))+1
 			score = SVD.evaluation2(A,test)
 			print('t =',t,'score =',score)
 			if score > prev2 and prev2 > prev1:
@@ -103,6 +104,7 @@ def biasedRSVD(train,test,k=96):
 	C = np.repeat(C,Globals.nItems,axis=1)
 	D = np.repeat(D,Globals.nUsers,axis=0)
 	A += C+D
+	A = 4*np.exp(-np.logaddexp(0,-A))+1
 	# over 5
 	mask = A>5
 	A[mask] = 5
