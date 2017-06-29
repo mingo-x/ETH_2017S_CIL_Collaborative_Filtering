@@ -186,7 +186,7 @@ if __name__ == "__main__":
 	random.seed(0)
 	np.random.seed(0)
 	RS = RecommenderSystem()
-	RS.readData("data_train.csv")
+	RS.readData("./data/data_train.csv")
 	RS.initParameters(K = Globals.k, lrate = Globals.lrate, mu = 0.02)
 	RS.train()
 	# RS.writeSubmissionFile("submission.csv")
