@@ -8,6 +8,7 @@ import Globals
 import random
 import time
 from sklearn import linear_model
+import math
 
 def sigmoid(x):
 	return math.exp(-np.logaddexp(0, -x))
