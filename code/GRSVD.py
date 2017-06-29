@@ -1,6 +1,7 @@
 import numpy as np
 import math, random, sys
 import Globals
+import Initialization
 
 def sigmoid(x):
 	return math.exp(-np.logaddexp(0, -x))
@@ -181,6 +182,7 @@ class RecommenderSystem:
 
 
 if __name__ == "__main__":
+	Initialization.initialization()
 	random.seed(0)
 	np.random.seed(0)
 	RS = RecommenderSystem()
