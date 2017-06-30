@@ -69,10 +69,10 @@ class RecommenderSystem:
 		self.K = K
 		if Globals.warmStart:
 			print('warm start')
-			self.U = np.load('./log/RSVDF_U_'+str(Globals.k)+'_fixed'+Globals.dataIdx+'.npy')
-			self.V = np.load('./log/RSVDF_V_'+str(Globals.k)+'_fixed'+Globals.dataIdx+'.npy')
-			self.BU = np.load('./log/RSVDF_BU_'+str(Globals.k)+'_fixed'+Globals.dataIdx+'.npy')
-			self.BV = np.load('./log/RSVDF_BV_'+str(Globals.k)+'_fixed'+Globals.dataIdx+'.npy')
+			self.U = np.load('./log/RSVDF2_U_'+str(Globals.k)+'_fixed'+Globals.dataIdx+'.npy')
+			self.V = np.load('./log/RSVDF2_V_'+str(Globals.k)+'_fixed'+Globals.dataIdx+'.npy')
+			self.BU = np.load('./log/RSVDF2_BU_'+str(Globals.k)+'_fixed'+Globals.dataIdx+'.npy')
+			self.BV = np.load('./log/RSVDF2_BV_'+str(Globals.k)+'_fixed'+Globals.dataIdx+'.npy')
 		else:
 			self.U = np.random.rand(self.n_row, self.K)
 			self.V = np.random.rand(self.K, self.n_col)
@@ -148,10 +148,10 @@ class RecommenderSystem:
 			self.V = self.V - self.lrate * Vgrad
 			self.BU = self.BU - self.lrate * BUgrad
 			self.BV = self.BV - self.lrate * BVgrad
-			np.save('./log/RSVDF_U_'+str(Globals.k)+'_fixed'+Globals.dataIdx+'.npy',self.U)
-			np.save('./log/RSVDF_V_'+str(Globals.k)+'_fixed'+Globals.dataIdx+'.npy',self.V)
-			np.save('./log/RSVDF_BU_'+str(Globals.k)+'_fixed'+Globals.dataIdx+'.npy',self.BU)
-			np.save('./log/RSVDF_BV_'+str(Globals.k)+'_fixed'+Globals.dataIdx+'.npy',self.BV)
+			np.save('./log/RSVDF2_U_'+str(Globals.k)+'_fixed'+Globals.dataIdx+'.npy',self.U)
+			np.save('./log/RSVDF2_V_'+str(Globals.k)+'_fixed'+Globals.dataIdx+'.npy',self.V)
+			np.save('./log/RSVDF2_BU_'+str(Globals.k)+'_fixed'+Globals.dataIdx+'.npy',self.BU)
+			np.save('./log/RSVDF2_BV_'+str(Globals.k)+'_fixed'+Globals.dataIdx+'.npy',self.BV)
 			endTime = time.time()
 			trainErr, testErr =  self.getError()
 			print(i,trainErr,testErr,int(endTime-startTime),'s')
@@ -162,7 +162,8 @@ class RecommenderSystem:
 					print('learning rate =',self.lrate)
 				else:
 					break
-			preErr = trainErr
+			else:
+				preErr = trainErr
 			i += 1
 
 	def pred(self):

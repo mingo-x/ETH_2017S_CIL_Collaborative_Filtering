@@ -144,7 +144,8 @@ class RecommenderSystem:
 					print('learning rate =',self.lrate)
 				else:
 					break
-			preErr = trainErr
+			else:
+				preErr = trainErr
 			i += 1
 
 	def pred(self):
