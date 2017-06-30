@@ -88,9 +88,9 @@ class RecommenderSystem:
 			eff = x  - self.data[(r, c)]
 			grad = grad + eff * self.V[:, c]
 			bias_grad = bias_grad + eff
-		grad = grad / self.n_train
+		grad = grad / len(cols)
 		grad = grad + self.mu * self.U[r]
-		bias_grad = bias_grad / self.n_train
+		bias_grad = bias_grad / len(cols)
 		return grad, bias_grad
 
 	def oneColGrad(self, c):
@@ -102,9 +102,9 @@ class RecommenderSystem:
 			eff = x - self.data[(r, c)]
 			grad = grad + eff * self.U[r]
 			bias_grad = bias_grad + eff
-		grad = grad / self.n_train
+		grad = grad / len(rows)
 		grad = grad + self.mu * self.V[:, c]
-		bias_grad = bias_grad / self.n_train
+		bias_grad = bias_grad / len(rows)
 		return grad, bias_grad
 
 	def rowGrad(self):
