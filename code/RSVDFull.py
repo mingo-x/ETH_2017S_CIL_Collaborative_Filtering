@@ -65,8 +65,13 @@ class RecommenderSystem:
 		self.lrate = lrate
 		self.mu = mu
 		self.K = K
-		self.U = np.random.rand(self.n_row, self.K)
-		self.V = np.random.rand(self.K, self.n_col)
+		if Globals.warmStart:
+			print('warm start')
+			self.U = np.load('./log/RSVDF_U_'+str(k)+'_fixed'+Globals.dataIdx+'.npy')
+			self.V = np.load('./log/RSVDF_V_'+str(k)+'_fixed'+Globals.dataIdx+'.npy')
+		else:
+			self.U = np.random.rand(self.n_row, self.K)
+			self.V = np.random.rand(self.K, self.n_col)
 
 	def oneRowGrad(self, r):
 		cols = self.train_row2col[r]
@@ -117,16 +122,26 @@ class RecommenderSystem:
 		valid_err /= len(self.valid_pair)
 		return np.sqrt(train_err), np.sqrt(valid_err)
 
-	def train(self, n_step = 200):
+	def train(self):
 		print("Start training ...")
-		for i in range(n_step):
+		prevErr = 1e10
+		while True:
 			startTime = time.time()
 			Ugrad = self.rowGrad()
 			Vgrad = self.colGrad()
 			self.U = self.U - self.lrate * Ugrad
 			self.V = self.V - self.lrate * Vgrad
+			np.save('./log/RSVDF_U_'+str(k)+'_fixed'+Globals.dataIdx+'.npy',self.U)
+			np.save('./log/RSVDF_V_'+str(k)+'_fixed'+Globals.dataIdx+'.npy',self.V)
 			endTime = time.time()
-			print(i, self.getError(),int(endTime-startTime),'s')
+			trainErr, testErr =  self.getError()
+			print(i,trainErr,testErr,int(endTime-startTime),'s')
+			if testErr > prevErr:
+				if self.lrate > 1e-5:
+					self.lrate *= 0.1
+				else:
+					break
+			prevErr = testErr
 
 	def pred(self):
 		A = np.empty((Globals.nUsers,Globals.nItems))
