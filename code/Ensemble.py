@@ -19,6 +19,7 @@ def loadData(data):
 	Basic5_A = np.load('./log/Basic5_A_fixed'+Globals.dataIdx+'.npy')
 	Basic6_A = np.load('./log/Basic6_A_fixed'+Globals.dataIdx+'.npy')
 	LM_A = np.load('./log/LM_A_fixed'+Globals.dataIdx+'.npy')
+	GRSVD_A = np.load('./log/GRSVD_A_32_fixed.npy')
 	if Globals.dataIdx == '1':
 		KMeans_A = np.load('./log/Kmeans_A_combi_fixed'+Globals.dataIdx+'_2.npy')
 		PSVD_A = np.load('./log/PSVD_A_12_fixed'+Globals.dataIdx+'.npy')
@@ -45,6 +46,7 @@ def loadData(data):
 	train = np.append(train,[RSVD2_A[known]],axis=0)
 	train = np.append(train,[KRR_A[known]],axis=0)
 	train = np.append(train,[LM_A[known]],axis=0)
+	train = np.append(train,[GRSVD_A[known]],axis=0)
 	#train = np.append(train,[NSVD2_A[known]],axis=0)
 	if Globals.predict == 't' or Globals.predict=='tr': # two-way interaction
 		train = np.append(train,[np.multiply(PSVD_A[known],RSVD_A[known])],axis=0)
@@ -69,6 +71,7 @@ def loadData(data):
 	test = np.append(test,[RSVD2_A.flatten()],axis=0)
 	test = np.append(test,[KRR_A.flatten()],axis=0)
 	test = np.append(test,[LM_A.flatten()],axis=0)
+	test = np.append(test,[GRSVD_A.flatten()],axis=0)
 	#test = np.append(test,[NSVD2_A.flatten()],axis=0)
 	if Globals.predict == 't' or Globals.predict=='tr':
 		test = np.append(test,[np.multiply(PSVD_A.flatten(),RSVD_A.flatten())],axis=0)
