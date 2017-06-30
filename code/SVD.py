@@ -208,5 +208,5 @@ if __name__ == "__main__":
 	Initialization.initialization()
 	data = Initialization.readInData('./data/data_train.csv')
 	# chooseK(data)
-	splitData2(data,idx='1')
+	splitData2(data,idx=Globals.dataIdx)
 

@@ -19,19 +19,19 @@ def loadData(data):
 	Basic5_A = np.load('./log/Basic5_A_fixed'+Globals.dataIdx+'.npy')
 	Basic6_A = np.load('./log/Basic6_A_fixed'+Globals.dataIdx+'.npy')
 	LM_A = np.load('./log/LM_A_fixed'+Globals.dataIdx+'.npy')
-	GRSVD_A = np.load('./log/GRSVD_A_32_fixed.npy')
+	GRSVD_A = np.load('./log/GRSVD_A_32_fixed'+Globals.dataIdx+'.npy')
 	if Globals.dataIdx == '1':
 		KMeans_A = np.load('./log/Kmeans_A_combi_fixed'+Globals.dataIdx+'_2.npy')
 		PSVD_A = np.load('./log/PSVD_A_12_fixed'+Globals.dataIdx+'.npy')
-		RSVD_A = np.load('./log/RSVD_A_10_fixed'+Globals.dataIdx+'.npy')
-		RSVD2_A = np.load('./log/RSVD2_A_5_fixed'+Globals.dataIdx+'.npy')
-		KRR_A = np.load('./log/KRR_A_15_fixed'+Globals.dataIdx+'.npy')
+		# RSVD_A = np.load('./log/RSVD_A_10_fixed'+Globals.dataIdx+'.npy')
+		# RSVD2_A = np.load('./log/RSVD2_A_5_fixed'+Globals.dataIdx+'.npy')
+		# KRR_A = np.load('./log/KRR_A_15_fixed'+Globals.dataIdx+'.npy')
 	else:
 		KMeans_A = np.load('./log/Kmeans_A_combi_fixed'+Globals.dataIdx+'.npy')
 		PSVD_A = np.load('./log/PSVD_A_20_fixed'+Globals.dataIdx+'.npy')
-		RSVD_A = np.load('./log/RSVD_A_20_fixed'+Globals.dataIdx+'.npy')
-		RSVD2_A = np.load('./log/RSVD2_A_20_fixed'+Globals.dataIdx+'.npy')
-		KRR_A = np.load('./log/KRR_A_20_fixed'+Globals.dataIdx+'.npy')
+		# RSVD_A = np.load('./log/RSVD_A_20_fixed'+Globals.dataIdx+'.npy')
+		# RSVD2_A = np.load('./log/RSVD2_A_20_fixed'+Globals.dataIdx+'.npy')
+		# KRR_A = np.load('./log/KRR_A_20_fixed'+Globals.dataIdx+'.npy')
 	
 	#NSVD2_A = np.load('./log/NSVD_A_20_fixed.npy')
 
