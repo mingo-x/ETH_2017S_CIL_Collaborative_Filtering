@@ -159,6 +159,8 @@ class RecommenderSystem:
 			if testErr > preErr and preErr > preErr2:
 				if self.lrate > 1e-5:
 					self.lrate *= 0.1
+					preErr2 = 1e10
+					preErr = 1e9
 					print('learning rate =',self.lrate)
 				else:
 					break
