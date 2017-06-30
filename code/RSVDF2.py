@@ -139,6 +139,7 @@ class RecommenderSystem:
 	def train(self):
 		print("Start training ...")
 		prevErr = 1e10
+		i = 0
 		while True:
 			startTime = time.time()
 			Ugrad, BUgrad = self.rowGrad()
@@ -161,6 +162,7 @@ class RecommenderSystem:
 				else:
 					break
 			prevErr = testErr
+			i += 1
 
 	def pred(self):
 		A = np.empty((Globals.nUsers,Globals.nItems))
