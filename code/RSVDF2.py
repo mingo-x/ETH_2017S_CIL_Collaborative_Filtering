@@ -23,6 +23,8 @@ class RecommenderSystem:
 
 	U = None
 	V = None
+	BU = None
+	BV = None
 
 	lrate = None
 	mu = None
@@ -69,24 +71,32 @@ class RecommenderSystem:
 			print('warm start')
 			self.U = np.load('./log/RSVDF_U_'+str(k)+'_fixed'+Globals.dataIdx+'.npy')
 			self.V = np.load('./log/RSVDF_V_'+str(k)+'_fixed'+Globals.dataIdx+'.npy')
+			self.BU = np.load('./log/RSVDF_BU_'+str(k)+'_fixed'+Globals.dataIdx+'.npy')
+			self.BV = np.load('./log/RSVDF_BV_'+str(k)+'_fixed'+Globals.dataIdx+'.npy')
 		else:
 			self.U = np.random.rand(self.n_row, self.K)
 			self.V = np.random.rand(self.K, self.n_col)
+			self.BU = np.random.rand(self.n_row)
+			self.BV = np.random.rand(self.n_col)
 
 	def oneRowGrad(self, r):
 		cols = self.train_row2col[r]
 		grad = np.zeros(self.K)
+		bias_grad = 0
 		for c in cols:
 			x = np.dot(self.U[r], self.V[:, c])
 			eff = x  - self.data[(r, c)]
 			grad = grad + eff * self.V[:, c]
+			bias_grad = bias_grad + eff
 		grad = grad / self.n_train
 		grad = grad + self.mu * self.U[r]
-		return grad
+		bias_grad = bias_grad / self.n_train
+		return grad, bias_grad
 
 	def oneColGrad(self, c):
 		rows = self.train_col2row[c]
 		grad = np.zeros(self.K)
+		bias_grad = 0
 		for r in rows:
 			x = np.dot(self.U[r], self.V[:, c])
 			eff = x - self.data[(r, c)]

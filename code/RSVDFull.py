@@ -140,6 +140,7 @@ class RecommenderSystem:
 			if testErr > prevErr:
 				if self.lrate > 1e-5:
 					self.lrate *= 0.1
+					print('learning rate =',lrate)
 				else:
 					break
 			prevErr = testErr
