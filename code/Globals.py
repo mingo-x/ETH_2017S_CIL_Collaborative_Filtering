@@ -10,3 +10,4 @@ modelIdx = ''
 step = 0
 fixed = True
 dataIdx = ''
+l2 = 0.02
