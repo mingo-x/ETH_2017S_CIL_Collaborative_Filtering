@@ -134,7 +134,7 @@ class RecommenderSystem:
 
 	def train(self):
 		print("Start training ...")
-		prevErr2 = 1e10
+		preErr2 = 1e10
 		preErr = 1e9
 		i = 0
 		while True:
@@ -148,14 +148,14 @@ class RecommenderSystem:
 			endTime = time.time()
 			trainErr, testErr =  self.getError()
 			print(i,trainErr,testErr,int(endTime-startTime),'s')
-			if testErr > prevErr and preErr > prevErr2:
+			if testErr > preErr and preErr > preErr2:
 				if self.lrate > 1e-5:
 					self.lrate *= 0.1
 					print('learning rate =',self.lrate)
 				else:
 					break
-			prevErr2 = preErr
-			prevErr = testErr
+			preErr2 = preErr
+			preErr = testErr
 			i += 1
 
 	def pred(self):
