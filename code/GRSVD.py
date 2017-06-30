@@ -2,6 +2,7 @@ import numpy as np
 import math, random, sys
 import Globals
 import Initialization
+import time
 
 def sigmoid(x):
 	return math.exp(-np.logaddexp(0, -x))
@@ -32,35 +33,28 @@ class RecommenderSystem:
 	def __init__(self, valid_per_row = 6):
 		self.valid_per_row = valid_per_row
 
-	def readData(self, filename):
-		f = open(filename, 'r')
-		lines = f.readlines()[1: ]
-		print(len(lines))
-		for line in lines:
-			nums = line.replace('r', '').replace('_c', ',').split(',')
-			r, c, s = [int(num) for num in nums]
-			self.data[(r - 1, c - 1)] = s
-			self.n_row = max(self.n_row, r)
-			self.n_col = max(self.n_col, c)
-		row2col = [[] for i in range(self.n_row)]
-		for item in self.data:
-			r, c = item
-			s = self.data[item]
-			row2col[r].append(c)
+	def readData(self, filename,trainPath='./data/train',testPath='./data/test'):
+		train = np.load(trainPath+str(Globals.dataIdx)+'.npy')
+		test = np.load(testPath+str(Globals.dataIdx)+'.npy')
+		self.n_row = Globals.nUsers
+		self.n_col = Globals.nItems
 		self.train_row2col = [[] for i in range(self.n_row)]
 		self.train_col2row = [[] for j in range(self.n_col)]
-		for r, item in enumerate(row2col):
-			num = int(self.valid_per_row / 100.0 * len(item))
-			order = [i for i in range(len(item))]
-			random.shuffle(order)
-			idx = order[0: num]
-			for i, c in enumerate(item):
-				if i in idx:
-					self.valid_pair.append((r, c))
-				else:
+		for r in range(Globals.nUsers):
+			for c in range(Globals.nItems):
+				if train[r,c]!=0:
+					self.data[(r,c)] = train[r,c]
 					self.train_pair.append((r, c))
 					self.train_row2col[r].append(c)
 					self.train_col2row[c].append(r)
+				elif test[r,c]!=0:
+					self.data[(r,c)] = test[r,c]
+					self.valid_pair.append((r, c))
+		row2col = [[] for i in range(self.n_row)]
+		for item in self.data:
+			r, c = item
+			row2col[r].append(c)
+		
 		print(sum([len(item) for item in self.train_row2col]))
 		print(sum([len(item) for item in self.train_col2row]))
 		self.n_train = len(self.train_pair)
@@ -148,13 +142,15 @@ class RecommenderSystem:
 	def train(self, n_step = 200):
 		print("Start training ...")
 		for i in range(n_step):
+			startTime = time.time()
 			Ugrad, BUgrad = self.rowGrad()
 			Vgrad, BVgrad = self.colGrad()
 			self.U = self.U - self.lrate * Ugrad
 			self.BU = self.BU - self.lrate * BUgrad
 			self.V = self.V - self.lrate * Vgrad
 			self.BV = self.BV - self.lrate * BVgrad
-			print(i, self.getError())
+			endTime = time.time()
+			print(i, self.getError(),int(endTime-startTime),'s')
 
 	def writeSubmissionFile(self, filename):
 		print("Start prediction ...")
