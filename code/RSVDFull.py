@@ -73,7 +73,7 @@ class RecommenderSystem:
 			self.U = np.random.rand(self.n_row, self.K)
 			self.V = np.random.rand(self.K, self.n_col)
 
-	def oneRowGrad(self, r, Unorm):
+	def oneRowGrad(self, r):
 		cols = self.train_row2col[r]
 		grad = np.zeros(self.K)
 		for c in cols:
@@ -84,7 +84,7 @@ class RecommenderSystem:
 		grad = grad + self.mu * self.U[r]
 		return grad
 
-	def oneColGrad(self, c, Vnorm):
+	def oneColGrad(self, c):
 		rows = self.train_col2row[c]
 		grad = np.zeros(self.K)
 		for r in rows:
