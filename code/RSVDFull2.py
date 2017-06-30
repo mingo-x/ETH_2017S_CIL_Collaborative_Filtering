@@ -178,7 +178,7 @@ if __name__ == "__main__":
 	Initialization.initialization()
 	RS = RecommenderSystem()
 	RS.readData()
-	RS.initParameters(K = Globals.k, lrate = Globals.lrate, mu = 0.02)
+	RS.initParameters(K = Globals.k, lrate = Globals.lrate, mu = Globals.l2)
 	RS.train()
 	RS.pred()
 	# RS.writeSubmissionFile("submission.csv")

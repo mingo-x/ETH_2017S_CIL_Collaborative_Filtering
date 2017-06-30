@@ -35,6 +35,7 @@ def initialization():
 			print('data idx =', Globals.dataIdx)
 		elif argv[i].startswith('-l2='):
 			Globals.l2 = float(argv[i][4:])
+			print('lambda2 =',Globals.l2)
 
 
 def readInData(inPath):
