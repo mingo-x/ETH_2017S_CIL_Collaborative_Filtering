@@ -80,8 +80,8 @@ class RecommenderSystem:
 			x = np.dot(self.U[r], self.V[:, c])
 			eff = x  - self.data[(r, c)]
 			grad = grad + eff * self.V[:, c]
-		grad = grad / self.n_train
-		grad = grad + self.mu / Unorm * self.U[r]
+		grad = grad / len(cols)
+		grad = grad + self.mu * self.U[r]
 		return grad
 
 	def oneColGrad(self, c, Vnorm):
@@ -91,30 +91,20 @@ class RecommenderSystem:
 			x = np.dot(self.U[r], self.V[:, c])
 			eff = x - self.data[(r, c)]
 			grad = grad + eff * self.U[r]
-		grad = grad / self.n_train
-		grad = grad + self.mu / Vnorm * self.V[:, c]
+		grad = grad / len(rows)
+		grad = grad + self.mu * self.V[:, c]
 		return grad
 
 	def rowGrad(self):
-		Unorm = 0
-		for i in range(self.n_row):
-			for j in range(self.K):
-				Unorm += self.U[i, j] ** 2
-		Unorm = np.sqrt(Unorm)
 		Ugrad = np.zeros((self.n_row, self.K))
 		for r in range(self.n_row):
-			Ugrad[r] = self.oneRowGrad(r,Unorm)
+			Ugrad[r] = self.oneRowGrad(r)
 		return Ugrad
 
 	def colGrad(self):
-		Vnorm = 0
-		for i in range(self.K):
-			for j in range(self.n_col):
-				Vnorm += self.V[i, j] ** 2
-		Vnorm = np.sqrt(Vnorm)
 		Vgrad = np.zeros((self.K, self.n_col))
 		for c in range(self.n_col):
-			Vgrad[:, c] = self.oneColGrad(c,Vnorm)
+			Vgrad[:, c] = self.oneColGrad(c)
 		return Vgrad
 
 	def predict(self, r, c):
