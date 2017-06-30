@@ -84,7 +84,7 @@ class RecommenderSystem:
 		grad = np.zeros(self.K)
 		bias_grad = 0
 		for c in cols:
-			x = np.dot(self.U[r], self.V[:, c])
+			x = np.dot(self.U[r], self.V[:, c])+ self.BU[r] + self.BV[c]
 			eff = x  - self.data[(r, c)]
 			grad = grad + eff * self.V[:, c]
 			bias_grad = bias_grad + eff
@@ -98,27 +98,31 @@ class RecommenderSystem:
 		grad = np.zeros(self.K)
 		bias_grad = 0
 		for r in rows:
-			x = np.dot(self.U[r], self.V[:, c])
+			x = np.dot(self.U[r], self.V[:, c])+ self.BU[r] + self.BV[c]
 			eff = x - self.data[(r, c)]
 			grad = grad + eff * self.U[r]
+			bias_grad = bias_grad + eff
 		grad = grad / self.n_train
 		grad = grad + self.mu * self.V[:, c]
-		return grad
+		bias_grad = bias_grad / self.n_train
+		return grad, bias_grad
 
 	def rowGrad(self):
 		Ugrad = np.zeros((self.n_row, self.K))
+		BUgrad = np.zeros(self.n_row)
 		for r in range(self.n_row):
-			Ugrad[r] = self.oneRowGrad(r)
-		return Ugrad
+			Ugrad[r], BUgrad[r] = self.oneRowGrad(r)
+		return Ugrad, BUgrad
 
 	def colGrad(self):
 		Vgrad = np.zeros((self.K, self.n_col))
+		BVgrad = np.zeros(self.n_col)
 		for c in range(self.n_col):
-			Vgrad[:, c] = self.oneColGrad(c)
-		return Vgrad
+			Vgrad[:, c], BVgrad[c] = self.oneColGrad(c)
+		return Vgrad, BVgrad
 
 	def predict(self, r, c):
-		x = np.dot(self.U[r], self.V[:, c])
+		x = np.dot(self.U[r], self.V[:, c])+ self.BU[r] + self.BV[c]
 		return x
 
 	def getError(self):
@@ -137,10 +141,12 @@ class RecommenderSystem:
 		prevErr = 1e10
 		while True:
 			startTime = time.time()
-			Ugrad = self.rowGrad()
-			Vgrad = self.colGrad()
+			Ugrad, BUgrad = self.rowGrad()
+			Vgrad, BVgrad = self.colGrad()
 			self.U = self.U - self.lrate * Ugrad
 			self.V = self.V - self.lrate * Vgrad
+			self.BU = self.BU - self.lrate * BUgrad
+			self.BV = self.BV - self.lrate * BVgrad
 			np.save('./log/RSVDF_U_'+str(k)+'_fixed'+Globals.dataIdx+'.npy',self.U)
 			np.save('./log/RSVDF_V_'+str(k)+'_fixed'+Globals.dataIdx+'.npy',self.V)
 			endTime = time.time()
