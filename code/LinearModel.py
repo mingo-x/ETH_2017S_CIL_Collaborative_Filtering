@@ -85,6 +85,10 @@ if __name__ == "__main__":
 		train, test = Initialization.readInData2(idx=Globals.dataIdx)
 		if Globals.predict == 'l':
 			chooseLamb(train,test)
+		elif Globals.predict == 'e':
+			A = np.load('./log/LM_A_fixed'+Globals.dataIdx+'.npy')
+			score = SVD.evaluation2(A,test)
+			print('score =', score)
 		else:
 			A = gradientDescent(train,test,lamb=0.01)
 			np.save('./log/LM_A_fixed'+Globals.dataIdx+'.npy',A)
