@@ -31,6 +31,25 @@ We conduct four methods: regularized singular value decomposition(RSVD), K-means
 Recommender systems are widely used in nowadays life, which help us choose books, movies, music and even friends. In collaborative filter, the recommendation is based on the preference of the user towards other items and the opinion of others[--- add some reference later---]. In many traditional collaborative filters work, they use only single model which is limited in some specific application. For example, some methods perform quite well in the book recommendation but is weak in the music recommendation[--- add some reference later---]. In this paper, we propose a hybrid framework to mix various recommendation algorithms. \\
 The rest of the paper is organized as follows. In the section 2, we first introduce regularized singular value decomposition(RSVD), K-means, improved RSVD and Postprocessing SVD with kernel ridge regression which are used in our system. Then we describe how we combine those four methods. In the section 3, we present our experiment design and some results. In the section 4, we give some conclusions. 
 
+\begin{table*}[htbp]
+  \centering
+  \begin{tabular}[c]{|l||l|l|l|}
+    \hline
+    Predictor&RMSE/Linear/SGD&RMSE/Nolinear/FGD&RMSE/linear/FGD\\
+    \hline
+    SVD&0.0&0.0&0.0\\
+    RSVD&0.0&0.0&0.0\\
+    RSVD2&0.0&0.0&0.0\\
+    K-means&0.0&0.0&0.0\\
+    RSVD-with krr&0.0&0.0&0.0\\
+    RSVD2-with krr&0.0&0.0&0.0\\
+    Linear Model&0.0&0.0&0.0\\
+    Merge Model&0.0&0.0&0.0\\
+    \hline
+  \end{tabular}
+  \caption{RMSE of different model}
+\end{table*}
+
 \section{Models and Methods}
 \subsection{Problem Formalization}
 In this paper we focus on the movie rating problem. We are given some training samples including user $i$, movie $j$ and their corresponding ratings $r_{ij}$. All ratings are integer values between 1 and 5 stars. And we should evaluate the ratings for new pairs user $i'$ and movie $j'$.
@@ -76,6 +95,8 @@ $$ \hat{r_ij}=f(u_{i}^{T}v_{j})$$
 $$ \hat{r_ij}=f(u_{i}^{T}v_{j}) + b_i + b_j  + \mu $$
 where we use $f(x) = 4*sigmod(x)+1 in our experiment$
 \subsection{Ensemble}
+
+
 
 \section{Experiment}
 \subsection{Datasets}
