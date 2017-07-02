@@ -34,7 +34,7 @@ def sim(known,data):
 			Is = np.intersect1d(I[i],I[j])
 			if len(Is)!=0:
 				s = pearson(Is,data[i],data[j])
-				if s==np.nan or s==np.inf:
+				if np.isnan(s):
 					print(i,j)
 				score[i,j] = s
 				score[j,i] = s
