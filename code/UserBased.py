@@ -29,7 +29,7 @@ def sim(known,data):
 		if i%100==0:
 			endTime = time.time()
 			print('user',i+1,int(endTime-startTime),'s')
-			startTime = time.Time()
+			startTime = time.time()
 		for j in range(i+1,Globals.nUsers):
 			Is = np.intersect1d(I[i],I[j])
 			if len(Is)!=0:
