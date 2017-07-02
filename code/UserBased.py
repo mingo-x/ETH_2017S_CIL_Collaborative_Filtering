@@ -37,7 +37,7 @@ def sim(known,data):
 					print(Is)
 					print(data[i])
 					print(data[j])
-				s = pearson(Is,data[i],data[j])
+				s = pearson(Is,data[i][Is],data[j][Is])
 				score[i,j] = s
 				score[j,i] = s
 	np.save('./log/UB_'+str(Globals.k)+'_sim'+Globals.dataIdx+'.npy')
