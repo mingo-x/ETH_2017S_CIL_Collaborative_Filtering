@@ -197,14 +197,28 @@ class RecommenderSystem:
 
 		np.save('./log/GRSVD_A_'+str(Globals.k)+'_fixed'+Globals.dataIdx+'.npy',A)
 
+	def clip(A,test):
+		mask = A>5
+		A[mask] = 5
+		mask = A<1
+		A[mask] = 1
+		print('finish clipping')
+		score = SVD.evaluation2(A,test)
+		print('after clipping score =',score)
+		np.save('./log/GRSVD_A_'+str(Globals.k)+'_fixed'+Globals.dataIdx+'.npy',A)
+
 
 if __name__ == "__main__":
 	Initialization.initialization()
-	random.seed(0)
-	np.random.seed(0)
-	RS = RecommenderSystem()
-	RS.readData("./data/data_train.csv")
-	RS.initParameters(K = Globals.k, lrate = Globals.lrate, mu = 0.02)
-	RS.train()
-	RS.pred()
-	# RS.writeSubmissionFile("submission.csv")
+	if Globals.predict == 'c':
+		data, test = Initialization.readInData2(idx = Globals.dataIdx)
+		A = np.load('./log/GRSVD_A_fixed'+Globals.dataIdx+'.npy')
+		clip(A,test)
+	else:
+		random.seed(0)
+		np.random.seed(0)
+		RS = RecommenderSystem()
+		RS.readData("./data/data_train.csv")
+		RS.initParameters(K = Globals.k, lrate = Globals.lrate, mu = 0.02)
+		RS.train()
+		RS.pred()
