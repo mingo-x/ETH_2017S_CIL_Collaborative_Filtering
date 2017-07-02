@@ -140,7 +140,7 @@ class RecommenderSystem:
 			endTime = time.time()
 			trainErr, testErr =  self.getError()
 			print(i,trainErr,testErr,int(endTime-startTime),'s')
-			if trainErr > preErr or testErr>preTest :
+			if preErr-trainErr<1e-7 or preTest-testErr<1e-7 :
 				if self.lrate > 1e-5:
 					self.lrate *= 0.1
 					preErr = 1e9
