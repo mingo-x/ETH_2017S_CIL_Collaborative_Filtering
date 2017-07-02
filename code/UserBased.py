@@ -21,7 +21,7 @@ def sim(known,data):
 	print('start calculating similarity')
 	index = np.array([i for i in range(Globals.nItems)])
 	I = [index[known[i]] for i in range(Globals.nUsers)]
-	print(len(I),len(I[0])
+	print(len(I),len(I[0]))
 	score = np.empty((Globals.nUsers,Globals.nUsers))
 	for i in range(Globals.nUsers):
 		for j in range(i+1,Globals.nUsers):
