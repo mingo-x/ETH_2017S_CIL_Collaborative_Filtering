@@ -35,7 +35,7 @@ def KRR(data,test, a=0.7):
 		y = data[i,known]
 		X = V[known]
 
-		clf = KernelRidge(alpha=a,kernel='rbf')
+		clf = KernelRidge(alpha=a,kernel=kernel)
 		clf.fit(X, y)
 		pred = clf.predict(V)
 		A[i] = pred
