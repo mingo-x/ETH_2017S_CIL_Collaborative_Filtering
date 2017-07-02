@@ -68,10 +68,17 @@ class RecommenderSystem:
 		self.lrate = lrate
 		self.mu = mu
 		self.K = K
-		self.U = np.random.rand(self.n_row, self.K)
-		self.BU = np.random.rand(self.n_row)
-		self.V = np.random.rand(self.K, self.n_col)
-		self.BV = np.random.rand(self.n_col)
+		if Globals.warmStart:
+			print('warm start')
+			self.U = np.load('./log/GRSVD_U_'+str(Globals.k)+'_fixed'+Globals.dataIdx+'.npy')
+			self.V = np.load('./log/GRSVD_V_'+str(Globals.k)+'_fixed'+Globals.dataIdx+'.npy')
+			self.BU = np.load('./log/GRSVD_BU_'+str(Globals.k)+'_fixed'+Globals.dataIdx+'.npy')
+			self.BV = np.load('./log/GRSVD_BV_'+str(Globals.k)+'_fixed'+Globals.dataIdx+'.npy')
+		else:
+			self.U = np.random.rand(self.n_row, self.K)
+			self.BU = np.random.rand(self.n_row)
+			self.V = np.random.rand(self.K, self.n_col)
+			self.BV = np.random.rand(self.n_col)
 
 	def oneRowGrad(self, r, Unorm):
 		cols = self.train_row2col[r]
@@ -161,8 +168,8 @@ class RecommenderSystem:
 			trainE, testE = self.getError()
 			endTime = time.time()
 			print(i, trainE, testE,int(endTime-startTime),'s')
-			if prevTrain-trainE<1e-8 or prevTest-testE<1e-8:
-				if self.lrate>1e-5:
+			if prevTrain-trainE<1e-7 or prevTest-testE<1e-7:
+				if self.lrate>1e-2:
 					self.lrate *= 0.1
 					prevTrain = 1e9
 					prevTest = 1e9
@@ -195,6 +202,13 @@ class RecommenderSystem:
 		for r in range(Globals.nUsers):
 			for c in range(Globals.nItems):
 				A[r,c] = self.predict(r,c)
+		mask = A>5
+		A[mask] = 5
+		mask = A<1
+		A[mask] = 1
+		print('finish clipping')
+		score = SVD.evaluation2(A,test)
+		print('after clipping score =',score)
 
 		np.save('./log/GRSVD_A_'+str(Globals.k)+'_fixed'+Globals.dataIdx+'.npy',A)
 
