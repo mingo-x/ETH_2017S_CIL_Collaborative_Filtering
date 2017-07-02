@@ -210,14 +210,14 @@ class RecommenderSystem:
 
 if __name__ == "__main__":
 	Initialization.initialization()
+	RS = RecommenderSystem()
 	if Globals.predict == 'c':
 		data, test = Initialization.readInData2(idx = Globals.dataIdx)
 		A = np.load('./log/GRSVD_A_'+str(Globals.k)+'_fixed'+Globals.dataIdx+'.npy')
-		clip(A,test)
+		RS.clip(A,test)
 	else:
 		random.seed(0)
-		np.random.seed(0)
-		RS = RecommenderSystem()
+		np.random.seed(0)	
 		RS.readData("./data/data_train.csv")
 		RS.initParameters(K = Globals.k, lrate = Globals.lrate, mu = 0.02)
 		RS.train()
