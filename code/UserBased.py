@@ -2,6 +2,7 @@ import Initialization
 import Globals
 import numpy as np
 import SVD
+import time
 
 def initialize(data):
 	known = data!=0
@@ -23,12 +24,19 @@ def sim(known,data):
 	I = [index[known[i]] for i in range(Globals.nUsers)]
 	print(len(I),len(I[0]))
 	score = np.empty((Globals.nUsers,Globals.nUsers))
+	startTime = time.time()
 	for i in range(Globals.nUsers):
 		if i%100==0:
-			print('user',i+1)
+			endTime = time.time()
+			print('user',i+1,int(endTime-startTime),'s')
+			startTime = time.time()
 		for j in range(i+1,Globals.nUsers):
 			Is = np.intersect1d(I[i],I[j])
 			if len(Is)!=0:
+				if i==0 and j==427:
+					print(Is)
+					print(data[i][Is])
+					print(data[j][Is])
 				s = pearson(Is,data[i],data[j])
 				score[i,j] = s
 				score[j,i] = s
@@ -41,7 +49,7 @@ def peer(u,j,known,score):
 	index = np.array([i for i in range(Globals.nItems)])
 	candidate = index[known[:,j]]
 	s = score[u,candidate]
-	mask = s!=np.nan
+	mask = np.isnan(s)==False
 	s = s[mask]
 	if len(s) < Globals.k:
 		k = len(s)
