@@ -5,7 +5,7 @@ import SVD
 
 def initialize(data):
 	known = data!=0
-	mu = np.mean(data[known],axis=1)
+	mu = [np.mean(data[i,known[i]]) for i in range(Globals.nUsers)]
 	data = [data[i]-mu[i] for i in range(Globals.nUsers)]
 	if Globals.warmStart:
 		score = np.load('./log/UB_sim'+Globals.dataIdx+'.npy')
