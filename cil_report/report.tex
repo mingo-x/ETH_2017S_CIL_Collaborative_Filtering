@@ -108,11 +108,16 @@ prediction error, measured by root-mean-squared error (RMSE)
 
 \subsection{Experimental Results}
 We implement six models: SVD, RSVD, Improved RSVD(shown as RSVD2), RSVD with KRR, RSVD2 with KRR and K-means in the experiment. We compare different training methods(FGD/SGD) and different interaction
-function(linear/nolinear) on those six models. Besides, we compare using single model and the ensemble models. All results are shown in the table \ref{mytable}.
+function(linear/nolinear) on those six models. Besides, we compare using single model and the ensemble models. All results are summarizes in the table \ref{mytable}.
 \subsubsection{Full Gradient vs Stochastic Gradient}
+As shown in the second and third column, FGD performs better than SGD. On the model XX, FGD obtain an XXX\% improvement on XXmodel(XXX\%) than SGD. 
 
 \subsubsection{Linear Interaction vs Nolinear Interaction}
+The Nolinear Interaction acquire a better results than linear interaction on all models. More specifically, it has a largest improvement on XXmodel(XXX\%), while has limited effect on XX model (XXX\%).
+
 \subsubsection{single model vs ensemble model}
+The ensemble model that combines all six above-mentioned model achieve a XXX RMSE. The ensemble gain a XXX improvement compare to XXX, which is the best model among all single model. The results demonstrate that the ensemble methods strengthen the ability of model to fit complicated data.
+
 
 All experiments were done on the ETH cluster euler with XXXGHz processor and XXXGB RAM. Running times varied from XXXXmin for SVD KNN to around XXX for RSVD2.
 
