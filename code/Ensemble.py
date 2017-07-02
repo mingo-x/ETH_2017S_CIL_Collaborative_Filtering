@@ -123,9 +123,9 @@ def loadData(data):
 		KRR_A = None
 		KRR2_A = None
 		LM_A = None
-	print(test.shape)
-
 	test = test.T
+	print(test.shape)
+	
 	endTime = time.time()
 	print('finish initialization',int(endTime-startTime),'s')
 	return train, target, test
