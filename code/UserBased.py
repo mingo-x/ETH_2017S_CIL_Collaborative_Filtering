@@ -24,6 +24,8 @@ def sim(known,data):
 	print(len(I),len(I[0]))
 	score = np.empty((Globals.nUsers,Globals.nUsers))
 	for i in range(Globals.nUsers):
+		if i%100==0:
+			print('user',i+1)
 		for j in range(i+1,Globals.nUsers):
 			Is = np.intersect1d(I[i],I[j])
 			if len(Is)!=0:
