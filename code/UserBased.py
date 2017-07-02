@@ -2,6 +2,7 @@ import Initialization
 import Globals
 import numpy as np
 import SVD
+import time
 
 def initialize(data):
 	known = data!=0
@@ -23,14 +24,17 @@ def sim(known,data):
 	I = [index[known[i]] for i in range(Globals.nUsers)]
 	print(len(I),len(I[0]))
 	score = np.empty((Globals.nUsers,Globals.nUsers))
+	startTime = time.time()
 	for i in range(Globals.nUsers):
 		if i%100==0:
-			print('user',i+1)
+			endTime = time.time()
+			print('user',i+1,int(endTime-startTime),'s')
+			startTime = time.Time()
 		for j in range(i+1,Globals.nUsers):
 			Is = np.intersect1d(I[i],I[j])
 			if len(Is)!=0:
 				s = pearson(Is,data[i],data[j])
-				if s==np.nan:
+				if s==np.nan or np.inf:
 					print(i,j)
 				score[i,j] = s
 				score[j,i] = s
