@@ -19,8 +19,8 @@ def pearson(Is,ru,rv):
 
 def sim(known,data):
 	print('start calculating similarity')
-	index = [i for i in range(Globals.nItems)]
-	I = [[index[known[i]]] for i in range(Globals.nUsers)]
+	index = np.array([i for i in range(Globals.nItems)])
+	I = [index[known[i]] for i in range(Globals.nUsers)]
 	print(I.shape)
 	score = np.empty((Globals.nUsers,Globals.nUsers))
 	for i in range(Globals.nUsers):
