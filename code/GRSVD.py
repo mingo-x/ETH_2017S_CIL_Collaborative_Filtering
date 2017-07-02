@@ -141,7 +141,11 @@ class RecommenderSystem:
 
 	def train(self, n_step = 200):
 		print("Start training ...")
-		for i in range(n_step):
+		# for i in range(n_step):
+		prevTrain = 1e9
+		prevTest = 1e9
+		i = 0
+		while True:
 			startTime = time.time()
 			Ugrad, BUgrad = self.rowGrad()
 			Vgrad, BVgrad = self.colGrad()
@@ -149,8 +153,25 @@ class RecommenderSystem:
 			self.BU = self.BU - self.lrate * BUgrad
 			self.V = self.V - self.lrate * Vgrad
 			self.BV = self.BV - self.lrate * BVgrad
+			np.save('./log/GRSVD_U_'+str(Globals.k)+'_fixed'+Globals.dataIdx+'.npy',self.U)
+			np.save('./log/GRSVD_V_'+str(Globals.k)+'_fixed'+Globals.dataIdx+'.npy',self.V)
+			np.save('./log/GRSVD_BU_'+str(Globals.k)+'_fixed'+Globals.dataIdx+'.npy',self.BU)
+			np.save('./log/GRSVD_BV_'+str(Globals.k)+'_fixed'+Globals.dataIdx+'.npy',self.BV)
+			trainE, testE = self.getError()
 			endTime = time.time()
-			print(i, self.getError(),int(endTime-startTime),'s')
+			print(i, trainE, testE,int(endTime-startTime),'s')
+			if prevTrain-trainE<1e-8 or prevTest-testE<1e-8:
+				if self.lrate>1e-5:
+					self.lrate *= 0.1
+					prevTrain = 1e9
+					prevTest = 1e9
+					print('learning rate =', self.lrate)
+				else:
+					break
+			else:
+				prevTrain = trainE
+				prevTest = testE
+			i += 1
 
 	def writeSubmissionFile(self, filename):
 		print("Start prediction ...")

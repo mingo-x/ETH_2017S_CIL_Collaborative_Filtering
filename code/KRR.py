@@ -23,8 +23,8 @@ def KRR(data,test, a=0.7):
 		# A = base.copy()
 		A = np.empty((Globals.nUsers,Globals.nItems))
 	else:
-		A = np.load('./log/KRR_A_'+str(Globals.k)+Globals.modelIdx+'_'+str(Globals.step)+suffix)
-	Vt = np.load('./log/RSVD_Vt_'+str(Globals.k)+Globals.modelIdx+suffix)
+		A = np.load('./log/KRR'+Globals.modelIdx+'_A_'+str(Globals.k)+'_'+str(Globals.step)+suffix)
+	Vt = np.load('./log/RSVDF'+Globals.modelIdx+'_Vt_'+str(Globals.k)+suffix)
 	V = Vt.T
 	# normalize
 	for i in range(Globals.nItems):
@@ -45,7 +45,7 @@ def KRR(data,test, a=0.7):
 			score = SVD.evaluation2(A,test)
 			print('score =',score)
 		if i%1000 == 0:
-			np.save('./log/KRR_A_'+str(Globals.k)+Globals.modelIdx+'_'+str(i)+suffix,A)
+			np.save('./log/KRR'+Globals.modelIdx+'_A_'+str(Globals.k)+suffix,A)
 
 	score = SVD.evaluation2(A,test)
 	print('alpha =', a, 'test error =',score)
@@ -77,7 +77,7 @@ if __name__ == '__main__':
 			chooseAlpha(data,test)
 		else:
 			A = KRR(data,test)
-			np.save('./log/KRR_A_'+str(Globals.k)+'_fixed'+Globals.dataIdx+'.npy',A)
+			np.save('./log/KRR'+Globals.modelIdx+'_A_'+str(Globals.k)+'_fixed'+Globals.dataIdx+'.npy',A)
 	else:
 		data = Initialization.readInData('./data/data_train.csv')
 		data, test = SVD.splitData(data,10)
