@@ -119,6 +119,10 @@ if __name__ == "__main__":
 		train, test = Initialization.readInData2(idx=Globals.dataIdx)
 		if Globals.predict == 'k':
 			chooseK(train,test)
+		elif Globals.predict == 'e':
+			A = np.load('./log/RSVD_A_'+str(Globals.k)'_fixed'+Globals.dataIdx+'.npy')
+			score = SVD.evaluation2(A,test)
+			print('score =', score)
 		else:
 			A = SGD(train,test,Globals.k)
 			np.save('./log/RSVD_A_'+str(Globals.k)+'_fixed'+Globals.dataIdx+'.npy',A)
