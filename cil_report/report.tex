@@ -37,17 +37,16 @@ The rest of the paper is organized as follows. In the section 2, we first introd
     \hline
     Predictor&RMSE/Linear/SGD&RMSE/Nolinear/FGD&RMSE/linear/FGD\\
     \hline
-    SVD&0.0&0.0&0.0\\
-    RSVD&0.0&0.0&0.0\\
-    RSVD2&0.0&0.0&0.0\\
-    K-means&0.0&0.0&0.0\\
-    RSVD-with krr&0.0&0.0&0.0\\
-    RSVD2-with krr&0.0&0.0&0.0\\
-    Linear Model&0.0&0.0&0.0\\
-    Merge Model&0.0&0.0&0.0\\
+    SVD&1.007&0.0&0.0\\
+    RSVD&1.020&0.0&0.0\\
+    RSVD2&1.009&0.0&0.0\\
+    K-means&1.046&0.0&0.0\\
+    RSVD-with krr&1.068&0.0&0.0\\
+    RSVD2-with krr&1.080&0.0&0.0\\
+    Linear Model&1.018&0.0&0.0\\
+    Merge Model&0.978&0.0&0.0\\
     \hline
-  \end{tabular}
-  \caption{RMSE of different model}
+  \end{tabular}    \caption{  \label{mytable} RMSE of different model}
 \end{table*}
 
 \section{Models and Methods}
@@ -108,8 +107,12 @@ Our collaborative filtering algorithm is evaluated according to the following we
 prediction error, measured by root-mean-squared error (RMSE)
 
 \subsection{Experimental Results}
+As shown in the table \ref{mytable}, 
+\subsubsection{Full Gradient vs Stochastic Gradient}
+\subsubsection{Linear Interaction vs Nolinear Interaction}
+\subsubsection{single model vs ensemble model}
 
-
+All experiments were done on the ETH cluster euler with XXXGHz processor and XXXGB RAM. Running times varied from XXXXmin for SVD KNN to around XXX for RSVD2.
 
 \section{Summary}
 \subsection{Conclusion}
