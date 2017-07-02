@@ -197,7 +197,7 @@ class RecommenderSystem:
 
 		np.save('./log/GRSVD_A_'+str(Globals.k)+'_fixed'+Globals.dataIdx+'.npy',A)
 
-	def clip(A,test):
+	def clip(self,A,test):
 		mask = A>5
 		A[mask] = 5
 		mask = A<1
