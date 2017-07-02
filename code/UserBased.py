@@ -14,7 +14,7 @@ def initialize(data):
 		return data, known, mu
 
 def pearson(Is,ru,rv):
-	sim = np.dot(ru[Is],rv[Is])/(np.sqrt(np.dot(ru[Is],ru[Is]))*np.sqrt(np.dot(rv[Is],rv[Is])))
+	sim = np.dot(ru[Is],rv[Is])/(np.sqrt(np.dot(ru[Is],ru[Is])*np.dot(rv[Is],rv[Is])))
 	return sim
 
 def sim(known,data):
@@ -38,9 +38,11 @@ def sim(known,data):
 
 def peer(u,j,known,score):
 	#(u,j) should be unobserved
-	index = [i for i in range(Globals.nItems)]
+	index = np.array([i for i in range(Globals.nItems)])
 	candidate = index[known[:,j]]
 	s = score[u,candidate]
+	mask = s!=np.nan
+	s = s[mask]
 	if len(s) < Globals.k:
 		k = len(s)
 	peers = candidate[np.argpartition(-s,Globals.k)[:Globals.k]]
@@ -51,7 +53,7 @@ def predict(u,j,known,score,data):
 	pred = 0
 	term = 0
 	for i in peers:
-		pred += score[u,i]*data[j]
+		pred += score[u,i]*data[i,j]
 		term += np.abs(score[u,i])
 	pred /= term
 	pred += mu[u]
