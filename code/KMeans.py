@@ -117,6 +117,10 @@ if __name__ == "__main__":
 		if Globals.predict=='c':
 			A = predictionWithCombi(data,test)
 			np.save('./log/Kmeans_A_combi_fixed'+Globals.dataIdx+'_2.npy',A)
+		elif Globals.predict == 'e':
+			A = np.load('./log/Kmeans_A_combi_fixed'+Globals.dataIdx+Globals.modelIdx+'.npy')
+			score = SVD.evaluation2(A,test)
+			print('score =', score)
 		else:
 			A = kmeans(data,test,Globals.k)
 			np.save('./log/Kmeans_A_'+str(Globals.k)+'_fixed'+Globals.dataIdx+'.npy',A)
