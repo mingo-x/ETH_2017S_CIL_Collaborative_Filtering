@@ -3,6 +3,7 @@ import math, random, sys
 import Globals
 import Initialization
 import time
+import SVD
 
 def sigmoid(x):
 	return math.exp(-np.logaddexp(0, -x))
