@@ -77,8 +77,8 @@ if __name__ == '__main__':
 	Initialization.initialization()
 	data, test = Initialization.readInData2(idx=Globals.dataIdx)
 	if Globals.warmStart:
-		data, known, mu, score = initialize()
+		data, known, mu, score = initialize(data)
 	else:
-		data, known, mu = initialize()
+		data, known, mu = initialize(data)
 		score = sim(known,data)
 	output(test,known,score,data)
