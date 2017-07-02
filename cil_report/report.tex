@@ -46,7 +46,8 @@ The rest of the paper is organized as follows. In the section 2, we first introd
     Linear Model&1.018&0.0&0.0\\
     Merge Model&0.978&0.0&0.0\\
     \hline
-  \end{tabular}    \caption{  \label{mytable} RMSE of different model}
+  \end{tabular}
+    \caption{  \label{mytable} RMSE of different model}
 \end{table*}
 
 \section{Models and Methods}
@@ -99,7 +100,6 @@ where we use $f(x) = 4*sigmod(x)+1 in our experiment$
 
 \section{Experiment}
 \subsection{Datasets}
-
 We use a movie rating data set to evaluate variants of item-based recommendation algorithms. The datasets include ratings of 10000 users for 1000 different movies. All ratings are integer values between 1 and 5 stars.The number of known rating is 1176952 and the average is $3.857$. And we split the datasets into two part: 90\% training set and 10\% test set.
 
 \subsection{Metric}
@@ -108,17 +108,30 @@ prediction error, measured by root-mean-squared error (RMSE)
 
 \subsection{Experimental Results}
 We implement six models: SVD, RSVD, Improved RSVD(shown as RSVD2), RSVD with KRR, RSVD2 with KRR and K-means in the experiment. We compare different training methods(FGD/SGD) and different interaction
-function(linear/nolinear) on those six models. Besides, we compare using single model and the ensemble models. All results are shown in the table \ref{mytable}.
+function(linear/nolinear) on those six models. Besides, we compare using single model and the ensemble models. All results are summarizes in the table \ref{mytable}.
+
 \subsubsection{Full Gradient vs Stochastic Gradient}
+As shown in the second and third column, FGD performs better than SGD. On the model XX, FGD obtain an XXX\% improvement on XXmodel(XXX\%) than SGD. 
 
 \subsubsection{Linear Interaction vs Nolinear Interaction}
-\subsubsection{single model vs ensemble model}
+The Nolinear Interaction acquire a better results than linear interaction on all models. More specifically, it has a largest improvement on XXmodel(XXX\%), while has limited effect on XX model (XXX\%).
+
+\subsubsection{Single model vs Ensemble model}
+The ensemble model that combines all six above-mentioned model achieve a XXX RMSE. The ensemble gain a XXX improvement compare to XXX, which is the best model among all single model. The results demonstrate that the ensemble methods strengthen the ability of model to fit complicated data.
+
 
 All experiments were done on the ETH cluster euler with XXXGHz processor and XXXGB RAM. Running times varied from XXXXmin for SVD KNN to around XXX for RSVD2.
 
 \section{Summary}
 \subsection{Conclusion}
+We introduce various basic collaborative filters algorithms and build a framework to combine them all. Besides, we compare different training methods and interaction functions to gain a better movie rating. The experiments show out that an ensemble model with FGD and nolinear interaction model achieve a best results(XXX \%)
+
 \subsection{Future Work} 
+\subsubsection{Model} 
+We may try to combine some deep learning models in our framework.
+\subsubsection{Data} 
+Now we just limit our model on movie rating datasets. More experiments are needed on other recommendation tasks to .
+
 
 
 
