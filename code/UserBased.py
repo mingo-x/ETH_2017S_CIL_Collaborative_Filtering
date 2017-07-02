@@ -33,10 +33,6 @@ def sim(known,data):
 		for j in range(i+1,Globals.nUsers):
 			Is = np.intersect1d(I[i],I[j])
 			if len(Is)!=0:
-				if i==0 and j==427:
-					print(Is)
-					print(data[i][Is])
-					print(data[j][Is])
 				s = pearson(Is,data[i],data[j])
 				score[i,j] = s
 				score[j,i] = s
