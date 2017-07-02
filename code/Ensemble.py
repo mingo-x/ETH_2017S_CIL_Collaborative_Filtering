@@ -18,6 +18,7 @@ def loadData(data):
 	Basic4_A = np.load('./log/Basic4_A_fixed'+Globals.dataIdx+'.npy')
 	Basic5_A = np.load('./log/Basic5_A_fixed'+Globals.dataIdx+'.npy')
 	Basic6_A = np.load('./log/Basic6_A_fixed'+Globals.dataIdx+'.npy')
+	PSVD_A = np.load('./log/PSVD_A_12_fixed'+Globals.dataIdx+'.npy')
 	LM_A = np.load('./log/LM_A_fixed'+Globals.dataIdx+'.npy')
 	# GRSVD_A = np.load('./log/GRSVD_A_32_fixed'+Globals.dataIdx+'.npy')
 	RSVDF_A = np.load('./log/RSVDF_A_32_fixed'+Globals.dataIdx+'.npy')
@@ -26,18 +27,8 @@ def loadData(data):
 	KRR2_A = np.load('./log/KRR2_A_32_fixed'+Globals.dataIdx+'.npy')
 	if Globals.dataIdx == '1':
 		KMeans_A = np.load('./log/Kmeans_A_combi_fixed'+Globals.dataIdx+'_2.npy')
-		PSVD_A = np.load('./log/PSVD_A_12_fixed'+Globals.dataIdx+'.npy')
-		# RSVD_A = np.load('./log/RSVD_A_10_fixed'+Globals.dataIdx+'.npy')
-		# RSVD2_A = np.load('./log/RSVD2_A_5_fixed'+Globals.dataIdx+'.npy')
-		# KRR_A = np.load('./log/KRR_A_15_fixed'+Globals.dataIdx+'.npy')
 	else:
 		KMeans_A = np.load('./log/Kmeans_A_combi_fixed'+Globals.dataIdx+'.npy')
-		PSVD_A = np.load('./log/PSVD_A_20_fixed'+Globals.dataIdx+'.npy')
-		# RSVD_A = np.load('./log/RSVD_A_20_fixed'+Globals.dataIdx+'.npy')
-		# RSVD2_A = np.load('./log/RSVD2_A_20_fixed'+Globals.dataIdx+'.npy')
-		# KRR_A = np.load('./log/KRR_A_20_fixed'+Globals.dataIdx+'.npy')
-	
-	#NSVD2_A = np.load('./log/NSVD_A_20_fixed.npy')
 
 	train = np.append([Basic1_A[known]],[Basic2_A[known]],axis=0)
 	train = np.append(train,[Basic3_A[known]],axis=0)
@@ -75,13 +66,21 @@ def loadData(data):
 		train = np.append(train,[np.multiply(KRR_A[known],LM_A[known])],axis=0)
 		train = np.append(train,[np.multiply(KRR2_A[known],LM_A[known])],axis=0)
 	train = train.T
+	print(train.shape)
 
 	test = np.append([Basic1_A.flatten()],[Basic2_A.flatten()],axis=0)
+	Basic1_A = None
+	Basic2_A = None
 	test = np.append(test,[Basic3_A.flatten()],axis=0)
+	Basic3_A = None
 	test = np.append(test,[Basic4_A.flatten()],axis=0)
+	Basic4_A = None
 	test = np.append(test,[Basic5_A.flatten()],axis=0)
+	Basic5_A = None
 	test = np.append(test,[Basic6_A.flatten()],axis=0)
+	Basic6_A = None
 	test = np.append(test,[KMeans_A.flatten()],axis=0)
+	KMeans_A = None
 	test = np.append(test,[PSVD_A.flatten()],axis=0)
 	test = np.append(test,[RSVDF_A.flatten()],axis=0)
 	test = np.append(test,[RSVDF2_A.flatten()],axis=0)
@@ -101,19 +100,34 @@ def loadData(data):
 		test = np.append(test,[np.multiply(PSVD_A.flatten(),KRR_A.flatten())],axis=0)
 		test = np.append(test,[np.multiply(PSVD_A.flatten(),KRR2_A.flatten())],axis=0)
 		test = np.append(test,[np.multiply(PSVD_A.flatten(),LM_A.flatten())],axis=0)
+		PSVD_A = None
 		test = np.append(test,[np.multiply(RSVDF_A.flatten(),RSVDF2_A.flatten())],axis=0)
 		test = np.append(test,[np.multiply(RSVDF_A.flatten(),KRR_A.flatten())],axis=0)
 		test = np.append(test,[np.multiply(RSVDF_A.flatten(),KRR2_A.flatten())],axis=0)
 		test = np.append(test,[np.multiply(RSVDF_A.flatten(),LM_A.flatten())],axis=0)
+		RSVDF_A = None
 		test = np.append(test,[np.multiply(RSVDF2_A.flatten(),KRR_A.flatten())],axis=0)
 		test = np.append(test,[np.multiply(RSVDF2_A.flatten(),KRR2_A.flatten())],axis=0)
 		test = np.append(test,[np.multiply(RSVDF2_A.flatten(),LM_A.flatten())],axis=0)
+		RSVDF2_A = None
 		test = np.append(test,[np.multiply(KRR_A.flatten(),KRR2_A.flatten())],axis=0)
 		test = np.append(test,[np.multiply(KRR_A.flatten(),LM_A.flatten())],axis=0)
+		KRR_A = None
 		test = np.append(test,[np.multiply(KRR2_A.flatten(),LM_A.flatten())],axis=0)
+		KRR2_A = None
+		LM_A = None
+	else:
+		PSVD_A = None
+		RSVDF_A = None
+		RSVDF2_A = None
+		KRR_A = None
+		KRR2_A = None
+		LM_A = None
+	print(test.shape)
+
 	test = test.T
 	endTime = time.time()
-	print('finish initialization',int(endTime-startTime),'s',train.shape, test.shape)
+	print('finish initialization',int(endTime-startTime),'s')
 	return train, target, test
 
 def ensemble(train, target, test):
