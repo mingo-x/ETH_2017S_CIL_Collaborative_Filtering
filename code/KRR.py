@@ -23,7 +23,7 @@ def KRR(data,test, a=0.7):
 		# A = base.copy()
 		A = np.empty((Globals.nUsers,Globals.nItems))
 	else:
-		A = np.load('./log/KRR'+Globals.modelIdx+'_A_'+str(Globals.k)+'_'+str(Globals.step)+suffix)
+		A = np.load('./log/KRR'+Globals.modelIdx+'_A_'+str(Globals.k)+suffix)
 	Vt = np.load('./log/RSVDF'+Globals.modelIdx+'_V_'+str(Globals.k)+suffix)
 	V = Vt.T
 	# normalize
