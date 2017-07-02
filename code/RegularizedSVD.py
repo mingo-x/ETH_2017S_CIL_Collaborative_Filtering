@@ -120,7 +120,7 @@ if __name__ == "__main__":
 		if Globals.predict == 'k':
 			chooseK(train,test)
 		elif Globals.predict == 'e':
-			A = np.load('./log/RSVD_A_'+str(Globals.k)'_fixed'+Globals.dataIdx+'.npy')
+			A = np.load('./log/RSVD_A_'+str(Globals.k)+'_fixed'+Globals.dataIdx+'.npy')
 			score = SVD.evaluation2(A,test)
 			print('score =', score)
 		else:
