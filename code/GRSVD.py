@@ -168,14 +168,8 @@ class RecommenderSystem:
 			trainE, testE = self.getError()
 			endTime = time.time()
 			print(i, trainE, testE,int(endTime-startTime),'s')
-			if prevTrain-trainE<1e-7 or prevTest-testE<1e-7:
-				if self.lrate>1e-2:
-					self.lrate *= 0.1
-					prevTrain = 1e9
-					prevTest = 1e9
-					print('learning rate =', self.lrate)
-				else:
-					break
+			if np.abs(prevTrain-trainE<1e-7) or np.abs(prevTest-testE)<1e-7:
+				break
 			else:
 				prevTrain = trainE
 				prevTest = testE
