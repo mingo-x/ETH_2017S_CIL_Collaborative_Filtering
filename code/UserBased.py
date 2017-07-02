@@ -14,7 +14,7 @@ def initialize(data):
 		return data, known, mu
 
 def pearson(Is,ru,rv):
-	sim = np.dot(ru[Is],rv[Is])/(np.sqrt(np.dot(ru[Is],ru[Is]))*np.sqrt(np.dot(rv[IS],rv[Is])))
+	sim = np.dot(ru[Is],rv[Is])/(np.sqrt(np.dot(ru[Is],ru[Is]))*np.sqrt(np.dot(rv[Is],rv[Is])))
 	return sim
 
 def sim(known,data):
