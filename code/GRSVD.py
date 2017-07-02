@@ -169,7 +169,7 @@ class RecommenderSystem:
 			trainE, testE = self.getError()
 			endTime = time.time()
 			print(i, trainE, testE,int(endTime-startTime),'s')
-			if np.abs(prevTrain-trainE<1e-7) or np.abs(prevTest-testE)<1e-7:
+			if np.abs(prevTrain-trainE)<1e-7 or np.abs(prevTest-testE)<1e-7:
 				break
 			else:
 				prevTrain = trainE
