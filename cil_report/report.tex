@@ -57,7 +57,7 @@ In this paper we focus on the movie rating problem. We are given some training s
 \subsubsection{Regularized singular value decomposition(RSVD)}
 We map both users and movies to a joint latent factor space of dimensionality $k$. Accordingly each user $i$ is associated with a vector $u_{i} \in \textbf{R$^k$}$, while each movie $j$ is associated with a vector $v_{j} \in \textbf{R$^k$} $. The dot product $u_i^Tv_j$ captures the interaction between user $i$ and movie $j$. We use this product to estimate the rating of user $i$ and item $j$.
 
-$$ \hat{r_ij}=u_{i}^{T}v_{j} $$
+$$ \hat{r_{ij}}=u_{i}^{T}v_{j} $$
 
 To learn the factor of the user and item, the system minimizes the regularized squared error on the set of known ratings.
 $$  \min \limits_{u, v} \sum_{i, j\in kn} (r_{ij} - \hat r_{ij})^2 + \lambda (||u_i||^2 + ||v_j||^2)  $$
@@ -67,7 +67,7 @@ where $ (||u_i||^2 + ||v_j||^2)$ is the regular terms to avoid overfitting and $
 \subsubsection{Improved regularized singular value decomposition}
 In the RSVD methods, we use dot product to fit the real rating. However, it is shown that some biases exist among both users and items. For example, some users tend to give higher rate than others. So we introduce the bias term into the evaluation.
 
-$$ \hat{r_ij}=u_{i}^{T}v_{j} + b_i + b_j  + \mu $$
+$$ \hat{r_{ij}}=u_{i}^{T}v_{j} + b_i + b_j  + \mu $$
 where $b_i$ and $b_j$ are the biases of user and items. $\mu$ is the average of all rating. The system learns by minimizing the squared error function:
 $$  \min \limits_{u, v} \sum_{i, j\in kn} (r_{ij} - \hat r_{ij})^2 + \lambda (||u_i||^2 + ||v_j||^2 + b_i^2 + b_j^2)  $$
 
@@ -90,8 +90,8 @@ In order to minimize the error of mean square, Stochastic Gradient Descent(SGD) 
 
 \subsubsection{Linear Interaction vs Nolinear Interaction}
 Either RSVD and improved RSVD adopt linear Interaction between user and items. We conduct a nolinear function $f$ in the interaction part.
-$$ \hat{r_ij}=f(u_{i}^{T}v_{j})$$
-$$ \hat{r_ij}=f(u_{i}^{T}v_{j}) + b_i + b_j  + \mu $$
+$$ \hat{r_{ij}}=f(u_{i}^{T}v_{j})$$
+$$ \hat{r_{ij}}=f(u_{i}^{T}v_{j}) + b_i + b_j  + \mu $$
 where we use $f(x) = 4*sigmod(x)+1 in our experiment$
 \subsection{Ensemble}
 
@@ -107,8 +107,10 @@ Our collaborative filtering algorithm is evaluated according to the following we
 prediction error, measured by root-mean-squared error (RMSE)
 
 \subsection{Experimental Results}
-As shown in the table \ref{mytable}, 
+We implement six models: SVD, RSVD, Improved RSVD(shown as RSVD2), RSVD with KRR, RSVD2 with KRR and K-means in the experiment. We compare different training methods(FGD/SGD) and different interaction
+function(linear/nolinear) on those six models. Besides, we compare using single model and the ensemble models. All results are shown in the table \ref{mytable}.
 \subsubsection{Full Gradient vs Stochastic Gradient}
+
 \subsubsection{Linear Interaction vs Nolinear Interaction}
 \subsubsection{single model vs ensemble model}
 

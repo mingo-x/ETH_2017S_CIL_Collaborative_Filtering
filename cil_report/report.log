@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.12.28)  2 JUL 2017 21:47
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.12.28)  2 JUL 2017 22:35
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -227,6 +227,10 @@ Underfull \hbox (badness 10000) in paragraph at lines 83--85
 
 
 ]
+Underfull \hbox (badness 1769) in paragraph at lines 111--113
+[]\OT1/ptm/m/n/10 We im-ple-ment six mod-els: SVD, RSVD, Im-proved
+ []
+
 No file report.bbl.
 
 ** Conference Paper **
@@ -261,7 +265,7 @@ al/texlive/2016/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive
 /2016/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb></usr/local/texlive/2016/tex
 mf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texlive/2016/texmf-dist/fo
 nts/type1/urw/times/utmri8a.pfb>
-Output written on report.pdf (2 pages, 133640 bytes).
+Output written on report.pdf (2 pages, 133994 bytes).
 PDF statistics:
  60 PDF objects out of 1000 (max. 8388607)
  43 compressed objects within 1 object stream
