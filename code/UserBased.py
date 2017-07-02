@@ -33,9 +33,11 @@ def sim(known,data):
 		for j in range(i+1,Globals.nUsers):
 			Is = np.intersect1d(I[i],I[j])
 			if len(Is)!=0:
+				if i==0 and j==427:
+					print(Is)
+					print(data[i])
+					print(data[j])
 				s = pearson(Is,data[i],data[j])
-				if np.isnan(s):
-					print(i,j)
 				score[i,j] = s
 				score[j,i] = s
 	np.save('./log/UB_'+str(Globals.k)+'_sim'+Globals.dataIdx+'.npy')
