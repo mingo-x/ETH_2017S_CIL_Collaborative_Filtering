@@ -35,9 +35,9 @@ def sim(known,data):
 			if len(Is)!=0:
 				if i==0 and j==427:
 					print(Is)
-					print(data[i])
-					print(data[j])
-				s = pearson(Is,data[i][Is],data[j][Is])
+					print(data[i][Is])
+					print(data[j][Is])
+				s = pearson(Is,data[i],data[j])
 				score[i,j] = s
 				score[j,i] = s
 	np.save('./log/UB_'+str(Globals.k)+'_sim'+Globals.dataIdx+'.npy')
