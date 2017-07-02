@@ -3,6 +3,7 @@ import math, random, sys
 import Globals
 import Initialization
 import time
+import SVD
 
 def sigmoid(x):
 	return math.exp(-np.logaddexp(0, -x))
@@ -60,6 +61,7 @@ class RecommenderSystem:
 		self.n_valid = len(self.valid_pair)
 		print(len(self.valid_pair))
 		print(len(self.train_pair) + len(self.valid_pair))
+		return test
 
 	def initParameters(self, K = 16, lrate = 400, mu = 0.02):
 		self.lrate = lrate
@@ -151,20 +153,29 @@ class RecommenderSystem:
 				preTest = testErr
 			i += 1
 
-	def pred(self):
+	def pred(self,test):
 		A = np.empty((Globals.nUsers,Globals.nItems))
 		for r in range(Globals.nUsers):
 			for c in range(Globals.nItems):
 				A[r,c] = self.predict(r,c)
 
+		# over 5
+		mask = A>5
+		A[mask] = 5
+		# below 1
+		mask = A<1
+		A[mask] = 1
+		print('finish clipping')
+		score = SVD.evaluation2(A,test)
+		print('after clipping score =',score)
 		np.save('./log/RSVDF_A_'+str(Globals.k)+'_fixed'+Globals.dataIdx+'.npy',A)
 
 
 if __name__ == "__main__":
 	Initialization.initialization()
 	RS = RecommenderSystem()
-	RS.readData()
+	test = RS.readData()
 	RS.initParameters(K = Globals.k, lrate = Globals.lrate, mu = Globals.l2)
 	RS.train()
-	RS.pred()
+	RS.pred(test)
 	# RS.writeSubmissionFile("submission.csv")
