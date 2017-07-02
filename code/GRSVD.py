@@ -212,7 +212,7 @@ if __name__ == "__main__":
 	Initialization.initialization()
 	if Globals.predict == 'c':
 		data, test = Initialization.readInData2(idx = Globals.dataIdx)
-		A = np.load('./log/GRSVD_A_fixed'+Globals.dataIdx+'.npy')
+		A = np.load('./log/GRSVD_A_'+str(Globals.k)'_fixed'+Globals.dataIdx+'.npy')
 		clip(A,test)
 	else:
 		random.seed(0)
