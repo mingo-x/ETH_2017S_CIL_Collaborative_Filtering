@@ -63,6 +63,7 @@ class RecommenderSystem:
 		self.n_valid = len(self.valid_pair)
 		print(len(self.valid_pair))
 		print(len(self.train_pair) + len(self.valid_pair))
+		return test
 
 	def initParameters(self, K = 16, lrate = 400, mu = 0.02):
 		self.lrate = lrate
@@ -191,7 +192,7 @@ class RecommenderSystem:
 			f.write("r" + str(r) + "_c" + str(c) + "," + str(s) + "\n")
 		f.close()
 
-	def pred(self):
+	def pred(self,test):
 		A = np.empty((Globals.nUsers,Globals.nItems))
 		for r in range(Globals.nUsers):
 			for c in range(Globals.nItems):
@@ -227,7 +228,7 @@ if __name__ == "__main__":
 	else:
 		random.seed(0)
 		np.random.seed(0)	
-		RS.readData("./data/data_train.csv")
+		test = RS.readData("./data/data_train.csv")
 		RS.initParameters(K = Globals.k, lrate = Globals.lrate, mu = 0.02)
 		RS.train()
-		RS.pred()
+		RS.pred(test)
