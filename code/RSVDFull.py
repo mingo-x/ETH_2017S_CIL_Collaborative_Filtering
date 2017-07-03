@@ -1,3 +1,7 @@
+# DESCRIPTION: This file implements a l2-norm regularized SVD model with full gradient descent. Training terminates when the validation error stops decreasing.
+
+# USAGE: To train the model, run "python3 code/RSVDFull.py -k=32 -l=0.1 -l2=0.1" and "python3 code/RSVDFull.py -k=32 -l=0.1 -l2=0.1 -d=1" . "-k" specifies the number of dimensions used, "-l" sets the starting learning rate, "-l2" sets the regularization parameter and "-d" chooses the training/validation data split.
+
 import numpy as np
 import math, random, sys
 import Globals
@@ -5,11 +9,7 @@ import Initialization
 import time
 import SVD
 
-def sigmoid(x):
-	return math.exp(-np.logaddexp(0, -x))
-
 class RecommenderSystem:
-
 	n_row = 0
 	n_col = 0
 
@@ -75,6 +75,7 @@ class RecommenderSystem:
 			self.U = np.random.rand(self.n_row, self.K)
 			self.V = np.random.rand(self.K, self.n_col)
 
+	# calculate the gradient for one row
 	def oneRowGrad(self, r):
 		cols = self.train_row2col[r]
 		grad = np.zeros(self.K)
@@ -86,6 +87,7 @@ class RecommenderSystem:
 		grad = grad + self.mu * self.U[r]
 		return grad
 
+	# calculate the gradient for one column
 	def oneColGrad(self, c):
 		rows = self.train_col2row[c]
 		grad = np.zeros(self.K)
@@ -97,12 +99,14 @@ class RecommenderSystem:
 		grad = grad + self.mu * self.V[:, c]
 		return grad
 
+	# calculate the row gradients
 	def rowGrad(self):
 		Ugrad = np.zeros((self.n_row, self.K))
 		for r in range(self.n_row):
 			Ugrad[r] = self.oneRowGrad(r)
 		return Ugrad
 
+	# calculate the column gradients
 	def colGrad(self):
 		Vgrad = np.zeros((self.K, self.n_col))
 		for c in range(self.n_col):
@@ -113,6 +117,7 @@ class RecommenderSystem:
 		x = np.dot(self.U[r], self.V[:, c])
 		return x
 
+	# calculate training and validation error
 	def getError(self):
 		train_err = 0
 		valid_err = 0
@@ -153,12 +158,13 @@ class RecommenderSystem:
 				preTest = testErr
 			i += 1
 
+	# predict
 	def pred(self,test):
 		A = np.empty((Globals.nUsers,Globals.nItems))
 		for r in range(Globals.nUsers):
 			for c in range(Globals.nItems):
 				A[r,c] = self.predict(r,c)
-
+		# clipping
 		# over 5
 		mask = A>5
 		A[mask] = 5
@@ -170,7 +176,6 @@ class RecommenderSystem:
 		print('after clipping score =',score)
 		np.save('./log/RSVDF_A_'+str(Globals.k)+'_fixed'+Globals.dataIdx+'.npy',A)
 
-
 if __name__ == "__main__":
 	Initialization.initialization()
 	RS = RecommenderSystem()
@@ -178,4 +183,3 @@ if __name__ == "__main__":
 	RS.initParameters(K = Globals.k, lrate = Globals.lrate, mu = Globals.l2)
 	RS.train()
 	RS.pred(test)
-	# RS.writeSubmissionFile("submission.csv")

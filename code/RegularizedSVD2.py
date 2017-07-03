@@ -1,6 +1,6 @@
 # DESCRIPTION: This file implemented a biased l2-norm regularized SVD model with SGD. A bias ci is added for each user i and dj for each item j. The prediction function is U[i]*V[j].T+c[i]+d[j] for user i and item j. SGD terminates when the validation error stops decreasing.
 
-# USAGE: To train the model, run "python3 code/Regularized2.py -k=5" and "python3 code/Regularized2.py -k=5 -d=1". "-k" specifies the number of dimensions for dimension reduction in SVD. "-d" chooses the training/validation data split.
+# USAGE: To train the model, run "python3 code/RegularizedSVD2.py -k=5" and "python3 code/RegularizedSVD2.py -k=5 -d=1". "-k" specifies the number of dimensions for dimension reduction in SVD. "-d" chooses the training/validation data split.
 
 import Initialization
 import SVD
