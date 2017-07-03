@@ -71,9 +71,9 @@ def output(test,known,score,data,vali):
 	startTime = time.time()
 	c = 0
 	for i,j in test:
-		if c%1000==0:
+		if c%10000==0:
 			endTime = time.time()
-			print('user', i, int(endTime-startTime), 's')
+			print('user', c, int(endTime-startTime), 's')
 			startTime = time.time()
 		A[i,j] = predict(i,j,known,score,data)
 		c += 1
