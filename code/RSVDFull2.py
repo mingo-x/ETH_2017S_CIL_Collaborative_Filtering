@@ -1,6 +1,6 @@
 # DESCRIPTION: This file implemented a biased l2-norm regularized SVD model with full gradient descent. A bias ci is added for each user i and dj for each item j. The prediction function is U[i]*V[j].T+c[i]+d[j] for user i and item j. Training terminates when the validation error stops decreasing.
 
-# USAGE: To train the model, run "python3 code/RSVD2.py -k=32 -l=0.1 -l2=0.1" and "python3 code/RegularizedSVD2.py -k=32 -l=0.1 -l2=0.1 -d=1". "-k" specifies the number of dimensions used for dimension reduction in SVD, "-l" sets the initial learning rate, "-l2" sets the regularization parameter and "-d" chooses the training/validation data split.
+# USAGE: To train the model, run "python3 code/RSVDFull2.py -k=32 -l=0.1 -l2=0.1" and "python3 code/RSVDFull2.py -k=32 -l=0.1 -l2=0.1 -d=1". "-k" specifies the number of dimensions used for dimension reduction in SVD, "-l" sets the initial learning rate, "-l2" sets the regularization parameter and "-d" chooses the training/validation data split.
 
 import numpy as np
 import math, random, sys
