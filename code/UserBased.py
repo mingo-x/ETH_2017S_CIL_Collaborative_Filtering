@@ -49,8 +49,9 @@ def peer(u,j,known,score,k):
 	mask = np.isnan(s)==False
 	s = s[mask]
 	if len(s) < k:
-		k = len(s)
-	peers = candidate[np.argpartition(-s,k)[:k]]
+		peers = candidate
+	else:
+		peers = candidate[np.argpartition(-s,k)[:k]]
 	return peers
 
 def predict(u,j,known,score,data):
