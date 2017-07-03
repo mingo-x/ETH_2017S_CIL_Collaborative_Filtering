@@ -37,15 +37,31 @@ In order to reproduce the prediction result, please follow the instructions.
 	python3 code/UserBased.py
 	python3 code/UserBased.py -d=1
 	# k-means
-	python3 code/KMeans.py -k=4
-	python3 code/KMeans.py -k=6
-	python3 code/KMeans.py -k=8
-	python3 code/KMeans.py -k=10
-	python3 code/KMeans.py -k=12
-	python3 code/KMeans.py -k=14
-	python3 code/KMeans.py -k=16
-	python3 code/KMeans.py -k=18
-	python3 code/KMeans.py -k=20
-	python3 code/KMeans.py -k=22
-	python3 code/KMeans.py -k=24
-	
+	python3 code/KMeans.py
+	python3 code/KMeans.py -d=1
+	python3 code/KMeans.py -p=c
+	python3 code/KMeans.py -p=c -d=1
+	# SVD with dimension reduction
+	python3 code/PlainSVD.py -k=12
+	python3 code/PlainSVD.py -k=12 -d=1
+	# regularized SVD
+	python3 code/RSVDFull.py -k=32 -l=0.1 -l2=0.1
+	python3 code/RSVDFull.py -k=32 -l=0.1 -l2=0.1 -d=1
+	# biased regularized SVD
+	python3 code/RSVDFull2.py -k=32 -l=0.1 -l2=0.1
+	python3 code/RSVDFull2.py -k=32 -l=0.1 -l2=0.1 -d=1
+	# kernel ridge regression
+	python3 code/KRR.py -k=32
+	python3 code/KRR.py -k=32 -d=1
+	python3 code/KRR.py -i=2 -k=32
+	python3 code/KRR.py -i=2 -k=32 -d=1
+	# linear weighted model
+	python3 code/LinearModel.py
+	python3 code/LinearModel.py -d=1
+
+3. Run the following commands to combine the models:
+	python3 code/Ensemble.py -p=tr
+	python3 code/Ensemble.py -p=tr -d=1
+	python3 code/Ensemble.py -p=a -d=tr
+
+4. The final prediction is stored in the "data" folder (prediction.csv).
