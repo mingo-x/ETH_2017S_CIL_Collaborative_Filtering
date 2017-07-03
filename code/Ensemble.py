@@ -169,7 +169,7 @@ def ensemble(train, target, test, predMask):
 	startTime = time.time()
 	pred = regr.predict(test)
 	endTime = time.time()
-	print('finish predicting',int(endTime-startTime),'s',A.shape)
+	print('finish predicting',int(endTime-startTime),'s',pred.shape)
 	A = np.empty((Globals.nUsers,Globals.nItems))
 	A[predMask] = pred
 	return A
@@ -188,7 +188,7 @@ def ensembleRR(train, target, test, predMask):
 	startTime = time.time()
 	pred = regr.predict(test)
 	endTime = time.time()
-	print('finish predicting',int(endTime-startTime),'s',A.shape)
+	print('finish predicting',int(endTime-startTime),'s',pred.shape)
 	A = np.empty((Globals.nUsers,Globals.nItems))
 	A[predMask] = pred
 
