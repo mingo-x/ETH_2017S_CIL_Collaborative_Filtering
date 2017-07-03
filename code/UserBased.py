@@ -58,6 +58,7 @@ def predict(u,j,known,score,data):
 	pred = 0
 	term = 0
 	for i in peers:
+		print(u,i,j)
 		pred += score[u,i]*data[i,j]
 		term += np.abs(score[u,i])
 	pred /= term
