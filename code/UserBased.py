@@ -45,7 +45,7 @@ def peer(u,j,known,score):
 	index = np.array([i for i in range(Globals.nUsers)])
 	candidate = index[known[:,j]]
 	s = score[u,candidate]
-	mask = np.isnan(s)==FalseG
+	mask = np.isnan(s)==False
 	s = s[mask]
 	if len(s) < Globals.k:
 		k = len(s)
