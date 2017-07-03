@@ -79,9 +79,8 @@ def output(test,known,score,data,vali):
 			endTime = time.time()
 			print('user', c, int(endTime-startTime), 's score =', e)
 			startTime = time.time()
-		p = predict(i,j,known,score,data)
-		print(p)
-		A[i,j] = p
+		# print(p)
+		A[i,j] = predict(i,j,known,score,data)
 		c += 1
 
 	e = SVD.evaluation2(A,vali)
