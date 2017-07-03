@@ -98,6 +98,7 @@ def output(test,known,score,data,vali):
 
 def chooseK(test,known,score,data,vali):
 	for k in range(1000,99,-100):
+		print("k =", k)
 		Globals.k = k
 		output(test,known,score,data,vali)		
 
