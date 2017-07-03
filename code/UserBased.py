@@ -70,7 +70,7 @@ def predict(u,j,known,score,data):
 		
 def output(test,known,score,data,vali):
 	print('start predicting')
-	A = np.empty((Globals.nUsers,Globals.nItems))
+	A = np.zeros((Globals.nUsers,Globals.nItems))
 	startTime = time.time()
 	c = 0
 	for i,j in test:
