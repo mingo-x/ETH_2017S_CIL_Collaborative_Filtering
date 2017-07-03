@@ -48,6 +48,7 @@ def peer(u,j,known,score,k):
 	s = score[u,candidate]
 	mask = np.isnan(s)==False
 	s = s[mask]
+	candidate = candidate[mask]
 	if len(s) < k:
 		peers = candidate
 	else:
