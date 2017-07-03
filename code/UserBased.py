@@ -64,6 +64,8 @@ def predict(u,j,known,score,data):
 		term += np.abs(score[u,i])
 	pred /= term
 	pred += mu[u]
+	if np.isnan(pred):
+		print(pred,term,peers.shape)
 		
 def output(test,known,score,data,vali):
 	print('start predicting')
