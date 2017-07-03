@@ -1,13 +1,13 @@
-# For the given movie j rated by user i, first five predictors
-# are empirical probabilities of each rating 1 − 5 for user i.
-# The sixth predictor is the mean rating of movie j, after
-# subtracting the mean rating of each member.
+# DESCRIPTION: This file implements 6 basic predictors. For the given item j rated by user i, the first five predictors are the empirical probabilities of each rating 1 − 5 for user i. The 6th predictor is the mean rating of item j, after subtracting the mean rating of each user.
+
+# USAGE: To train the predictors, run "python3 code/Basic.py" and "python3 code/Basic.py -d=1". "-d" is the option for different training/validation data splits.
 
 import Initialization
 import Globals
 import numpy as np
 import SVD
 
+# basic 1
 def p1(inData, n = Globals.nUsers):
 	print('basic predictor 1')
 	data = inData.copy()
@@ -22,6 +22,7 @@ def p1(inData, n = Globals.nUsers):
 		data[i,:] = p
 	return data
 
+# basic 2
 def p2(inData, n = Globals.nUsers):
 	print('basic predictor 2')
 	data = inData.copy()
@@ -36,6 +37,7 @@ def p2(inData, n = Globals.nUsers):
 		data[i,:] = p
 	return data
 
+# basic 3
 def p3(inData, n = Globals.nUsers):
 	print('basic predictor 3')
 	data = inData.copy()
@@ -50,6 +52,7 @@ def p3(inData, n = Globals.nUsers):
 		data[i,:] = p
 	return data
 
+# basic 4
 def p4(inData, n = Globals.nUsers):
 	print('basic predictor 4')
 	data = inData.copy()
@@ -64,6 +67,7 @@ def p4(inData, n = Globals.nUsers):
 		data[i,:] = p
 	return data
 
+# basic 5
 def p5(inData, n = Globals.nUsers):
 	print('basic predictor 5')
 	data = inData.copy()
@@ -78,6 +82,7 @@ def p5(inData, n = Globals.nUsers):
 		data[i,:] = p
 	return data
 
+# basic 6
 def p6(inData, nu = Globals.nUsers, ni = Globals.nItems):
 	print('basic predictor 6')
 	data = inData.copy()
@@ -89,18 +94,17 @@ def p6(inData, nu = Globals.nUsers, ni = Globals.nItems):
 	meani = np.empty(ni)
 	for i in range(ni):
 		mask = data[:,i]!=0
+		# subtract mean of each user
+		data[:,i] -= meanu
+		# mean of item
 		meani[i] = np.mean(data[mask,i])
-	for i in range(nu):
-		for j in range(ni):
-			data[i,j] = meani[j] - meanu[i]
+		data[:,i] = meanu[i]
 	return data
 
 if __name__ == "__main__":
 	Initialization.initialization()
 	if Globals.fixed:
 		data, test = Initialization.readInData2(idx=Globals.dataIdx)
-	else:
-		data = Initialization.readInData('./data/data_train.csv')
 	A = p1(data)
 	np.save('./log/Basic1_A_fixed'+Globals.dataIdx+'.npy',A)
 	score = SVD.evaluation2(A,test)
