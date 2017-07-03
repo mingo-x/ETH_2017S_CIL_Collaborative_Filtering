@@ -57,11 +57,9 @@ def peer(u,j,known,score,k):
 
 def predict(u,j,known,score,data):
 	peers = peer(u,j,known,score,Globals.k)
-	# print(peers)
 	pred = 0
 	term = 0
 	for i in peers:
-		# print(u,i,j)
 		pred += score[u,i]*data[i,j]
 		term += np.abs(score[u,i])
 	pred /= term
@@ -70,9 +68,12 @@ def predict(u,j,known,score,data):
 def output(test,known,score,data):
 	print('start predicting')
 	A = np.empty((Globals.nUsers,Globals.nItems))
+	startTime = time.time()
 	for i in range(Globals.nUsers):
-		if i%100==0:
-			print('user', i)
+		if i%50==0:
+			endTime = time.time()
+			print('user', i, int(endTime-startTime), 's')
+			startTime = time.time()
 		for j in range(Globals.nItems):
 			A[i,j] = predict(i,j,known,score,data)
 
