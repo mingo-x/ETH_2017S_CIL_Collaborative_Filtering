@@ -1,4 +1,7 @@
-# Ensemble of all the modles
+# DESCRIPTION: This file implements a user-based collaborative filtering method. The similarity between users is assessed by the Pearson correlation coefficient. For user i and item j, the top 500 users closest to user i who have rated item j are found and the ratings of item j by these close users are averaged with the weight being the corresponding Pearson coefficient. Before the averaging, the raw ratings are mean-centered in a user-wise fashion and the mean rating of user i is added back to the weighted average to obtain the final prediction.
+
+# USAGE: To train the model, run "python3 code/UserBased.py" and "python3 code/UserBased.py -d=1". "-d" chooses the training/validation data split.
+
 import Initialization
 import Globals
 import numpy as np
@@ -8,18 +11,22 @@ import time
 def initialize(data):
 	known = data!=0
 	mu = [np.mean(data[i,known[i]]) for i in range(Globals.nUsers)]
+	# mean-centered user-wisely
 	for i in range(Globals.nUsers):
 		data[i] -= mu[i]
+	# load previously trained model
 	if Globals.warmStart:
 		score = np.load('./log/UB_sim'+Globals.dataIdx+'.npy')
 		return data, known, mu, score
 	else:
 		return data, known, mu
 
+# Pearson correlation coefficient
 def pearson(Is,ru,rv):
 	sim = np.dot(ru[Is],rv[Is])/(np.sqrt(np.dot(ru[Is],ru[Is])*np.dot(rv[Is],rv[Is])))
 	return sim
 
+# calculate user-user similarity
 def sim(known,data):
 	print('start calculating similarity')
 	index = np.array([i for i in range(Globals.nItems)])
@@ -42,6 +49,7 @@ def sim(known,data):
 	print('finish calculating similarity')
 	return score
 
+# find at most k closest users who have rated item j
 def peer(u,j,known,score,k):
 	#(u,j) should be unobserved
 	index = np.array([i for i in range(Globals.nUsers)])
@@ -65,10 +73,8 @@ def predict(u,j,known,score,data):
 		term += np.abs(score[u,i])
 	pred /= term
 	pred += mu[u]
-	# if np.isnan(pred):
-		# print(pred,term,peers.shape)
 	return pred
-		
+
 def output(test,known,score,data,vali):
 	print('start predicting')
 	A = np.zeros((Globals.nUsers,Globals.nItems))
@@ -82,12 +88,12 @@ def output(test,known,score,data,vali):
 				e = SVD.evaluation2(A,vali)
 				print('s score =', e)
 			startTime = time.time()
-		# print(p)
 		A[i,j] = predict(i,j,known,score,data)
 		c += 1
 
 	e = SVD.evaluation2(A,vali)
 	print("score =", e)
+	# clipping
 	mask = A>5
 	A[mask] = 5
 	mask = A<1
@@ -97,6 +103,7 @@ def output(test,known,score,data,vali):
 	np.save('./log/UB_A_'+str(Globals.k)+'_fixed'+Globals.dataIdx+'.npy',A)
 	print('finish predicting')
 
+# choose the best k
 def chooseK(test,known,score,data,vali):
 	for k in range(1000,99,-100):
 		print("k =", k)
@@ -115,11 +122,14 @@ if __name__ == '__main__':
 		test = []
 	else:
 		test = Initialization.readInSubmission('./data/sampleSubmission.csv')
+	# load (i,j) pairs needed to be predicted
 	for i in range(Globals.nUsers):
 		for j in range(Globals.nItems):
 			if vali[i,j]!=0:
 				test.append((i,j))
+	# choose best k
 	if Globals.predict == 'k':
 		chooseK(test,known,score,data,vali)
+	# train or validate
 	else:
 		output(test,known,score,data,vali)
