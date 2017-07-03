@@ -1,6 +1,6 @@
 # DESCRIPTION: This file implements the k-means method. Users are classified by k clusters and the distance is defined by the sum of the square distance of observed ratings. Before the clustering, users' mean ratings are subtracted from the observed ratings. A prediction of user i and item j is given by the corresponding value of the center of the cluster user i belongs to, plus his mean ratings. The final predictor is the mean of 11 k-means models, with k varying from 4 to 24 (step = 2).
 
-# USAGE: To train one k-means model, run "python3 code/KMeans.py -k=K" and "python3 code/KMeans.py -k=K -d=1", with K = 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24. "-k" specifies how many clusters are used and "-d" chooses the data split. To combine the k-means models with different ks, run "python3 code/KMeans.py -p=c" and "python3 code/KMeans.py -p=c -d=1". "-p=c" sets the program to do the combination.
+# USAGE: To train k-means models with various k values, run "python3 code/KMeans.py" and "python3 code/KMeans.py -d=1". "-d" chooses the training/validation data split. To combine the k-means models with different ks, run "python3 code/KMeans.py -p=c" and "python3 code/KMeans.py -p=c -d=1". "-p=c" sets the program to do the combination.
 
 import numpy as np
 import Initialization
@@ -123,5 +123,6 @@ if __name__ == "__main__":
 		print('score =', score)
 	# single k-means
 	else:
-		A = kmeans(data,test,Globals.k)
-		np.save('./log/Kmeans_A_'+str(Globals.k)+'_fixed'+Globals.dataIdx+'.npy',A)
+		for k in range(4,25,2):
+			A = kmeans(data,test,k)
+			np.save('./log/Kmeans_A_'+str(k)+'_fixed'+Globals.dataIdx+'.npy',A)
