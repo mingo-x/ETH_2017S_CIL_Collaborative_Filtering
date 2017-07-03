@@ -1,3 +1,7 @@
+# DESCRIPTION: This file implemented a biased l2-norm regularized SVD model with full gradient descent. A bias ci is added for each user i and dj for each item j. The prediction function is U[i]*V[j].T+c[i]+d[j] for user i and item j. Training terminates when the validation error stops decreasing.
+
+# USAGE: To train the model, run "python3 code/RSVD2.py -k=32 -l=0.1 -l2=0.1" and "python3 code/RegularizedSVD2.py -k=32 -l=0.1 -l2=0.1 -d=1". "-k" specifies the number of dimensions used for dimension reduction in SVD, "-l" sets the initial learning rate, "-l2" sets the regularization parameter and "-d" chooses the training/validation data split.
+
 import numpy as np
 import math, random, sys
 import Globals
@@ -5,11 +9,7 @@ import Initialization
 import time
 import SVD
 
-def sigmoid(x):
-	return math.exp(-np.logaddexp(0, -x))
-
 class RecommenderSystem:
-
 	n_row = 0
 	n_col = 0
 
@@ -81,6 +81,7 @@ class RecommenderSystem:
 			self.BU = np.random.rand(self.n_row)
 			self.BV = np.random.rand(self.n_col)
 
+	# calculate the gradient for one row
 	def oneRowGrad(self, r):
 		cols = self.train_row2col[r]
 		grad = np.zeros(self.K)
@@ -95,6 +96,7 @@ class RecommenderSystem:
 		bias_grad = bias_grad / len(cols)
 		return grad, bias_grad
 
+	# calculate the gradient for one column
 	def oneColGrad(self, c):
 		rows = self.train_col2row[c]
 		grad = np.zeros(self.K)
@@ -109,6 +111,7 @@ class RecommenderSystem:
 		bias_grad = bias_grad / len(rows)
 		return grad, bias_grad
 
+	# calculate the row gradients
 	def rowGrad(self):
 		Ugrad = np.zeros((self.n_row, self.K))
 		BUgrad = np.zeros(self.n_row)
@@ -116,6 +119,7 @@ class RecommenderSystem:
 			Ugrad[r], BUgrad[r] = self.oneRowGrad(r)
 		return Ugrad, BUgrad
 
+	# calculate the column gradients
 	def colGrad(self):
 		Vgrad = np.zeros((self.K, self.n_col))
 		BVgrad = np.zeros(self.n_col)
@@ -127,6 +131,7 @@ class RecommenderSystem:
 		x = np.dot(self.U[r], self.V[:, c])+ self.BU[r] + self.BV[c]
 		return x
 
+	# calculate the trainind error and the validation error
 	def getError(self):
 		train_err = 0
 		valid_err = 0
@@ -171,11 +176,13 @@ class RecommenderSystem:
 				preTest = testErr
 			i += 1
 
+	# predict
 	def pred(self,test):
 		A = np.empty((Globals.nUsers,Globals.nItems))
 		for r in range(Globals.nUsers):
 			for c in range(Globals.nItems):
 				A[r,c] = self.predict(r,c)
+		# clipping
 		# over 5
 		mask = A>5
 		A[mask] = 5
@@ -187,7 +194,6 @@ class RecommenderSystem:
 		print('after clipping score =',score)
 		np.save('./log/RSVDF2_A_'+str(Globals.k)+'_fixed'+Globals.dataIdx+'.npy',A)
 
-
 if __name__ == "__main__":
 	Initialization.initialization()
 	RS = RecommenderSystem()
@@ -195,4 +201,3 @@ if __name__ == "__main__":
 	RS.initParameters(K = Globals.k, lrate = Globals.lrate, mu = Globals.l2)
 	RS.train()
 	RS.pred(test)
-	# RS.writeSubmissionFile("submission.csv")
