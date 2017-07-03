@@ -46,7 +46,7 @@ def loadData(data,predMask):
 	train = np.append(train,[KRR_A[known]],axis=0)
 	train = np.append(train,[KRR2_A[known]],axis=0)
 	train = np.append(train,[LM_A[known]],axis=0)
-	train = np.append(train,[UB_A[known]],axis=0)
+	# train = np.append(train,[UB_A[known]],axis=0)
 	# train = np.append(train,[GRSVD_A[known]],axis=0)
 	#train = np.append(train,[NSVD2_A[known]],axis=0)
 
@@ -62,22 +62,22 @@ def loadData(data,predMask):
 		train = np.append(train,[np.multiply(PSVD_A[known],KRR_A[known])],axis=0)
 		train = np.append(train,[np.multiply(PSVD_A[known],KRR2_A[known])],axis=0)
 		train = np.append(train,[np.multiply(PSVD_A[known],LM_A[known])],axis=0)
-		train = np.append(train,[np.multiply(PSVD_A[known],UB_A[known])],axis=0)
+		# train = np.append(train,[np.multiply(PSVD_A[known],UB_A[known])],axis=0)
 		train = np.append(train,[np.multiply(RSVDF_A[known],RSVDF2_A[known])],axis=0)
 		train = np.append(train,[np.multiply(RSVDF_A[known],KRR_A[known])],axis=0)
 		train = np.append(train,[np.multiply(RSVDF_A[known],KRR2_A[known])],axis=0)
 		train = np.append(train,[np.multiply(RSVDF_A[known],LM_A[known])],axis=0)
-		train = np.append(train,[np.multiply(RSVDF_A[known],UB_A[known])],axis=0)
+		# train = np.append(train,[np.multiply(RSVDF_A[known],UB_A[known])],axis=0)
 		train = np.append(train,[np.multiply(RSVDF2_A[known],KRR_A[known])],axis=0)
 		train = np.append(train,[np.multiply(RSVDF2_A[known],KRR2_A[known])],axis=0)
 		train = np.append(train,[np.multiply(RSVDF2_A[known],LM_A[known])],axis=0)
-		train = np.append(train,[np.multiply(RSVDF2_A[known],UB_A[known])],axis=0)
+		# train = np.append(train,[np.multiply(RSVDF2_A[known],UB_A[known])],axis=0)
 		train = np.append(train,[np.multiply(KRR_A[known],KRR2_A[known])],axis=0)
 		train = np.append(train,[np.multiply(KRR_A[known],LM_A[known])],axis=0)
-		train = np.append(train,[np.multiply(KRR_A[known],UB_A[known])],axis=0)
+		# train = np.append(train,[np.multiply(KRR_A[known],UB_A[known])],axis=0)
 		train = np.append(train,[np.multiply(KRR2_A[known],LM_A[known])],axis=0)
-		train = np.append(train,[np.multiply(KRR2_A[known],UB_A[known])],axis=0)
-		train = np.append(train,[np.multiply(LM_A[known],UB_A[known])],axis=0)
+		# train = np.append(train,[np.multiply(KRR2_A[known],UB_A[known])],axis=0)
+		# train = np.append(train,[np.multiply(LM_A[known],UB_A[known])],axis=0)
 	train = train.T
 	print(train.shape)
 
@@ -101,7 +101,7 @@ def loadData(data,predMask):
 	test = np.append(test,[KRR_A[predMask]],axis=0)
 	test = np.append(test,[KRR2_A[predMask]],axis=0)
 	test = np.append(test,[LM_A[predMask]],axis=0)
-	test = np.append(test,[UB_A[predMask]],axis=0)
+	# test = np.append(test,[UB_A[predMask]],axis=0)
 	# test = np.append(test,[GRSVD_A[predMask]],axis=0)
 	#test = np.append(test,[NSVD2_A[predMask]],axis=0)
 
@@ -117,27 +117,27 @@ def loadData(data,predMask):
 		test = np.append(test,[np.multiply(PSVD_A[predMask],KRR_A[predMask])],axis=0)
 		test = np.append(test,[np.multiply(PSVD_A[predMask],KRR2_A[predMask])],axis=0)
 		test = np.append(test,[np.multiply(PSVD_A[predMask],LM_A[predMask])],axis=0)
-		test = np.append(test,[np.multiply(PSVD_A[predMask],UB_A[predMask])],axis=0)
+		# test = np.append(test,[np.multiply(PSVD_A[predMask],UB_A[predMask])],axis=0)
 		PSVD_A = None
 		test = np.append(test,[np.multiply(RSVDF_A[predMask],RSVDF2_A[predMask])],axis=0)
 		test = np.append(test,[np.multiply(RSVDF_A[predMask],KRR_A[predMask])],axis=0)
 		test = np.append(test,[np.multiply(RSVDF_A[predMask],KRR2_A[predMask])],axis=0)
 		test = np.append(test,[np.multiply(RSVDF_A[predMask],LM_A[predMask])],axis=0)
-		test = np.append(test,[np.multiply(RSVDF_A[predMask],UB_A[predMask])],axis=0)
+		# test = np.append(test,[np.multiply(RSVDF_A[predMask],UB_A[predMask])],axis=0)
 		RSVDF_A = None
 		test = np.append(test,[np.multiply(RSVDF2_A[predMask],KRR_A[predMask])],axis=0)
 		test = np.append(test,[np.multiply(RSVDF2_A[predMask],KRR2_A[predMask])],axis=0)
 		test = np.append(test,[np.multiply(RSVDF2_A[predMask],LM_A[predMask])],axis=0)
-		test = np.append(test,[np.multiply(RSVDF2_A[predMask],UB_A[predMask])],axis=0)
+		# test = np.append(test,[np.multiply(RSVDF2_A[predMask],UB_A[predMask])],axis=0)
 		RSVDF2_A = None
 		test = np.append(test,[np.multiply(KRR_A[predMask],KRR2_A[predMask])],axis=0)
 		test = np.append(test,[np.multiply(KRR_A[predMask],LM_A[predMask])],axis=0)
-		test = np.append(test,[np.multiply(KRR_A[predMask],UB_A[predMask])],axis=0)
+		# test = np.append(test,[np.multiply(KRR_A[predMask],UB_A[predMask])],axis=0)
 		KRR_A = None
 		test = np.append(test,[np.multiply(KRR2_A[predMask],LM_A[predMask])],axis=0)
-		test = np.append(test,[np.multiply(KRR2_A[predMask],UB_A[predMask])],axis=0)
+		# test = np.append(test,[np.multiply(KRR2_A[predMask],UB_A[predMask])],axis=0)
 		KRR2_A = None
-		test = np.append(test,[np.multiply(LM_A[predMask],UB_A[predMask])],axis=0)
+		# test = np.append(test,[np.multiply(LM_A[predMask],UB_A[predMask])],axis=0)
 		LM_A = None
 		UB_A = None
 	else:
