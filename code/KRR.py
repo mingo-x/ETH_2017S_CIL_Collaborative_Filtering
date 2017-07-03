@@ -1,3 +1,7 @@
+# DESCRIPTION: This file implements an SVD-based kernel ridge regression model. For each user, the V matrix from SVD is fed to the ridge regression as features and the observed ratings as targets. The V matrix is normalized for each item. exp(2(xi.T*xj+1)) is used as the kernel.
+
+# USAGE: To tarin the model, run "python3 code/KRR.py -k=32", "python3 code/KRR.py -k=32 -d=1", "python3 code/KRR.py -i=2 -k=32" and "python3 code/KRR.py -i=2 -k=32 -d=1". "-i" specifies the SVD model used as the base, "-k" specifies the number of dimension used in the SVD model and "-d" chooses the data split.
+
 import Globals
 from sklearn.kernel_ridge import KernelRidge
 import numpy as np
@@ -7,20 +11,20 @@ import SVD
 def kernel(x1,x2):
 	return np.exp(2*(np.dot(x1,x2)-1))
 
+# count the number of observed ratings for each movie
 def topRatedMovies(data):
 	for i in range(Globals.nItems):
 		count = np.count_nonzero(data[:,i])
 		print(count,)
 
+# train and predict
 def KRR(data,test, a=0.7):
 	suffix = '_fixed'+Globals.dataIdx+'.npy'
 	if not Globals.fixed:
 		suffix = '.npy'
 	known = data!=0
-	# base = SVD.baseline(data,known)
-	# data -= base
+	# read from previous trained result
 	if Globals.step == 0:
-		# A = base.copy()
 		A = np.empty((Globals.nUsers,Globals.nItems))
 	else:
 		A = np.load('./log/KRR'+Globals.modelIdx+'_A_'+str(Globals.k)+suffix)
@@ -29,7 +33,7 @@ def KRR(data,test, a=0.7):
 	# normalize
 	for i in range(Globals.nItems):
 		V[i] /= np.linalg.norm(V[i])
-
+	# regression starts here
 	for i in range(Globals.step,Globals.nUsers):
 		known = data[i]!=0
 		y = data[i,known]
@@ -39,7 +43,6 @@ def KRR(data,test, a=0.7):
 		clf.fit(X, y)
 		pred = clf.predict(V)
 		A[i] = pred
-		# mask = test[i]!=0
 		if i%10 == 0:
 			print('user ',i+1)
 			score = SVD.evaluation2(A,test)
@@ -62,29 +65,13 @@ def chooseAlpha(data,test):
 	for a in np.arange(0.5,0.9,0.1):
 		KRR(data,test,a)
 
-def predictionWithCombi():
-	A1 = np.load('./log/KRR_A_'+str(Globals.k)+'.npy')
-	A2 = np.load('./log/KRR_A_'+str(Globals.k)+'_2.npy')
-	A3 = np.load('./log/KRR_A_'+str(Globals.k)+'_3.npy')
-	A = (A1+A2+A3)/3.0
-	return A
-
 if __name__ == '__main__':
 	Initialization.initialization()
-	if Globals.fixed:
-		data, test = Initialization.readInData2(idx=Globals.dataIdx)
-		if Globals.predict == 'a':
-			chooseAlpha(data,test)
-		else:
-			A = KRR(data,test)
-			np.save('./log/KRR'+Globals.modelIdx+'_A_'+str(Globals.k)+'_fixed'+Globals.dataIdx+'.npy',A)
+	data, test = Initialization.readInData2(idx=Globals.dataIdx)
+	# choose the best alpha
+	if Globals.predict == 'a':
+		chooseAlpha(data,test)
+	# train and predict
 	else:
-		data = Initialization.readInData('./data/data_train.csv')
-		data, test = SVD.splitData(data,10)
-		if Globals.predict=='c':
-			A = predictionWithCombi()
-			np.save('./log/KRR_A_'+str(Globals.k)+'_combi.npy',A)
-		else:
-			A = KRR(data,test)
-			np.save('./log/KRR_A_'+str(Globals.k)+Globals.modelIdx+'.npy',A)
-		SVD.writeOutData(A)
+		A = KRR(data,test)
+		np.save('./log/KRR'+Globals.modelIdx+'_A_'+str(Globals.k)+'_fixed'+Globals.dataIdx+'.npy',A)
