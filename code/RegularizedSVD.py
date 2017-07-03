@@ -1,6 +1,4 @@
-# using gradient descent with
-# regularization and early stopping
-# subtraction of baseline?
+# DESCRIPTION: This file implements a l2-norm regularized SVD model with SGD. SGD terminates when the validation error stops decreasing.
 
 import Initialization
 import SVD
@@ -10,12 +8,8 @@ import random
 import time
 from sklearn import linear_model
 
-def sigmoid(x):
-	return math.exp(-np.logaddexp(0, -x))
-
 def SGD(train,test,k=96):
 	# initialization
-	# normal distr? N(0,1)
 	print('start initialization k =',k)
 	lrate = Globals.lrate
 	lamb = 0.02
@@ -24,6 +18,7 @@ def SGD(train,test,k=96):
 	suffix = '_fixed'+Globals.dataIdx+'.npy'
 	if not Globals.fixed:
 		suffix = '.npy'
+	# read in previously trained result
 	if Globals.warmStart:
 		print('warm start')
 		U = np.load('./log/RSVD_U_'+str(k)+Globals.modelIdx+suffix)
@@ -37,8 +32,6 @@ def SGD(train,test,k=96):
 			for j in range(Globals.nItems):
 				Vt[i,j] = random.normalvariate(mu,sigma)
 	known = train!=0
-	# base = SVD.baseline(train,known)
-	# train -= base
 	print('finish initialization')
 
 	print('start SGD')
@@ -54,6 +47,7 @@ def SGD(train,test,k=96):
 			i = random.randint(0,Globals.nUsers-1)
 			j = random.randint(0,Globals.nItems-1)
 
+		# gradient descent
 		yp = U[i,:].dot(Vt[:,j])
 		r = train[i,j] - yp
 		U[i,:] += lrate*(r*Vt[:,j].T-lamb*U[i,:])
@@ -65,6 +59,7 @@ def SGD(train,test,k=96):
 			score = SVD.evaluation2(A,test)
 			print('t =',t,'score =',score)
 			if score > prev2 and prev2 > prev1:
+				# descrease learning rate
 				if lrate <= 1e-5:
 					break
 				else:
@@ -93,46 +88,28 @@ def SGD(train,test,k=96):
 	# below 1
 	mask = A<1
 	A[mask] = 1
-	
 	print('finish clipping')
 	score = SVD.evaluation2(A,test)
 	print('after clipping score =',score)
 	return A
 
+# choose the best number of dimensions
 def chooseK(train,test):
 	for k in range(15,26,5):
 		SGD(train,test,k)
 
-
-def predictionWithCombi(k,test):
-	A1 = np.load('./log/RSVD_A_'+str(k)+'_clip.npy')
-	A2 = np.load('./log/RSVD_A_'+str(k)+'_2_clip.npy')
-	A3 = np.load('./log/RSVD_A_'+str(k)+'_3_clip.npy')
-	A = (A1+A2+A3)/3.0
-	score = SVD.evaluation2(A,test)
-	print('after combination score =',score)
-	return A
-
 if __name__ == "__main__":
 	Initialization.initialization()
-	if Globals.fixed:
-		train, test = Initialization.readInData2(idx=Globals.dataIdx)
-		if Globals.predict == 'k':
-			chooseK(train,test)
-		elif Globals.predict == 'e':
-			A = np.load('./log/RSVD_A_'+str(Globals.k)+'_fixed'+Globals.dataIdx+'.npy')
-			score = SVD.evaluation2(A,test)
-			print('score =', score)
-		else:
-			A = SGD(train,test,Globals.k)
-			np.save('./log/RSVD_A_'+str(Globals.k)+'_fixed'+Globals.dataIdx+'.npy',A)
+	train, test = Initialization.readInData2(idx=Globals.dataIdx)
+	# choose best k
+	if Globals.predict == 'k':
+		chooseK(train,test)
+	# evaluate
+	elif Globals.predict == 'e':
+		A = np.load('./log/RSVD_A_'+str(Globals.k)+'_fixed'+Globals.dataIdx+'.npy')
+		score = SVD.evaluation2(A,test)
+		print('score =', score)
+	# train & predict
 	else:
-		data = Initialization.readInData('./data/data_train.csv')
-		train, test = SVD.splitData(data,10)
-		if Globals.predict=='c':
-			A = predictionWithCombi(Globals.k,test)
-			np.save('./log/RSVD_A_'+str(Globals.k)+'_combi.npy',A)
-		else:
-			A = SGD(train,test,Globals.k)
-			np.save('./log/RSVD_A_'+str(Globals.k)+Globals.modelIdx+'.npy',A)
-		SVD.writeOutData(A)
+		A = SGD(train,test,Globals.k)
+		np.save('./log/RSVD_A_'+str(Globals.k)+'_fixed'+Globals.dataIdx+'.npy',A)
