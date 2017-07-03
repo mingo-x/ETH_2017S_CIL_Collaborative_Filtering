@@ -36,7 +36,7 @@ def sim(known,data):
 				s = pearson(Is,data[i],data[j])
 				score[i,j] = s
 				score[j,i] = s
-	np.save('./log/UB_'+str(Globals.k)+'_sim'+Globals.dataIdx+'.npy')
+	np.save('./log/UB_'+str(Globals.k)+'_sim'+Globals.dataIdx+'.npy',score)
 	print('finish calculating similarity')
 	return score
 
