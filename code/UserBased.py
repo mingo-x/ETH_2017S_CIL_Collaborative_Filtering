@@ -103,7 +103,10 @@ if __name__ == '__main__':
 	else:
 		data, known, mu = initialize(data)
 		score = sim(known,data)
-	test = Initialization.readInSubmission('./data/sampleSubmission.csv')
+	if Globals.predict == 'v':
+		test = []
+	else:
+		test = Initialization.readInSubmission('./data/sampleSubmission.csv')
 	for i in range(Globals.nUsers):
 		for j in range(Globals.nItems):
 			if vali[i,j]!=0:
