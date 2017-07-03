@@ -86,7 +86,7 @@ def output(test,known,score,data,vali):
 	A[mask] = 1
 	e = SVD.evaluation2(A,vali)
 	print("clipped score =", e)
-	np.save('./log/UB_A_'+str(Globals.k)+'.npy')
+	np.save('./log/UB_A_'+str(Globals.k)+'_fixed'+Globals.dataIdx+'.npy',A)
 	print('finish predicting')
 
 if __name__ == '__main__':
@@ -102,4 +102,4 @@ if __name__ == '__main__':
 		for j in range(Globals.nItems):
 			if vali[i,j]!=0:
 				test.append((i,j))
-	output(test,known,score,data,vali)
+	output(test,known,score,data)
