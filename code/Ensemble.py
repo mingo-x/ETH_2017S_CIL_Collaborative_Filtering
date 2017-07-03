@@ -180,8 +180,8 @@ def ensemble(train, target, test, predMask):
 def ensembleRR(train, target, test, predMask):
 	print('start ridge regression')
 	startTime = time.time()
-	regr = linear_model.Lasso(alpha=Globals.lrate)
-	# regr = linear_model.Ridge(alpha=1.0, tol=1e-5)
+	# regr = linear_model.Lasso(alpha=Globals.lrate)
+	regr = linear_model.Ridge(alpha=0.1, tol=1e-5)
 	regr.fit(train, target)
 	endTime = time.time()
 	print('finish training',int(endTime-startTime),'s')
