@@ -78,12 +78,10 @@ $$  \min \limits_{u, v} \sum_{i, j\in kn} (r_{ij} - \hat r_{ij})^2 + \lambda (||
  For each user $i$ in cluster $k$, we use $\mu_{kj}$ to rate movie $j$. Besides we compute the average 11 runs of K-means with $K\in$ [4, 24] and stride 2 as the prediction.
 
 \subsubsection{Postprocessing SVD with kernel ridge regression}
-.  \\
+In the Postprocessing SVD with kernel ridge regression(PSVD-KRR), we discard all user factor vector $u_i$ after training. For each user we predict the rating via regression of $v_j$. For user $i$, vector $y$ denotes the all real rating $r_i$in training data. And $X$ denote a matrix of movie features. We can use kernel ridge regression to predict $y$.
 
-[bu shi hen dong a xiong di !]
-. \\
-
-
+$$ \hat{y_i} = K(x_i^T, X)(K(X,X) + \lambda I)^{-1}y$$
+where $K(X, X')$ is a kernel function. We use $K(x_{i}^{T}, x_{j}^{T})=exp(2(x_i^Tx_j-1))$ in our experiments.
 
 \subsection{Improvement}
 \subsubsection{Full Gradient vs Stochastic Gradient}
@@ -93,9 +91,12 @@ In order to minimize the error of mean square, Stochastic Gradient Descent(SGD) 
 Either RSVD and improved RSVD adopt linear Interaction between user and items. We conduct a nolinear function $f$ in the interaction part.
 $$ \hat{r_{ij}}=f(u_{i}^{T}v_{j})$$
 $$ \hat{r_{ij}}=f(u_{i}^{T}v_{j}) + b_i + b_j  + \mu $$
-where we use $f(x) = 4*sigmod(x)+1 in our experiment$
+where we use $f(x) = 4*sigmod(x)+1$ in our experiment
 \subsection{Ensemble}
-
+We employ a linear model to ensemble all models. The $w_m$ denotes the weight of $m$th model we want to combine and $\hat{r_{ij}^m}$ is the predicted results of model $m$ for user $i$ and item $j$.
+The algorithm wants to training the weight $w$ by minimize
+$$  \sum_{i, j\in kn} (r_{ij} - \sum_{m\in M}w_m\hat r_{ij}^m)^2 + \lambda (||w_i||^2)  $$
+where $M$ is the set of model we using.
 
 
 \section{Experiment}
@@ -130,7 +131,7 @@ We introduce various basic collaborative filters algorithms and build a framewor
 \subsubsection{Model} 
 We may try to combine some deep learning models in our framework.
 \subsubsection{Data} 
-Now we just limit our model on movie rating datasets. More experiments are needed on other recommendation tasks to .
+Now we just limit our model on movie rating datasets. More experiments are needed on other recommendation tasks.
 
 
 
