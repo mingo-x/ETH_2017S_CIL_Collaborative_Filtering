@@ -41,20 +41,20 @@ def sim(known,data):
 	print('finish calculating similarity')
 	return score
 
-def peer(u,j,known,score):
+def peer(u,j,known,score,k):
 	#(u,j) should be unobserved
 	index = np.array([i for i in range(Globals.nUsers)])
 	candidate = index[known[:,j]]
 	s = score[u,candidate]
 	mask = np.isnan(s)==False
 	s = s[mask]
-	if len(s) < Globals.k:
+	if len(s) < k:
 		k = len(s)
-	peers = candidate[np.argpartition(-s,Globals.k)[:Globals.k]]
+	peers = candidate[np.argpartition(-s,k)[:k]]
 	return peers
 
 def predict(u,j,known,score,data):
-	peers = peer(u,j,known,score)
+	peers = peer(u,j,known,score,Globals.k)
 	# print(peers)
 	pred = 0
 	term = 0
