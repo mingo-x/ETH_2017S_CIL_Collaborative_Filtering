@@ -7,7 +7,8 @@ import time
 def initialize(data):
 	known = data!=0
 	mu = [np.mean(data[i,known[i]]) for i in range(Globals.nUsers)]
-	data = [data[i]-mu[i] for i in range(Globals.nUsers)]
+	for i in range(Globals.nUsers):
+		data[i] -= mu[i]
 	if Globals.warmStart:
 		score = np.load('./log/UB_sim'+Globals.dataIdx+'.npy')
 		return data, known, mu, score
@@ -54,11 +55,11 @@ def peer(u,j,known,score):
 
 def predict(u,j,known,score,data):
 	peers = peer(u,j,known,score)
-	print(peers)
+	# print(peers)
 	pred = 0
 	term = 0
 	for i in peers:
-		print(u,i,j)
+		# print(u,i,j)
 		pred += score[u,i]*data[i,j]
 		term += np.abs(score[u,i])
 	pred /= term
