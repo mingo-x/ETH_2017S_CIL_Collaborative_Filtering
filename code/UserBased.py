@@ -104,4 +104,4 @@ if __name__ == '__main__':
 		for j in range(Globals.nItems):
 			if vali[i,j]!=0:
 				test.append((i,j))
-	output(test,known,score,data)
+	output(test,known,score,data,vali)
