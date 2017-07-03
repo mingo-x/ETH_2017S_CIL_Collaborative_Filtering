@@ -75,9 +75,11 @@ def output(test,known,score,data,vali):
 	c = 0
 	for i,j in test:
 		if c%10000==0:
-			e = SVD.evaluation2(A,vali)
 			endTime = time.time()
-			print('user', c, int(endTime-startTime), 's score =', e)
+			print('user', c, int(endTime-startTime),)
+			if Globals.predict == 'v' or Globals.predict == 'k':
+				e = SVD.evaluation2(A,vali)
+				print('s score =', e)
 			startTime = time.time()
 		# print(p)
 		A[i,j] = predict(i,j,known,score,data)
@@ -94,6 +96,11 @@ def output(test,known,score,data,vali):
 	np.save('./log/UB_A_'+str(Globals.k)+'_fixed'+Globals.dataIdx+'.npy',A)
 	print('finish predicting')
 
+def chooseK(test,known,score,data,vali):
+	for k in range(1000,99,-100):
+		Globals.k = k
+		output(test,known,score,data,vali)		
+
 if __name__ == '__main__':
 	Initialization.initialization()
 	data, vali = Initialization.readInData2(idx=Globals.dataIdx)
@@ -102,7 +109,7 @@ if __name__ == '__main__':
 	else:
 		data, known, mu = initialize(data)
 		score = sim(known,data)
-	if Globals.predict == 'v':
+	if Globals.predict == 'v' or Globals.predict == 'k':
 		test = []
 	else:
 		test = Initialization.readInSubmission('./data/sampleSubmission.csv')
@@ -110,4 +117,7 @@ if __name__ == '__main__':
 		for j in range(Globals.nItems):
 			if vali[i,j]!=0:
 				test.append((i,j))
-	output(test,known,score,data,vali)
+	if Globals.predict == 'k':
+		chooseK(test,known,score,data,vali)
+	else:
+		output(test,known,score,data,vali)
