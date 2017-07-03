@@ -1,5 +1,6 @@
-#add biases to the regularized SVD model, one parameter
-#ci for each user and one dj for each movie
+# DESCRIPTION: This file implemented a biased l2-norm regularized SVD model with SGD. A bias ci is added for each user i and dj for each item j. The prediction function is U[i]*V[j].T+c[i]+d[j] for user i and item j. SGD terminates when the validation error stops decreasing.
+
+# USAGE: To train the model, run "python3 code/Regularized2.py -k=5" and "python3 code/Regularized2.py -k=5 -d=1". "-k" specifies the number of dimensions for dimension reduction in SVD. "-d" chooses the training/validation data split.
 
 import Initialization
 import SVD
@@ -11,7 +12,6 @@ from sklearn import linear_model
 
 def biasedRSVD(train,test,k=96):
 	# initialization
-	# normal distr? N(0,1)
 	print('start initialization k =',k)
 	lrate = Globals.lrate
 	lamb = 0.02
@@ -21,20 +21,20 @@ def biasedRSVD(train,test,k=96):
 	suffix = '_fixed'+Globals.dataIdx+'.npy'
 	if not Globals.fixed:
 		suffix = '.npy'
+	# read in previously trained result
 	if Globals.warmStart:
 		print('warm start')
 		U = np.load('./log/RSVD2_U_'+str(k)+Globals.modelIdx+suffix)
 		Vt = np.load('./log/RSVD2_Vt_'+str(k)+Globals.modelIdx+suffix)
 		c = np.load('./log/RSVD2_c_'+str(k)+Globals.modelIdx+suffix)
 		d = np.load('./log/RSVD2_d_'+str(k)+Globals.modelIdx+suffix)
+	# otherwise, random initialization
 	else:
 		U = np.random.rand(Globals.nUsers,k)
 		Vt = np.random.rand(k,Globals.nItems)
 		c = np.random.rand(Globals.nUsers)
 		d = np.random.rand(Globals.nItems)
 	known = train!=0
-	# base = SVD.baseline(train,known)
-	# train -= base
 	print('finish initialization')
 
 	print('start SGD')
@@ -51,6 +51,7 @@ def biasedRSVD(train,test,k=96):
 			i = random.randint(0,Globals.nUsers-1)
 			j = random.randint(0,Globals.nItems-1)
 
+		# gradient descent
 		yp = c[i]+d[j]+U[i,:].dot(Vt[:,j])
 		r = train[i,j] - yp
 		Ut = U[i,:].T
@@ -94,7 +95,7 @@ def biasedRSVD(train,test,k=96):
 	np.save('./log/RSVD2_c_'+str(k)+Globals.modelIdx+suffix,c)
 	np.save('./log/RSVD2_d_'+str(k)+Globals.modelIdx+suffix,d)
 
-	# end clipping
+	# clipping
 	print('start clipping')
 	A = U.dot(Vt)
 	C = np.reshape(c,(Globals.nUsers,1))
@@ -113,35 +114,18 @@ def biasedRSVD(train,test,k=96):
 	print('after clipping score =',score)
 	return A
 
+# choose the best number of dimensions kept
 def chooseK(train,test):
 	for k in range(25,4,-5):
 		biasedRSVD(train,test,k)
 
-def predictionWithCombi(k,test):
-	A1 = np.load('./log/RSVD2_A_'+str(k)+'_clip.npy')
-	A2 = np.load('./log/RSVD2_A_'+str(k)+'_2_clip.npy')
-	A3 = np.load('./log/RSVD2_A_'+str(k)+'_3_clip.npy')
-	A = (A1+A2+A3)/3.0
-	score = SVD.evaluation2(A,test)
-	print('after combination score =',score)
-	return A
-
 if __name__ == "__main__":
 	Initialization.initialization()
-	if Globals.fixed:
-		train, test = Initialization.readInData2(idx=Globals.dataIdx)
-		if Globals.predict == 'k':
-			chooseK(train,test)
-		else:
-			A = biasedRSVD(train,test,Globals.k)
-			np.save('./log/RSVD2_A_'+str(Globals.k)+'_fixed'+Globals.dataIdx+'.npy',A)
+	train, test = Initialization.readInData2(idx=Globals.dataIdx)
+	# choose the best k
+	if Globals.predict == 'k':
+		chooseK(train,test)
+	# train & predict
 	else:
-		data = Initialization.readInData('./data/data_train.csv')
-		train, test = SVD.splitData(data,10)
-		if Globals.predict=='c':
-			A = predictionWithCombi(Globals.k,test)
-			np.save('./log/RSVD2_A_'+str(Globals.k)+'_combi.npy',A)
-		else:
-			A = biasedRSVD(train,test,Globals.k)
-			np.save('./log/RSVD2_A_'+str(Globals.k)+Globals.modelIdx+'_clip.npy',A)
-		SVD.writeOutData(A)
+		A = biasedRSVD(train,test,Globals.k)
+		np.save('./log/RSVD2_A_'+str(Globals.k)+'_fixed'+Globals.dataIdx+'.npy',A)

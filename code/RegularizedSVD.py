@@ -1,5 +1,7 @@
 # DESCRIPTION: This file implements a l2-norm regularized SVD model with SGD. SGD terminates when the validation error stops decreasing.
 
+# USAGE: To train the model, run "python3 code/RegularizedSVD.py -k=10" and "python3 code/RegularizedSVD.py -k=10 -d=1" . "-k" specifies the number of dimensions used and "-d" chooses the training/validation data split.
+
 import Initialization
 import SVD
 import numpy as np
