@@ -36,16 +36,16 @@ def sim(known,data):
 				s = pearson(Is,data[i],data[j])
 				score[i,j] = s
 				score[j,i] = s
-	np.save('./log/UB_'+str(Globals.k)+'_sim'+Globals.dataIdx+'.npy',score)
+	np.save('./log/UB_sim'+Globals.dataIdx+'.npy',score)
 	print('finish calculating similarity')
 	return score
 
 def peer(u,j,known,score):
 	#(u,j) should be unobserved
-	index = np.array([i for i in range(Globals.nItems)])
+	index = np.array([i for i in range(Globals.nUsers)])
 	candidate = index[known[:,j]]
 	s = score[u,candidate]
-	mask = np.isnan(s)==False
+	mask = np.isnan(s)==FalseG
 	s = s[mask]
 	if len(s) < Globals.k:
 		k = len(s)
