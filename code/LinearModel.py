@@ -1,4 +1,4 @@
-# DESCRIPTION: This file implements a linear weighted model. Each item j has a weight wj. The rating of item j by user i is linear to the sum of the weights of the user's rated items. Stochastic gradient descent is used to minimize the mean square error and to learn the item weights.
+# DESCRIPTION: This file implements a linear weighted model. Each item j has a weight wj. The rating of item j by user i is linear to the sum of the weights of the user's rated items. Gradient descent is used to minimize the mean square error and to learn the item weights.
 
 # USAGE: To train the model, run "python3 code/LinearModel.py" and "python3 code/LinearModel.py -d=1". "-d" chooses the datasplit.
 
@@ -9,7 +9,6 @@ import SVD
 import Initialization
 import time
 
-# SGD
 def gradientDescent(train,test,lamb=0.02):
 	suffix ='_fixed'+Globals.dataIdx+'.npy'
 	if not Globals.fixed:
