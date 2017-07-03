@@ -54,6 +54,7 @@ def peer(u,j,known,score):
 
 def predict(u,j,known,score,data):
 	peers = peer(u,j,known,score)
+	print(peers)
 	pred = 0
 	term = 0
 	for i in peers:
