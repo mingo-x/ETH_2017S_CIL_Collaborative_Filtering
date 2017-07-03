@@ -74,8 +74,9 @@ def output(test,known,score,data,vali):
 	c = 0
 	for i,j in test:
 		if c%10000==0:
+			e = SVD.evaluation2(A,vali)
 			endTime = time.time()
-			print('user', c, int(endTime-startTime), 's')
+			print('user', c, int(endTime-startTime), 's score =', e)
 			startTime = time.time()
 		A[i,j] = predict(i,j,known,score,data)
 		c += 1
