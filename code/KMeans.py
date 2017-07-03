@@ -1,5 +1,7 @@
-# mean prediction of ensemble of 10 runs
-# of K-means with K ranging from 4 to 24
+# DESCRIPTION: This file implements the k-means method. Users are classified by k clusters and the distance is defined by the sum of the square distance of observed ratings. Before the clustering, users' mean ratings are subtracted from the observed ratings. A prediction of user i and item j is given by the corresponding value of the center of the cluster user i belongs to, plus his mean ratings. The final predictor is the mean of 11 k-means models, with k varying from 4 to 24 (step = 2).
+
+# USAGE: To train one k-means model, run "python3 code/KMeans.py -k=K" and "python3 code/KMeans.py -k=K -d=1", with K = 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24. "-k" specifies how many clusters are used and "-d" chooses the data split. To combine the k-means models with different ks, run "python3 code/KMeans.py -p=c" and "python3 code/KMeans.py -p=c -d=1". "-p=c" sets the program to do the combination.
+
 import numpy as np
 import Initialization
 import Globals
@@ -16,12 +18,15 @@ def kmeans(inData,test,k):
 	known = data!=0
 	missing = known == False
 	uMean = np.empty(Globals.nUsers)
+	# substract users' mean ratings
 	for i in range(Globals.nUsers):
 		uMean[i] = np.mean(data[i])
 		data[i] -= uMean[i]
 	data[missing] = 0
+	# read in previous trained model
 	if Globals.warmStart:
 		center = np.load('./log/KMeans_center_'+str(k)+suffix)
+	# random initialization
 	else:
 		center = np.empty((k,Globals.nItems))
 		for i in range(k):
@@ -33,9 +38,10 @@ def kmeans(inData,test,k):
 	print('start kmeans')
 	startTime = time.time()
 	t = 0
+	# terminate if the change of error is less than 1e-8
 	while np.abs(prev-curr)>1e-8:
 		prev = curr
-		# assign
+		# new assignment
 		assignment = [[] for i in range(k)]
 		curr = 0
 		for i in range(Globals.nUsers):
@@ -50,7 +56,7 @@ def kmeans(inData,test,k):
 			curr += minDist
 		curr = np.sqrt(curr/nObs)
 
-		# mean
+		# new center
 		for i in range(k):
 			if len(assignment[i])!= 0:
 				for j in range(Globals.nItems):
@@ -75,17 +81,9 @@ def kmeans(inData,test,k):
 	score = SVD.evaluation2(A,test)
 	print('test error =',score)
 
-	#clipping
-	# over 5
-	# mask = A>5
-	# A[mask] = 5
-	# below 1
-	# mask = A<1
-	# A[mask] = 1
-	# score = SVD.evaluation2(A,test)
-	# print('after clipping test error =',score)
 	return A
 
+# combine models with different k
 def predictionWithCombi(data,test):
 	suffix = '_fixed'+Globals.dataIdx+'.npy'
 	if not Globals.fixed:
@@ -100,6 +98,7 @@ def predictionWithCombi(data,test):
 	A /= 10.0
 	score = SVD.evaluation2(A,test)
 	print('after combination score =',score)
+	# clipping
 	# over 5
 	mask = A>5
 	A[mask] = 5
@@ -112,24 +111,17 @@ def predictionWithCombi(data,test):
 
 if __name__ == "__main__":
 	Initialization.initialization()
-	if Globals.fixed:
-		data, test = Initialization.readInData2(idx = Globals.dataIdx)
-		if Globals.predict=='c':
-			A = predictionWithCombi(data,test)
-			np.save('./log/Kmeans_A_combi_fixed'+Globals.dataIdx+'.npy',A)
-		elif Globals.predict == 'e':
-			A = np.load('./log/Kmeans_A_combi_fixed'+Globals.dataIdx+Globals.modelIdx+'.npy')
-			score = SVD.evaluation2(A,test)
-			print('score =', score)
-		else:
-			A = kmeans(data,test,Globals.k)
-			np.save('./log/Kmeans_A_'+str(Globals.k)+'_fixed'+Globals.dataIdx+'.npy',A)
+	data, test = Initialization.readInData2(idx = Globals.dataIdx)
+	# combine
+	if Globals.predict=='c':
+		A = predictionWithCombi(data,test)
+		np.save('./log/Kmeans_A_combi_fixed'+Globals.dataIdx+'.npy',A)
+	# evaluate
+	elif Globals.predict == 'e':
+		A = np.load('./log/Kmeans_A_combi_fixed'+Globals.dataIdx+Globals.modelIdx+'.npy')
+		score = SVD.evaluation2(A,test)
+		print('score =', score)
+	# single k-means
 	else:
-		data = Initialization.readInData('./data/data_train.csv')
-		if Globals.predict=='c':
-			A = predictionWithCombi(data,data)
-			np.save('./log/Kmeans_A_combi.npy',A)
-		else:
-			A = kmeans(data,test,Globals.k)
-			np.save('./log/Kmeans_A_'+str(Globals.k)+'.npy',A)
-	#SVD.writeOutData(A)
+		A = kmeans(data,test,Globals.k)
+		np.save('./log/Kmeans_A_'+str(Globals.k)+'_fixed'+Globals.dataIdx+'.npy',A)
