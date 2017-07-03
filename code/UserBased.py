@@ -65,35 +65,41 @@ def predict(u,j,known,score,data):
 	pred /= term
 	pred += mu[u]
 		
-def output(test,known,score,data):
+def output(test,known,score,data,vali):
 	print('start predicting')
 	A = np.empty((Globals.nUsers,Globals.nItems))
 	startTime = time.time()
-	for i in range(Globals.nUsers):
-		if i%50==0:
+	c = 0
+	for i,j in test:
+		if c%1000==0:
 			endTime = time.time()
 			print('user', i, int(endTime-startTime), 's')
 			startTime = time.time()
-		for j in range(Globals.nItems):
-			A[i,j] = predict(i,j,known,score,data)
+		A[i,j] = predict(i,j,known,score,data)
+		c += 1
 
-	e = SVD.evaluation2(A,test)
+	e = SVD.evaluation2(A,vali)
 	print("score =", e)
 	mask = A>5
 	A[mask] = 5
 	mask = A<1
 	A[mask] = 1
-	e = SVD.evaluation2(A,test)
+	e = SVD.evaluation2(A,vali)
 	print("clipped score =", e)
 	np.save('./log/UB_A_'+str(Globals.k)+'.npy')
 	print('finish predicting')
 
 if __name__ == '__main__':
 	Initialization.initialization()
-	data, test = Initialization.readInData2(idx=Globals.dataIdx)
+	data, vali = Initialization.readInData2(idx=Globals.dataIdx)
 	if Globals.warmStart:
 		data, known, mu, score = initialize(data)
 	else:
 		data, known, mu = initialize(data)
 		score = sim(known,data)
-	output(test,known,score,data)
+	test = Initialization.readInSubmission('./data/sampleSubmission.csv')
+	for i in range(Globals.nUsers):
+		for j in range(Globals.nItems):
+			if vali[i,j]!=0:
+				test.append((i,j))
+	output(test,known,score,data,vali)

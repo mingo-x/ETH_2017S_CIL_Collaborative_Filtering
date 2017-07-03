@@ -90,3 +90,23 @@ def readInData3(trainPath='./data/train',testPath='./data/test',idx=''):
 	endTime = time.time()
 	print('finish reading data', int(endTime-startTime), 's', train.shape, test.shape)
 	return trainData,testData
+
+def readInSubmission(inPath):
+# read in data
+	print('start reading submission data')
+	startTime = time.time()
+	index = []
+	csvReader = csv.reader(open(inPath,encoding='utf-8'))
+	abort = True
+	for row in csvReader:
+		if abort:
+			abort = False
+			continue
+		idx = row[0]
+		npos = idx.index('_')
+		i = int(idx[1:npos])-1
+		j = int(idx[npos+2:])-1
+		index.append((i,j))
+	endTime = time.time()
+	print('finish reading  submission data', int(endTime-startTime), 's')
+	return index
