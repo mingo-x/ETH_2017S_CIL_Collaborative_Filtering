@@ -61,7 +61,7 @@ In the User-based collaborative filtering, the prediction of one user's rating t
 For a prediction of user $i$ and item $j$, no more than $K$ most similar users who have rated item $j$ will be selected and their ratings of item $j$ will be averaged with the weight being their Pearson coefficient to user $i$. Before the averaging, the raw ratings will be mean-centered in a user-wise fashion in order to tackle the problem that different users might provide ratings on different scales. The mean rating of user $i$ will be added back to the weighted average to get the final prediction. $$prediction formula$$
 
 \subsubsection{K-means}
-K-means algorithm is used to classify the users into $K$ clusters $C_k$ and minimizing the intra-cluster variance.
+ K-means algorithm is used to divide users into K clusters $C_k$ and minimizing the intra-cluster variance.
  $$   \sum_{k=1}^K \sum_{i \in C_k} (||r_{i}-\mu_k||^2)  $$, where $$  ||r_{i}-\mu_k||^2 = \sum_{j \in kn_i}(r_{ij}-\mu_{kj})^2  $$, where $kn_i$ is the set of movie rated by user $i$.
  For each user $i$ in cluster $k$, we use $\mu_{kj}$ to rate movie $j$. Besides we compute the average 11 runs of K-means with $K\in$ [4, 24] and stride 2 as the prediction.
 
