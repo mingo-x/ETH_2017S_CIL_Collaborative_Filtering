@@ -10,6 +10,7 @@ import time
 import SVD
 
 def kmeans(inData,test,k):
+	print("k =",k)
 	suffix = '_fixed'+Globals.dataIdx+'.npy'
 	if not Globals.fixed:
 		suffix = '.npy'
