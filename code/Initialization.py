@@ -1,9 +1,12 @@
+# DESCRIPTION: This file defines some helper functions for parameter initialization and data reading
+
 import numpy as np
 import csv
 from sys import argv
 import time
 import Globals
 
+# parameter initialization
 def initialization():
 	for i in range(1,len(argv)):
 		if argv[i].startswith('-k='):
@@ -37,9 +40,8 @@ def initialization():
 			Globals.l2 = float(argv[i][4:])
 			print('lambda2 =',Globals.l2)
 
-
+# read in raw data
 def readInData(inPath):
-# read in data
 	print('start reading data')
 	startTime = time.time()
 	data = np.zeros((Globals.nUsers,Globals.nItems))
@@ -59,8 +61,8 @@ def readInData(inPath):
 	print('finish reading data', int(endTime-startTime), 's')
 	return data
 
+# read in splitted data
 def readInData2(trainPath='./data/train',testPath='./data/test',idx=''):
-	# read in data
 	print('start reading data')
 	startTime = time.time()
 	print('train =',trainPath+idx+'.npy')
@@ -71,28 +73,8 @@ def readInData2(trainPath='./data/train',testPath='./data/test',idx=''):
 	print('finish reading data', int(endTime-startTime), 's', train.shape, test.shape)
 	return train,test
 
-def readInData3(trainPath='./data/train',testPath='./data/test',idx=''):
-	# read in data
-	print('start reading data')
-	startTime = time.time()
-	print('train =',trainPath+idx+'.npy')
-	print('test =',testPath+idx+'.npy')
-	train = np.load(trainPath+idx+'.npy')
-	test = np.load(testPath+idx+'.npy')
-	trainData = {}
-	testData = {}
-	for r in range(Globals.nUsers):
-		for c in range(Globals.nItems):
-			if train[r,c]!=0:
-				trainData[(r,c)] = train[r,c]
-			if test[r,c]!=0:
-				testData[(r,c)] = test[r,c]
-	endTime = time.time()
-	print('finish reading data', int(endTime-startTime), 's', train.shape, test.shape)
-	return trainData,testData
-
+# read in submission indices and return a list
 def readInSubmission(inPath):
-# read in data
 	print('start reading submission data')
 	startTime = time.time()
 	index = []
@@ -111,6 +93,7 @@ def readInSubmission(inPath):
 	print('finish reading  submission data', int(endTime-startTime), 's')
 	return index
 
+# read in submission indices and return a boolean mask
 def readInSubmission2(inPath):
 	print('start reading submission data')
 	startTime = time.time()

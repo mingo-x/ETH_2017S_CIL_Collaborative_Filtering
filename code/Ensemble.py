@@ -1,6 +1,6 @@
 # DESCRIPTION: This is the file to combine all the models into one ensembled model. For each training/validation data split, we fit a ridge regression on the validation data and obtain a weighted average of the predictions from different models. Features include the predictions of all the models and the two-way interactions between some models. The final prediction is an average of the ensembled results of different training/validation data splits.
 
-# USAGE: To train the ensemble for one data split, run "python3 code/Ensemble.py -p=tr" and "python3 code/Ensemble.py -p=tr -d=1". "-p=tr" stands for adding two-way interaction and using ridge regression. "-d" is the option for choosing data split. To get the final prediction, run "python3 code/Ensemble.py -p=a -d=tr". "-p=a" means taking average of different ensembles and "-d=tr" specifies the ensemble method.
+# USAGE: To train the ensemble for one data split, run "python3 code/Ensemble.py -p=tr" and "python3 code/Ensemble.py -p=tr -d=1". "-p=tr" stands for adding two-way interaction and using ridge regression. "-d" is the option for choosing data split. To get the final prediction, run "python3 code/Ensemble.py -p=a -d=tr". "-p=a" means taking average of different ensembles and "-d=tr" specifies the ensemble method. Tne prediction file is stored in the "data" folder.
 
 from sklearn import linear_model
 import SVD

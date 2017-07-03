@@ -1,3 +1,7 @@
+# DESCRIPTION: This file implements a full-gradient descent nonlinear SVD method. The prediction function is 4*(sigmoid(U[i]*VT[j]+c[i]+d[j]))+1 for user i and item j. c and d are the biases of users and items.
+
+# USAGE: To train and predict, run "python3 code/GRSVD.py -k=32 -l=400" and "python3 code/GRSVD.py -k=32 -l=400 -d=1". "-k" sets the dimension in the reduced SVD, "-l" is a parameter related to the learning rate and "-d" chooses the data split.
+
 import numpy as np
 import math, random, sys
 import Globals
@@ -9,7 +13,6 @@ def sigmoid(x):
 	return math.exp(-np.logaddexp(0, -x))
 
 class RecommenderSystem:
-
 	n_row = 0
 	n_col = 0
 
@@ -81,6 +84,7 @@ class RecommenderSystem:
 			self.V = np.random.rand(self.K, self.n_col)
 			self.BV = np.random.rand(self.n_col)
 
+	# calculate the gradient for one row
 	def oneRowGrad(self, r, Unorm):
 		cols = self.train_row2col[r]
 		grad = np.zeros(self.K)
@@ -95,6 +99,7 @@ class RecommenderSystem:
 		bias_grad = bias_grad / self.n_train
 		return grad, bias_grad
 
+	# calculated the gradient for one column
 	def oneColGrad(self, c, Vnorm):
 		rows = self.train_col2row[c]
 		grad = np.zeros(self.K)
@@ -109,6 +114,7 @@ class RecommenderSystem:
 		bias_grad = bias_grad / self.n_train
 		return grad, bias_grad
 
+	# gradients for rows
 	def rowGrad(self):
 		Unorm = 0
 		for i in range(self.n_row):
@@ -121,6 +127,7 @@ class RecommenderSystem:
 			Ugrad[r], BUgrad[r] = self.oneRowGrad(r, Unorm)
 		return Ugrad, BUgrad
 
+	# gradient for columns
 	def colGrad(self):
 		Vnorm = 0
 		for i in range(self.K):
@@ -137,6 +144,7 @@ class RecommenderSystem:
 		x = sigmoid(np.dot(self.U[r], self.V[:, c]) + self.BU[r] + self.BV[c])
 		return 4 * x + 1
 
+	# calculate the training error and the test error
 	def getError(self):
 		train_err = 0
 		valid_err = 0
@@ -148,6 +156,7 @@ class RecommenderSystem:
 		valid_err /= len(self.valid_pair)
 		return train_err, valid_err
 
+	# training
 	def train(self, n_step = 200):
 		print("Start training ...")
 		# for i in range(n_step):
@@ -192,6 +201,7 @@ class RecommenderSystem:
 			f.write("r" + str(r) + "_c" + str(c) + "," + str(s) + "\n")
 		f.close()
 
+	# predict
 	def pred(self,test):
 		A = np.empty((Globals.nUsers,Globals.nItems))
 		for r in range(Globals.nUsers):
@@ -207,6 +217,7 @@ class RecommenderSystem:
 
 		np.save('./log/GRSVD_A_'+str(Globals.k)+'_fixed'+Globals.dataIdx+'.npy',A)
 
+	# data clipping
 	def clip(self,A,test):
 		mask = A>5
 		A[mask] = 5
@@ -217,14 +228,15 @@ class RecommenderSystem:
 		print('after clipping score =',score)
 		np.save('./log/GRSVD_A_'+str(Globals.k)+'_fixed'+Globals.dataIdx+'.npy',A)
 
-
 if __name__ == "__main__":
 	Initialization.initialization()
 	RS = RecommenderSystem()
+	# clip result
 	if Globals.predict == 'c':
 		data, test = Initialization.readInData2(idx = Globals.dataIdx)
 		A = np.load('./log/GRSVD_A_'+str(Globals.k)+'_fixed'+Globals.dataIdx+'.npy')
 		RS.clip(A,test)
+	# train and predict
 	else:
 		random.seed(0)
 		np.random.seed(0)	
