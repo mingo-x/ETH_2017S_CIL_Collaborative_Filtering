@@ -1,3 +1,5 @@
+# DESCRIPTION: This file contains some global variables.
+
 nUsers = 10000
 nItems = 1000
 
