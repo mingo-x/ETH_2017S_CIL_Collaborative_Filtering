@@ -9,7 +9,7 @@ import Globals
 import time
 import Initialization
 
-def loadData(data):
+def loadData(data,predMask):
 	print('start initialization')
 	startTime = time.time()
 	known = data!=0
@@ -82,62 +82,62 @@ def loadData(data):
 	print(train.shape)
 
 	# load prediction data
-	test = np.append([Basic1_A.flatten()],[Basic2_A.flatten()],axis=0)
+	test = np.append([Basic1_A[predMask]],[Basic2_A[predMask]],axis=0)
 	Basic1_A = None
 	Basic2_A = None
-	test = np.append(test,[Basic3_A.flatten()],axis=0)
+	test = np.append(test,[Basic3_A[predMask]],axis=0)
 	Basic3_A = None
-	test = np.append(test,[Basic4_A.flatten()],axis=0)
+	test = np.append(test,[Basic4_A[predMask]],axis=0)
 	Basic4_A = None
-	test = np.append(test,[Basic5_A.flatten()],axis=0)
+	test = np.append(test,[Basic5_A[predMask]],axis=0)
 	Basic5_A = None
-	test = np.append(test,[Basic6_A.flatten()],axis=0)
+	test = np.append(test,[Basic6_A[predMask]],axis=0)
 	Basic6_A = None
-	test = np.append(test,[KMeans_A.flatten()],axis=0)
+	test = np.append(test,[KMeans_A[predMask]],axis=0)
 	KMeans_A = None
-	test = np.append(test,[PSVD_A.flatten()],axis=0)
-	test = np.append(test,[RSVDF_A.flatten()],axis=0)
-	test = np.append(test,[RSVDF2_A.flatten()],axis=0)
-	test = np.append(test,[KRR_A.flatten()],axis=0)
-	test = np.append(test,[KRR2_A.flatten()],axis=0)
-	test = np.append(test,[LM_A.flatten()],axis=0)
-	test = np.append(test,[UB_A.flatten()],axis=0)
-	# test = np.append(test,[GRSVD_A.flatten()],axis=0)
-	#test = np.append(test,[NSVD2_A.flatten()],axis=0)
+	test = np.append(test,[PSVD_A[predMask]],axis=0)
+	test = np.append(test,[RSVDF_A[predMask]],axis=0)
+	test = np.append(test,[RSVDF2_A[predMask]],axis=0)
+	test = np.append(test,[KRR_A[predMask]],axis=0)
+	test = np.append(test,[KRR2_A[predMask]],axis=0)
+	test = np.append(test,[LM_A[predMask]],axis=0)
+	test = np.append(test,[UB_A[predMask]],axis=0)
+	# test = np.append(test,[GRSVD_A[predMask]],axis=0)
+	#test = np.append(test,[NSVD2_A[predMask]],axis=0)
 
 	# two-way interaction
 	if Globals.predict == 't' or Globals.predict=='tr':
-		# test = np.append(test,[np.multiply(GRSVD_A.flatten(),PSVD_A.flatten())],axis=0)
-		# test = np.append(test,[np.multiply(GRSVD_A.flatten(),RSVDF_A.flatten())],axis=0)
-		# test = np.append(test,[np.multiply(GRSVD_A.flatten(),RSVDF2_A.flatten())],axis=0)
-		# test = np.append(test,[np.multiply(GRSVD_A.flatten(),KRR2_A.flatten())],axis=0)
-		# test = np.append(test,[np.multiply(GRSVD_A.flatten(),LM_A.flatten())],axis=0)
-		test = np.append(test,[np.multiply(PSVD_A.flatten(),RSVDF_A.flatten())],axis=0)
-		test = np.append(test,[np.multiply(PSVD_A.flatten(),RSVDF2_A.flatten())],axis=0)
-		test = np.append(test,[np.multiply(PSVD_A.flatten(),KRR_A.flatten())],axis=0)
-		test = np.append(test,[np.multiply(PSVD_A.flatten(),KRR2_A.flatten())],axis=0)
-		test = np.append(test,[np.multiply(PSVD_A.flatten(),LM_A.flatten())],axis=0)
-		test = np.append(test,[np.multiply(PSVD_A.flatten(),UB_A.flatten())],axis=0)
+		# test = np.append(test,[np.multiply(GRSVD_A[predMask],PSVD_A[predMask])],axis=0)
+		# test = np.append(test,[np.multiply(GRSVD_A[predMask],RSVDF_A[predMask])],axis=0)
+		# test = np.append(test,[np.multiply(GRSVD_A[predMask],RSVDF2_A[predMask])],axis=0)
+		# test = np.append(test,[np.multiply(GRSVD_A[predMask],KRR2_A[predMask])],axis=0)
+		# test = np.append(test,[np.multiply(GRSVD_A[predMask],LM_A[predMask])],axis=0)
+		test = np.append(test,[np.multiply(PSVD_A[predMask],RSVDF_A[predMask])],axis=0)
+		test = np.append(test,[np.multiply(PSVD_A[predMask],RSVDF2_A[predMask])],axis=0)
+		test = np.append(test,[np.multiply(PSVD_A[predMask],KRR_A[predMask])],axis=0)
+		test = np.append(test,[np.multiply(PSVD_A[predMask],KRR2_A[predMask])],axis=0)
+		test = np.append(test,[np.multiply(PSVD_A[predMask],LM_A[predMask])],axis=0)
+		test = np.append(test,[np.multiply(PSVD_A[predMask],UB_A[predMask])],axis=0)
 		PSVD_A = None
-		test = np.append(test,[np.multiply(RSVDF_A.flatten(),RSVDF2_A.flatten())],axis=0)
-		test = np.append(test,[np.multiply(RSVDF_A.flatten(),KRR_A.flatten())],axis=0)
-		test = np.append(test,[np.multiply(RSVDF_A.flatten(),KRR2_A.flatten())],axis=0)
-		test = np.append(test,[np.multiply(RSVDF_A.flatten(),LM_A.flatten())],axis=0)
-		test = np.append(test,[np.multiply(RSVDF_A.flatten(),UB_A.flatten())],axis=0)
+		test = np.append(test,[np.multiply(RSVDF_A[predMask],RSVDF2_A[predMask])],axis=0)
+		test = np.append(test,[np.multiply(RSVDF_A[predMask],KRR_A[predMask])],axis=0)
+		test = np.append(test,[np.multiply(RSVDF_A[predMask],KRR2_A[predMask])],axis=0)
+		test = np.append(test,[np.multiply(RSVDF_A[predMask],LM_A[predMask])],axis=0)
+		test = np.append(test,[np.multiply(RSVDF_A[predMask],UB_A[predMask])],axis=0)
 		RSVDF_A = None
-		test = np.append(test,[np.multiply(RSVDF2_A.flatten(),KRR_A.flatten())],axis=0)
-		test = np.append(test,[np.multiply(RSVDF2_A.flatten(),KRR2_A.flatten())],axis=0)
-		test = np.append(test,[np.multiply(RSVDF2_A.flatten(),LM_A.flatten())],axis=0)
-		test = np.append(test,[np.multiply(RSVDF2_A.flatten(),UB_A.flatten())],axis=0)
+		test = np.append(test,[np.multiply(RSVDF2_A[predMask],KRR_A[predMask])],axis=0)
+		test = np.append(test,[np.multiply(RSVDF2_A[predMask],KRR2_A[predMask])],axis=0)
+		test = np.append(test,[np.multiply(RSVDF2_A[predMask],LM_A[predMask])],axis=0)
+		test = np.append(test,[np.multiply(RSVDF2_A[predMask],UB_A[predMask])],axis=0)
 		RSVDF2_A = None
-		test = np.append(test,[np.multiply(KRR_A.flatten(),KRR2_A.flatten())],axis=0)
-		test = np.append(test,[np.multiply(KRR_A.flatten(),LM_A.flatten())],axis=0)
-		test = np.append(test,[np.multiply(KRR_A.flatten(),UB_A.flatten())],axis=0)
+		test = np.append(test,[np.multiply(KRR_A[predMask],KRR2_A[predMask])],axis=0)
+		test = np.append(test,[np.multiply(KRR_A[predMask],LM_A[predMask])],axis=0)
+		test = np.append(test,[np.multiply(KRR_A[predMask],UB_A[predMask])],axis=0)
 		KRR_A = None
-		test = np.append(test,[np.multiply(KRR2_A.flatten(),LM_A.flatten())],axis=0)
-		test = np.append(test,[np.multiply(KRR2_A.flatten(),UB_A.flatten())],axis=0)
+		test = np.append(test,[np.multiply(KRR2_A[predMask],LM_A[predMask])],axis=0)
+		test = np.append(test,[np.multiply(KRR2_A[predMask],UB_A[predMask])],axis=0)
 		KRR2_A = None
-		test = np.append(test,[np.multiply(LM_A.flatten(),UB_A.flatten())],axis=0)
+		test = np.append(test,[np.multiply(LM_A[predMask],UB_A[predMask])],axis=0)
 		LM_A = None
 		UB_A = None
 	else:
@@ -156,7 +156,7 @@ def loadData(data):
 	return train, target, test
 
 # linear regression
-def ensemble(train, target, test):
+def ensemble(train, target, test, predMask):
 	print('start training')
 	startTime = time.time()
 	regr = linear_model.LinearRegression()
@@ -167,15 +167,15 @@ def ensemble(train, target, test):
 
 	print('start predicting')
 	startTime = time.time()
-	A = regr.predict(test)
+	pred = regr.predict(test)
 	endTime = time.time()
 	print('finish predicting',int(endTime-startTime),'s',A.shape)
-	A = np.reshape(A,(Globals.nUsers,Globals.nItems))
-
+	A = np.empty((Globals.nUsers,Globals.nItems))
+	A[predMask] = pred
 	return A
 
 # ridge regression
-def ensembleRR(train, target, test):
+def ensembleRR(train, target, test, predMask):
 	print('start ridge regression')
 	startTime = time.time()
 	regr = linear_model.Ridge(alpha=0.5, tol=1e-4)
@@ -186,10 +186,11 @@ def ensembleRR(train, target, test):
 
 	print('start predicting')
 	startTime = time.time()
-	A = regr.predict(test)
+	pred = regr.predict(test)
 	endTime = time.time()
 	print('finish predicting',int(endTime-startTime),'s',A.shape)
-	A = np.reshape(A,(Globals.nUsers,Globals.nItems))
+	A = np.empty((Globals.nUsers,Globals.nItems))
+	A[predMask] = pred
 
 	return A
 
@@ -219,20 +220,21 @@ if __name__ == "__main__":
 		SVD.writeOutData(A)
 	else:
 		train, data = Initialization.readInData2(idx = Globals.dataIdx)
-		train, target, test = loadData(data)
+		predMask = Initialization.readInSubmission2('./data/sampleSubmission.csv')
+		train, target, test = loadData(data,predMask)
 		# ridge regression, without two-way interaction
 		if Globals.predict == 'r':
-			A = ensembleRR(train,target,test)
+			A = ensembleRR(train,target,test,predMask)
 			np.save('./log/Ensemble_A'+Globals.dataIdx+'_r.npy',A)
 		# ridge regression, with two-way interaction
 		elif Globals.predict == 'tr':
-			A = ensembleRR(train,target,test)
+			A = ensembleRR(train,target,test,predMask)
 			np.save('./log/Ensemble_A'+Globals.dataIdx+'_tr.npy',A)
 		# linear regression, with two-way interaction
 		elif Globals.predict == 't':
-			A = ensemble(train,target,test)
+			A = ensemble(train,target,test,predMask)
 			np.save('./log/Ensemble_A'+Globals.dataIdx+'_t.npy',A)
 		# linear regression, without two-way interaction
 		else:
-			A = ensemble(train,target,test)
+			A = ensemble(train,target,test,predMask)
 			np.save('./log/Ensemble_A'+Globals.dataIdx+'.npy',A)

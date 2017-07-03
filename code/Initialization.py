@@ -110,3 +110,22 @@ def readInSubmission(inPath):
 	endTime = time.time()
 	print('finish reading  submission data', int(endTime-startTime), 's')
 	return index
+
+def readInSubmission2(inPath):
+	print('start reading submission data')
+	startTime = time.time()
+	mask = np.zeros((Globals.nUsers,Globals.nItems),dtype=bool)
+	csvReader = csv.reader(open(inPath,encoding='utf-8'))
+	abort = True
+	for row in csvReader:
+		if abort:
+			abort = False
+			continue
+		idx = row[0]
+		npos = idx.index('_')
+		i = int(idx[1:npos])-1
+		j = int(idx[npos+2:])-1
+		mask[i,j] = True
+	endTime = time.time()
+	print('finish reading  submission data', int(endTime-startTime), 's')
+	return mask
