@@ -124,7 +124,7 @@ functions(linear/nolinear) were compared. The ensemble strategy has also been as
 %function(linear/nolinear) on those six models. Besides, we compare using single model and the ensemble models. All results are summarizes in the table \ref{mytable}.
 
 \subsubsection{Individual Results}
-\begin{table*}[htbp]
+\begin{table}[htbp]
   \centering
   \begin{tabular}[c]{|l||l|}
     \hline
@@ -144,7 +144,7 @@ functions(linear/nolinear) were compared. The ensemble strategy has also been as
     \hline
   \end{tabular}
     \caption{  \label{mytable} RMSE of Different Models on Validation Set}
-\end{table*}
+\end{table}
 
 The RMSEs on the validation set of different CF methods are shown in Table \ref{mytable}. The content in the brackets indicates that the training method is stochastic gradient descent (SGD) or full gradient descent (FGD). KRR-RSVD denotes the KRR method based on RSVD and KRR-BSVD denotes the KRR method based on BSVD.
 
@@ -157,7 +157,7 @@ For the RSVD model and the BSVD model, we have trained them using the stochastic
 The NSVD method adds nonlinearity to the interaction between user vectors and movie vectors comparing with BSVD. We expected the nonlinearity will increase the model complexity and improve the prediction quality. However, as shown in Tabel \ref{mytable}, the RMSE of NSVD is no better than that of BSVD. One possible reason is that the training of NSVD in our experiments has not converged due to its relatively slow training speed. Given more training time or better hardware, it's hopeful that NSVD will outperform BSVD.
 
 \subsubsection{Ensemble}
-\begin{table*}[htbp]
+\begin{table}[htbp]
   \centering
   \begin{tabular}[c]{|l||l|}
     \hline
@@ -170,7 +170,7 @@ The NSVD method adds nonlinearity to the interaction between user vectors and mo
     \hline
   \end{tabular}
     \caption{  \label{ensembleTable} RMSE of Different Ensemble Strategies on Kaggle Public Set}
-\end{table*}
+\end{table}
 
 The final system uses the six basic predictors and eight of the CF models: UB, K-means, SVD, RSVD (SGD), BSVD (SGD), KRR-RSVD, KRR-BSVD and LW. All the predictors and models have been trained on two training/validation data splits. Ridge regression was run on each splits to obtain the corresponding ensemble weights. The final system takes the average of the two regression results and the RMSE on the Kaggle public set is shown in Table \ref{ensembleTable} with the row name "Ridge + 2-way + 2 splits". The RMSE score of the BSVD (FGD), which is the best single model on the validation set, is 0.98611 on the Kaggle public set. The hybrid system gained a 0.68\% improvement over the best single model we have implemented. This result demonstrates that the ensemble method can benefit from the advantages of different models and achieve a better prediction ability.
 
@@ -182,9 +182,6 @@ In this project, we implemented various collaborative filtering models and built
 
 \subsection{Future Work}
 We may incorporate some deep learning models into our framework. And for now we have only evaluated our model on the movie rating data set. More experiments can be conducted on other recommendation tasks to test the generalization ability of our system.
-
-\section*{Acknowledgements}
-do we need this???
 
 \bibliographystyle{IEEEtran}
 \bibliography{report}
