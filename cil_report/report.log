@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2016.2.29)  4 JUL 2017 14:39
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2016.2.29)  4 JUL 2017 15:58
 entering extended mode
 **report.tex
 (D:\ETH\courses\CIL\Collaborative_Filtering\cil_report\report.tex
@@ -169,9 +169,9 @@ Underfull \hbox (badness 2020) in paragraph at lines 36--37
  []
 
 
-Overfull \hbox (25.06712pt too wide) detected at line 42
-\OML/cmm/m/it/10 Pearson\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 u; v\OT1/cmr/m/n/10 )
- = []
+Overfull \hbox (5.92307pt too wide) detected at line 42
+\OML/cmm/m/it/10 Sim\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 u; v\OT1/cmr/m/n/10 ) = [
+]
  []
 
 [1{C:/CTEX/UserData/pdftex/config/pdftex.map{Unicode.sfd}{UGBK.sfd}}
@@ -215,10 +215,10 @@ Before submitting the final camera ready copy, remember to:
 
 ] (D:\ETH\courses\CIL\Collaborative_Filtering\cil_report\report.aux) ) 
 Here is how much of TeX's memory you used:
- 1896 strings out of 495354
- 29167 string characters out of 3183859
- 88721 words of memory out of 3000000
- 5088 multiletter control sequences out of 15000+200000
+ 1899 strings out of 495354
+ 29228 string characters out of 3183859
+ 88730 words of memory out of 3000000
+ 5091 multiletter control sequences out of 15000+200000
  40423 words of font info for 74 fonts, out of 3000000 for 9000
  14 hyphenation exceptions out of 8191
  27i,8n,19p,896b,287s stack positions out of 5000i,500n,10000p,200000b,50000s
@@ -234,7 +234,7 @@ msfonts/cm/cmsy10.pfb><C:/CTEX/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy5.pfb>
 type1/urw/times/utmb8a.pfb><C:/CTEX/MiKTeX/fonts/type1/urw/times/utmbi8a.pfb><C
 :/CTEX/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><C:/CTEX/MiKTeX/fonts/type1/urw/
 times/utmri8a.pfb>
-Output written on report.pdf (4 pages, 177971 bytes).
+Output written on report.pdf (4 pages, 177316 bytes).
 PDF statistics:
  72 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)

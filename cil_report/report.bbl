@@ -21,8 +21,21 @@
 \providecommand{\BIBdecl}{\relax}
 \BIBdecl
 
+\bibitem{Koren2009Matrix}
+Y.~Koren, R.~Bell, and C.~Volinsky, ``Matrix factorization techniques for
+  recommender systems,'' \emph{Computer}, vol.~42, no.~8, pp. 30--37, 2009.
+
+\bibitem{Linden2003Amazon}
+G.~Linden, B.~Smith, and J.~York, ``Amazon.com recommendations: Item-to-item
+  collaborative filtering,'' \emph{IEEE Internet Computing}, vol.~7, no.~1, pp.
+  76--80, 2003.
+
 \bibitem{Paterek2007Improving}
 A.~Paterek, ``Improving regularized singular value decomposition for
   collaborative filtering,'' \emph{Proceedings of Kdd Cup Workshop}, 2007.
+
+\bibitem{Aggarwal2016Neighborhood}
+C.~C. Aggarwal, \emph{Neighborhood-Based Collaborative Filtering}.\hskip 1em
+  plus 0.5em minus 0.4em\relax Springer International Publishing, 2016.
 
 \end{thebibliography}
