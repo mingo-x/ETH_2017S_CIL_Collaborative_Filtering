@@ -38,7 +38,7 @@ We have implemented both memory-based methods and model-based methods, including
 Same to \cite{Paterek2007Improving}, we used 6 basic predictors which exploit the simple statistics of the data.
 
 \subsubsection{User-based Model}
-In the User-based (UB) collaborative filtering, the prediction of one user's rating to an item is an linear combination of the ratings of this item provided by the users similar to him. We implemented a method described in [---ref\_b---]. The similarity between users is evaluated by the Pearson correlation coefficient:
+In the User-based (UB) collaborative filtering, the prediction of one user's rating to an item is an linear combination of the ratings of this item provided by the users similar to him. We implemented a method described in \cite{Aggarwal2016Neighborhood}. The similarity between users is evaluated by the Pearson correlation coefficient:
 $$Pearson(u,v) = \frac{{\sum\limits_{k \in {I_u} \cap {I_v}} {({r_{uk}} - {\mu _u}) \cdot ({r_{vk}} - {\mu _v})} }}{{\sqrt {\sum\limits_{k \in {I_u} \cap {I_v}} {{{({r_{uk}} - {\mu _u})}^2}} }  \cdot \sqrt {\sum\limits_{k \in {I_u} \cap {I_v}} {{{({r_{vk}} - {\mu _v})}^2}} } }}$$
 , where $\mu _u$ and $\mu _v$ are the mean ratings of user $u$ and user $v$, and ${I_u}$ and ${I_v}$ denote the set of indices of movies rated by user $u$ and $v$ respectively.
 
@@ -51,7 +51,7 @@ We used the K-means algorithm to classify the users into $K$ clusters $C_k$ and 
  For a user $i$ classified to cluster $k$, $\mu_{kj}$ is our predicted rating for the movie $j$. We have run the K-means algorithm 11 times with $K$ varying from 4 to 24 with a stride of 2 and took an average of the predicting results as our prediction.
 
 \subsubsection{SVD with Dimension Reduction}
-In the SVD with dimension reduction method, we keep the $k$ most significant singular values for the reproduction of the rating matrix. 
+In the SVD with dimension reduction method, we keep the $k$ most significant singular values for the reproduction of the rating matrix.
 \[A = U[:,k] \cdot D[:k,:k] \cdot V{[:,k]^T}\]
 For each movie $j$, the missing values in its column are filled with the mean of its observed ratings. $k$ is set to 12 in our system.
 
@@ -137,7 +137,7 @@ functions(linear/nolinear) were compared. The ensemble strategy has also been as
     RSVD (FGD)&1.00266\\
     BSVD (SGD)&1.00901\\
     BSVD (FGD)&0.98544\\
-    NSVD&0.99913\\
+    NSVD&0.99820\\
     KRR-RSVD&1.06843\\
     KRR-BSVD&1.08037\\
     LM&1.01836\\

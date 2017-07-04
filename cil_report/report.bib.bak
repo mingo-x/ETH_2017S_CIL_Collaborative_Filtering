@@ -15,10 +15,3 @@
   journal=  {Proceedings of Kdd Cup Workshop},
   year= {2007},
 }
-
-@book{Aggarwal2016Neighborhood,
-  title={Neighborhood-Based Collaborative Filtering},
-  author={Aggarwal, Charu C.},
-  publisher={Springer International Publishing},
-  year={2016},
-}
