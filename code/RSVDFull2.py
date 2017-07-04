@@ -196,8 +196,13 @@ class RecommenderSystem:
 
 if __name__ == "__main__":
 	Initialization.initialization()
-	RS = RecommenderSystem()
-	test = RS.readData()
-	RS.initParameters(K = Globals.k, lrate = Globals.lrate, mu = Globals.l2)
-	RS.train()
-	RS.pred(test)
+	# write result
+	if Globals.predict=='w':
+		A = np.load('./log/RSVDF2_A_32_fixed.npy')
+		SVD.writeOutData(A)
+	else:
+		RS = RecommenderSystem()
+		test = RS.readData()
+		RS.initParameters(K = Globals.k, lrate = Globals.lrate, mu = Globals.l2)
+		RS.train()
+		RS.pred(test)
