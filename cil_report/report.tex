@@ -28,25 +28,6 @@ and combined them into one hybrid framework which is flexible for extension. The
 Nowadays, recommender systems are widely used in our daily life. They can help us choose books, movies, music or even friends. In collaborative filtering (CF), the recommendation of an item to a user can done using the user's preference towards other items and the opinion of other users towards this item [--- add some reference later---]. Many traditional collaborative filtering works have proposed good algorithms and models [---reference---], but using only a single method has its limitation. (For example???) So in this project, we implemented a hybrid framework that mixes various CF models and achieves better performance than any single one of them. Both memory-based models and model-based models were exploited and the results were merged via Ridge regression. \\
 The rest of the paper is organized as follows. In Section 2, we first introduce the CF models used in our system, including the basic statistics, the user-based neighbourhood-based method, K-means, Singular Value Decomposition (SVD) with dimension reduction, the regularized SVD, the regularized SVD with bias, the nonlinear regularized SVD with bias, the kernel ridge regression based on SVD and a linear weighted model. Then the details of how we combine the methods via Ridge regression are introduced. In Section 3, the experiment design and results will be presented. Conclusions are given in Section 4.
 
-\begin{table*}[htbp]
-  \centering
-  \begin{tabular}[c]{|l||l|l|l|}
-    \hline
-    Predictor&RMSE/Linear/SGD&RMSE/Nolinear/FGD&RMSE/linear/FGD\\
-    \hline
-    SVD&1.007&0.0&0.0\\
-    RSVD&1.020&0.0&0.0\\
-    RSVD2&1.009&0.0&0.0\\
-    K-means&1.046&0.0&0.0\\
-    RSVD-with krr&1.068&0.0&0.0\\
-    RSVD2-with krr&1.080&0.0&0.0\\
-    Linear Model&1.018&0.0&0.0\\
-    Merge Model&0.978&0.0&0.0\\
-    \hline
-  \end{tabular}
-    \caption{  \label{mytable} RMSE of different model}
-\end{table*}
-
 \section{Models and Methods}
 \subsection{Problem Formalization}
 In this paper, we are focusing on the movie rating problem. We are given some training samples which are composed of the user id $i$, movie id $j$ and the corresponding rating $r_{ij}$. All the ratings are integer values between 1 and 5. The task is to predict the rating $r_{i'j'}$ given user $i'$ and movie $j'$.
@@ -113,11 +94,10 @@ where $M$ is the set of models we implemented and. The two-way interactions of s
 
 To avoid the possible drawback caused by the small size of the validation set (which is the training set for the ridge regression), we generated two training/validation data splits from the original training data. Ridge regression was run on each split and then the regression results were merged using averaging.
 
-
 \section{Experiment}
 \subsection{Data}
- The data set is a movie rating data set that is composed of 10000 users and 1000 movies. The rating values are integers between 1 and 5. There are in total 1176952 observed ratings and the mean of the observed ratings is $3.857$. 
- 
+ The data set is a movie rating data set that is composed of 10000 users and 1000 movies. The rating values are integers between 1 and 5. There are in total 1176952 observed ratings and the mean of the observed ratings is $3.857$.
+
  The observed ratings was split into a training set with approximately 90\% of the observations and a validation set with approximately 10\% of the observations. Two training/validation splits were generated from the original data. The training set was used for the training of individual CF models and the validation set was used for the validation of the individual CF models and the training of the ensemble regression.
 
 \subsection{Metric}
@@ -125,14 +105,43 @@ The performance of the methods and models is measured by the root-mean-squared e
 $$fomula$$
 
 \subsection{Experimental Results}
-We implement six models: SVD, RSVD, Improved RSVD(shown as RSVD2), RSVD with KRR, RSVD2 with KRR and K-means in the experiment. We compare different training methods(FGD/SGD) and different interaction
-function(linear/nolinear) on those six models. Besides, we compare using single model and the ensemble models. All results are summarizes in the table \ref{mytable}.
+We have implemented six basic predictors and nine CF models: UB, K-means, SVD, RSVD, BSVD, NSVD, KRR based on RSVD, KRR based on BSVD and LW. Experiments on individual models were conducted and the ensemble result is also reported. Different training methods(FGD/SGD) and different interaction
+functions(linear/nolinear) were compared. The ensemble strategy has also been assessed.
+%We compare different training methods(FGD/SGD) and different interaction
+%function(linear/nolinear) on those six models. Besides, we compare using single model and the ensemble models. All results are summarizes in the table \ref{mytable}.
 
-\subsubsection{Full Gradient vs Stochastic Gradient}
-As shown in the second and third column, FGD performs better than SGD. On the model XX, FGD obtain an XXX\% improvement on XXmodel(XXX\%) than SGD.
+\subsubsection{Individual Results}
+\begin{table*}[htbp]
+  \centering
+  \begin{tabular}[c]{|l||l|}
+    \hline
+    Model&RMSE\\
+    \hline
+    UB&0.99968\\
+    K-means&1.04551\\
+    SVD&1.00649\\
+    RSVD (SGD)&1.01988\\
+    RSVD (FGD)&1.00266\\
+    BSVD (SGD)&1.00901\\
+    BSVD (FGD)&0.98544\\
+    NSVD&0.99913\\
+    KRR-RSVD&1.06843\\
+    KRR-BSVD&1.08037\\
+    LM&1.01836\\
+    \hline
+  \end{tabular}
+    \caption{  \label{mytable} RMSE of Different Models}
+\end{table*}
 
-\subsubsection{Linear Interaction vs Nolinear Interaction}
-The Nolinear Interaction acquire a better results than linear interaction on all models. More specifically, it has a largest improvement on XXmodel(XXX\%), while has limited effect on XX model (XXX\%).
+The RMSEs on the validation set of different CF methods are shown in Table \ref{mytable}. The content in the brackets indicates that the training method is stochastic gradient descent (SGD) or full gradient descent (FGD). KRR-RSVD denotes the KRR method based on RSVD and KRR-BSVD denotes the KRR method based on BSVD. 
+
+The regularized SVD with bias trained with FGD achieved the best score. The user-based method and the non-linear regularized SVD with bias also had good performance.
+
+\subsubsection{Full Gradient Descent vs Stochastic Gradient Descent}
+For the RSVD model and the BSVD model, we have trained them using the stochastic gradient descent method and the full gradient descent method. As we can see from Table \ref{mytable}, FGD consistently performs better than SGD (1.69\% better for RSVD and 2.34\% better for BSVD).
+
+\subsubsection{Linear Interaction vs Nonlinear Interaction}
+The NSVD method adds nonlinearity to the interaction between user vectors and movie vectors comparing with BSVD. We expected the nonlinearity will increase the model complexity and improve the prediction quality. However, as shown in Tabel \ref{mytable}, the RMSE of NSVD is no better than that of BSVD. One possible reason is that the training of NSVD in our experiments has not converged due to its relatively slow training speed. Given more training time or better hardware, it's hopeful that NSVD will outperform BSVD.
 
 \subsubsection{Single model vs Ensemble model}
 The ensemble model that combines all six above-mentioned model achieve a XXX RMSE. The ensemble gain a XXX improvement compare to XXX, which is the best model among all single model. The results demonstrate that the ensemble methods strengthen the ability of model to fit complicated data.

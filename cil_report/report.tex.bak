@@ -28,25 +28,6 @@ and combined them into one hybrid framework which is flexible for extension. The
 Nowadays, recommender systems are widely used in our daily life. They can help us choose books, movies, music or even friends. In collaborative filtering (CF), the recommendation of an item to a user can done using the user's preference towards other items and the opinion of other users towards this item [--- add some reference later---]. Many traditional collaborative filtering works have proposed good algorithms and models [---reference---], but using only a single method has its limitation. (For example???) So in this project, we implemented a hybrid framework that mixes various CF models and achieves better performance than any single one of them. Both memory-based models and model-based models were exploited and the results were merged via Ridge regression. \\
 The rest of the paper is organized as follows. In Section 2, we first introduce the CF models used in our system, including the basic statistics, the user-based neighbourhood-based method, K-means, Singular Value Decomposition (SVD) with dimension reduction, the regularized SVD, the regularized SVD with bias, the nonlinear regularized SVD with bias, the kernel ridge regression based on SVD and a linear weighted model. Then the details of how we combine the methods via Ridge regression are introduced. In Section 3, the experiment design and results will be presented. Conclusions are given in Section 4.
 
-\begin{table*}[htbp]
-  \centering
-  \begin{tabular}[c]{|l||l|l|l|}
-    \hline
-    Predictor&RMSE/Linear/SGD&RMSE/Nolinear/FGD&RMSE/linear/FGD\\
-    \hline
-    SVD&1.007&0.0&0.0\\
-    RSVD&1.020&0.0&0.0\\
-    RSVD2&1.009&0.0&0.0\\
-    K-means&1.046&0.0&0.0\\
-    RSVD-with krr&1.068&0.0&0.0\\
-    RSVD2-with krr&1.080&0.0&0.0\\
-    Linear Model&1.018&0.0&0.0\\
-    Merge Model&0.978&0.0&0.0\\
-    \hline
-  \end{tabular}
-    \caption{  \label{mytable} RMSE of different model}
-\end{table*}
-
 \section{Models and Methods}
 \subsection{Problem Formalization}
 In this paper, we are focusing on the movie rating problem. We are given some training samples which are composed of the user id $i$, movie id $j$ and the corresponding rating $r_{ij}$. All the ratings are integer values between 1 and 5. The task is to predict the rating $r_{i'j'}$ given user $i'$ and movie $j'$.
@@ -107,26 +88,57 @@ The linear weighted model (LW) introduced in [---ref\_a---] is also adopted in o
 %where we use $f(x) = 4*sigmod(x)+1$ in our experiment
 
 \subsection{Ensemble}
-We employ a linear model to ensemble all models. The $w_m$ denotes the weight of $m$th model we want to combine and $\hat{r_{ij}^m}$ is the predicted results of model $m$ for user $i$ and item $j$.
-The algorithm wants to training the weight $w$ by minimize
+In order to take advantage of different CF models and overcome their individual shortcomings, we decide to combine the results of the models. Ridge regression was fitted on the validation set to obtain the ensemble weights. $w_m$ denotes the weight of the $m$th mode and $\hat{r_{ij}^m}$ is the predicted results by model $m$ for user $i$ and item $j$. Ridge regression trained the weights $w_m$ by minimizing the regularized square error
 $$  \sum_{i, j\in kn} (r_{ij} - \sum_{m\in M}w_m\hat r_{ij}^m)^2 + \lambda (||w_i||^2)  $$
-where $M$ is the set of model we using.
+where $M$ is the set of models we implemented and. The two-way interactions of some of these models were also fed to the ridge regression as features.
 
+To avoid the possible drawback caused by the small size of the validation set (which is the training set for the ridge regression), we generated two training/validation data splits from the original training data. Ridge regression was run on each split and then the regression results were merged using averaging.
 
 \section{Experiment}
-\subsection{Datasets}
-We use a movie rating data set to evaluate variants of item-based recommendation algorithms. The datasets include ratings of 10000 users for 1000 different movies. All ratings are integer values between 1 and 5 stars.The number of known rating is 1176952 and the average is $3.857$. And we split the datasets into two part: 90\% training set and 10\% test set.
+\subsection{Data}
+ The data set is a movie rating data set that is composed of 10000 users and 1000 movies. The rating values are integers between 1 and 5. There are in total 1176952 observed ratings and the mean of the observed ratings is $3.857$.
+
+ The observed ratings was split into a training set with approximately 90\% of the observations and a validation set with approximately 10\% of the observations. Two training/validation splits were generated from the original data. The training set was used for the training of individual CF models and the validation set was used for the validation of the individual CF models and the training of the ensemble regression.
 
 \subsection{Metric}
-Our collaborative filtering algorithm is evaluated according to the following weighted criteria:
-prediction error, measured by root-mean-squared error (RMSE)
+The performance of the methods and models is measured by the root-mean-squared error (RMSE).
+$$fomula$$
 
 \subsection{Experimental Results}
-We implement six models: SVD, RSVD, Improved RSVD(shown as RSVD2), RSVD with KRR, RSVD2 with KRR and K-means in the experiment. We compare different training methods(FGD/SGD) and different interaction
-function(linear/nolinear) on those six models. Besides, we compare using single model and the ensemble models. All results are summarizes in the table \ref{mytable}.
+We have implemented six basic predictors and nine CF models: UB, K-means, SVD, RSVD, BSVD, NSVD, KRR based on RSVD, KRR based on BSVD and LW. Experiments on individual models were conducted and the ensemble result is also reported. Different training methods(FGD/SGD) and different interaction
+functions(linear/nolinear) were compared. The ensemble strategy has also been assessed.
+%We compare different training methods(FGD/SGD) and different interaction
+%function(linear/nolinear) on those six models. Besides, we compare using single model and the ensemble models. All results are summarizes in the table \ref{mytable}.
 
-\subsubsection{Full Gradient vs Stochastic Gradient}
-As shown in the second and third column, FGD performs better than SGD. On the model XX, FGD obtain an XXX\% improvement on XXmodel(XXX\%) than SGD.
+\subsubsection{Individual Results}
+\begin{table*}[htbp]
+  \centering
+  \begin{tabular}[c]{|l||l|}
+    \hline
+    Model&RMSE\\
+    \hline
+    UB&0.99968\\
+    K-means&1.04551\\
+    SVD&1.00649\\
+    RSVD (SGD)&1.01988\\
+    RSVD (FGD)&1.00266\\
+    BSVD (SGD)&1.00901\\
+    BSVD (FGD)&0.98544\\
+    NSVD&0.99913\\
+    KRR-RSVD&1.06843\\
+    KRR-BSVD&1.08037\\
+    LM&1.01836\\
+    \hline
+  \end{tabular}
+    \caption{  \label{mytable} RMSE of Different Models}
+\end{table*}
+
+The RMSEs on the validation set of different CF methods are shown in Table \ref{mytable}. The content in the brackets indicates that the training method is stochastic gradient descent (SGD) or full gradient descent (FGD). KRR-RSVD denotes the KRR method based on RSVD and KRR-BSVD denotes the KRR method based on BSVD. 
+
+The regularized SVD with bias trained with FGD achieved the best score. The user-based method and the non-linear regularized SVD with bias also had good performance.
+
+\subsubsection{Full Gradient Descent vs Stochastic Gradient Descent}
+For the RSVD model and the BSVD model, we have trained them using the stochastic gradient descent method and the full gradient descent method. As we can see from Table \ref{mytable}, FGD consistently performs better than SGD. On the model XX, FGD obtain an XXX\% improvement on XXmodel(XXX\%) than SGD.
 
 \subsubsection{Linear Interaction vs Nolinear Interaction}
 The Nolinear Interaction acquire a better results than linear interaction on all models. More specifically, it has a largest improvement on XXmodel(XXX\%), while has limited effect on XX model (XXX\%).
@@ -139,16 +151,10 @@ All experiments were done on the ETH cluster euler with XXXGHz processor and XXX
 
 \section{Summary}
 \subsection{Conclusion}
-We introduce various basic collaborative filters algorithms and build a framework to combine them all. Besides, we compare different training methods and interaction functions to gain a better movie rating. The experiments show out that an ensemble model with FGD and nolinear interaction model achieve a best results(XXX \%)
+In this project, we implemented various collaborative filtering models and built a hybrid framework that combines them all. The ensemble of different CF methods benefits from the advantages of these models and can overcome their individual limitations. We have conducted comprehensive experiments to tune the models to their best performance and tested different ensemble strategies. The system that combines the basic predictors, the user-based method, K-means, SVD with dimension reduction, the regularized SVD, the regularized SVD with bias, the kernel ridge regression based on RSVD and BSVD, the linear weighted model and the two-way interactions between some of them using ridge regression on two training/validation data splits achieves the best RMSE score, which is 0.97937 on the Kaggle public set.
 
 \subsection{Future Work}
-\subsubsection{Model}
-We may try to combine some deep learning models in our framework.
-\subsubsection{Data}
-Now we just limit our model on movie rating datasets. More experiments are needed on other recommendation tasks.
-
-
-
+We may incorporate some deep learning models into our framework. And for now we have only evaluated our model on the movie rating data set. More experiments can be conducted on other recommendation tasks to test the generalization ability of our system.
 
 \section*{Acknowledgements}
 do we need this???

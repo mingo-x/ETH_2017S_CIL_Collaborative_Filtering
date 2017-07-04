@@ -216,6 +216,18 @@ def average():
 	A[mask] = 1
 	return A
 
+# clip and write
+def clip():
+	A = np.load('./log/Ensemble_A_tr.npy')
+	#clipping
+	# over 5
+	mask = A>5
+	A[mask] = 5
+	# below 1
+	mask = A<1
+	A[mask] = 1
+	SVD.writeOutData(A)
+
 if __name__ == "__main__":
 	Initialization.initialization()
 	# average ensembles
@@ -223,6 +235,8 @@ if __name__ == "__main__":
 		A = average()
 		np.save('./log/Ensemble_A_ave.npy',A)
 		SVD.writeOutData(A)
+	elif Globals.predict == 'c':
+		clip()
 	else:
 		train, data = Initialization.readInData2(idx = Globals.dataIdx)
 		predMask = Initialization.readInSubmission2('./data/sampleSubmission.csv')
