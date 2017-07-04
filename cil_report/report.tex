@@ -7,7 +7,7 @@
 
 
 \begin{document}
-\title{A Hybrid Framework for Collaborative Filtering}
+\title{A Hybrid Framework of Collaborative Filtering}
 
 \author{
   Yanping Xie, Zuoyue Li, Jie Huang\\
@@ -25,7 +25,7 @@ and combined them into one hybrid framework which is flexible for extension. The
 
 \section{Introduction}
 
-Nowadays, recommender systems are widely used in our daily life. They can help us choose books, movies, music or even friends. In collaborative filtering (CF), the recommendation of an item to a user can done using the user's preference towards other items and the opinion of other users towards this item [--- add some reference later---]. Many traditional collaborative filtering works have proposed good algorithms and models [---reference---], but using only a single method has its limitation. (For example???) So in this project, we implemented a hybrid framework that mixes various CF models and achieves better performance than any single one of them. Both memory-based models and model-based models were exploited and the results were merged via Ridge regression. \\
+Nowadays, recommender systems are widely used in our daily life. They can help us choose books, movies, music or even friends. In collaborative filtering (CF), the recommendation of an item to a user can done using the user's preference towards other items and the opinion of other users towards this item \cite{Koren2009Matrix}\cite{Linden2003Amazon}. Many traditional collaborative filtering works have proposed good algorithms and models, but using only a single method has its limitation. So in this project, we implemented a hybrid framework that mixes various CF models and achieves better performance than any single one of them. Both memory-based models and model-based models were exploited and the results were merged via Ridge regression. \\
 The rest of the paper is organized as follows. In Section 2, we first introduce the CF models used in our system, including the basic statistics, the user-based neighbourhood-based method, K-means, Singular Value Decomposition (SVD) with dimension reduction, the regularized SVD, the regularized SVD with bias, the nonlinear regularized SVD with bias, the kernel ridge regression based on SVD and a linear weighted model. Then the details of how we combine the methods via Ridge regression are introduced. In Section 3, the experiment design and results will be presented. Conclusions are given in Section 4.
 
 \section{Models and Methods}
@@ -115,7 +115,7 @@ The performance of the methods and models is measured by the root-mean-squared e
 , where $P$ is the set of user/movie pairs to be tested.
 
 \subsection{Experiment Settings}
-All experiments were run on the ETH cluster Euler with XXXGHz processor and XXXGB RAM. The runnings time varied from 2min for SVD with dimension reduction to several hours for the user-based method and models using full gradient descent.
+All experiments were run on the ETH cluster Euler with one core processor and 2.7GB RAM. The runnings time varied from 2min for SVD with dimension reduction to several hours for the user-based method and models using full gradient descent.
 
 \subsection{Experimental Results}
 We have implemented six basic predictors and nine CF models: UB, K-means, SVD, RSVD, BSVD, NSVD, KRR based on RSVD, KRR based on BSVD and LW. Experiments on individual models were conducted and the ensemble result is also reported. Different training methods(FGD/SGD) and different interaction
