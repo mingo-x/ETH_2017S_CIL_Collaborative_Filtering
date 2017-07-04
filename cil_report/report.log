@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2016.2.29)  4 JUL 2017 10:48
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2016.2.29)  4 JUL 2017 14:11
 entering extended mode
 **report.tex
 (D:\ETH\courses\CIL\Collaborative_Filtering\cil_report\report.tex
@@ -124,11 +124,7 @@ Package: ltxcmds 2011/04/18 v1.20 LaTeX kernel commands for general use (HO)
 \Gin@req@height=\dimen117
 \Gin@req@width=\dimen118
 )
-(D:\ETH\courses\CIL\Collaborative_Filtering\cil_report\report.aux
-
-LaTeX Warning: Label `mytable' multiply defined.
-
-)
+(D:\ETH\courses\CIL\Collaborative_Filtering\cil_report\report.aux)
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 9.
 LaTeX Font Info:    ... okay on input line 9.
 LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 9.
@@ -141,7 +137,8 @@ LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 9.
 LaTeX Font Info:    ... okay on input line 9.
 LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 9.
 LaTeX Font Info:    ... okay on input line 9.
- (C:\CTEX\MiKTeX\tex\context\base\supp-pdf.mkii
+
+(C:\CTEX\MiKTeX\tex\context\base\supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count92
 \scratchdimen=\dimen119
@@ -171,35 +168,38 @@ Underfull \hbox (badness 2020) in paragraph at lines 36--37
 \OT1/ptm/m/n/10 s and model-based meth-od-s, in-clud-ing the user-based
  []
 
+
+Overfull \hbox (25.06712pt too wide) detected at line 42
+\OML/cmm/m/it/10 Pearson\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 u; v\OT1/cmr/m/n/10 )
+ = []
+ []
+
 [1{C:/CTEX/UserData/pdftex/config/pdftex.map{Unicode.sfd}{UGBK.sfd}}
 
 
 ]
-Underfull \hbox (badness 1460) in paragraph at lines 74--76
+Underfull \hbox (badness 1460) in paragraph at lines 80--82
 \OT1/ptm/m/n/10 where $\OML/cmm/m/it/10 K\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 X; X
 []\OT1/cmr/m/n/10 )$ \OT1/ptm/m/n/10 is a k-er-nel func-tion. $\OML/cmm/m/it/10
  K\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 x[]; x[]\OT1/cmr/m/n/10 ) =$
  []
 
 [2]
-Underfull \hbox (badness 1383) in paragraph at lines 111--115
+Underfull \hbox (badness 1383) in paragraph at lines 121--125
 \OT1/ptm/m/n/10 W. Ex-per-i-ments on in-di-vid-u-al mod-el-s were con-duct-ed
  []
 
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 119.
+(Font)              <8> on input line 129.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 119.
+(Font)              <6> on input line 129.
 
-Underfull \hbox (badness 1472) in paragraph at lines 147--148
+Underfull \hbox (badness 1472) in paragraph at lines 157--158
  \OT1/ptm/m/it/10 3) Lin-ear In-ter-ac-tion vs Non-lin-ear In-ter-ac-tion: [][]
  \OT1/ptm/m/n/10 The
  []
 
-
-LaTeX Warning: Reference `ensembleTable' on page 3 undefined on input line 165.
-
-
+[3]
 No file report.bbl.
 
 ** Conference Paper **
@@ -212,35 +212,32 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[3] [4] (D:\ETH\courses\CIL\Collaborative_Filtering\cil_report\report.aux)
+[4
 
-LaTeX Warning: There were undefined references.
-
-
-LaTeX Warning: There were multiply-defined labels.
-
- ) 
+] (D:\ETH\courses\CIL\Collaborative_Filtering\cil_report\report.aux) ) 
 Here is how much of TeX's memory you used:
  1885 strings out of 495354
  28885 string characters out of 3183859
- 89749 words of memory out of 3000000
+ 90718 words of memory out of 3000000
  5081 multiletter control sequences out of 15000+200000
  38209 words of font info for 72 fonts, out of 3000000 for 9000
  14 hyphenation exceptions out of 8191
  27i,8n,19p,896b,287s stack positions out of 5000i,500n,10000p,200000b,50000s
-{C:/CTEX/MiKTeX/fonts/enc/dvips/fontname/8r.enc}<C:/CTEX/MiKTeX/fonts/type1/p
-ublic/amsfonts/cm/cmex10.pfb><C:/CTEX/MiKTeX/fonts/type1/public/amsfonts/cm/cmm
-i10.pfb><C:/CTEX/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi5.pfb><C:/CTEX/MiKTe
-X/fonts/type1/public/amsfonts/cm/cmmi7.pfb><C:/CTEX/MiKTeX/fonts/type1/public/a
-msfonts/cm/cmr10.pfb><C:/CTEX/MiKTeX/fonts/type1/public/amsfonts/cm/cmr7.pfb><C
-:/CTEX/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/CTEX/MiKTeX/fonts/t
-ype1/public/amsfonts/cm/cmsy5.pfb><C:/CTEX/MiKTeX/fonts/type1/public/amsfonts/c
-m/cmsy7.pfb><C:/CTEX/MiKTeX/fonts/type1/urw/times/utmb8a.pfb><C:/CTEX/MiKTeX/fo
-nts/type1/urw/times/utmbi8a.pfb><C:/CTEX/MiKTeX/fonts/type1/urw/times/utmr8a.pf
-b><C:/CTEX/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
-Output written on report.pdf (4 pages, 163204 bytes).
+{C:/CTEX/
+MiKTeX/fonts/enc/dvips/fontname/8r.enc}<C:/CTEX/MiKTeX/fonts/type1/public/amsfo
+nts/cm/cmex10.pfb><C:/CTEX/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:
+/CTEX/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi5.pfb><C:/CTEX/MiKTeX/fonts/typ
+e1/public/amsfonts/cm/cmmi7.pfb><C:/CTEX/MiKTeX/fonts/type1/public/amsfonts/cm/
+cmr10.pfb><C:/CTEX/MiKTeX/fonts/type1/public/amsfonts/cm/cmr5.pfb><C:/CTEX/MiKT
+eX/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/CTEX/MiKTeX/fonts/type1/public/a
+msfonts/cm/cmsy10.pfb><C:/CTEX/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy5.pfb>
+<C:/CTEX/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/CTEX/MiKTeX/fonts/
+type1/urw/times/utmb8a.pfb><C:/CTEX/MiKTeX/fonts/type1/urw/times/utmbi8a.pfb><C
+:/CTEX/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><C:/CTEX/MiKTeX/fonts/type1/urw/
+times/utmri8a.pfb>
+Output written on report.pdf (4 pages, 177428 bytes).
 PDF statistics:
- 68 PDF objects out of 1000 (max. 8388607)
+ 72 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
