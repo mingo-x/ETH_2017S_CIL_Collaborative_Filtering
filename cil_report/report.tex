@@ -26,7 +26,7 @@ and combined them into one hybrid framework which is flexible for extension. The
 \section{Introduction}
 
 Nowadays, recommender systems are widely used in our daily life. They can help us choose books, movies, music or even friends. In collaborative filtering (CF), the recommendation of an item to a user can done using the user's preference towards other items and the opinion of other users towards this item [--- add some reference later---]. Many traditional collaborative filtering works have proposed good algorithms and models [---reference---], but using only a single method has its limitation. (For example???) So in this project, we implemented a hybrid framework that mixes various CF models and achieves better performance than any single one of them. Both memory-based models and model-based models were exploited and the results were merged via Ridge regression. \\
-The rest of the paper is organized as follows. In Section 2, we first introduce the CF models used in our system, including the basic statistics, the user-based neighbourhood-based method, K-means, Singular Value Decomposition (SVD) with dimension reduction, the regularized SVD, the regularized SVD with bias, the kernel ridge regression based on SVD and a linear weighted model. Then the details of how we combine the methods via Ridge regression are introduced. In Section 3, the experiment design and results will be presented. Conclusions are given in Section 4.
+The rest of the paper is organized as follows. In Section 2, we first introduce the CF models used in our system, including the basic statistics, the user-based neighbourhood-based method, K-means, Singular Value Decomposition (SVD) with dimension reduction, the regularized SVD, the regularized SVD with bias, the nonlinear regularized SVD with bias, the kernel ridge regression based on SVD and a linear weighted model. Then the details of how we combine the methods via Ridge regression are introduced. In Section 3, the experiment design and results will be presented. Conclusions are given in Section 4.
 
 \begin{table*}[htbp]
   \centering
@@ -52,65 +52,77 @@ The rest of the paper is organized as follows. In Section 2, we first introduce 
 In this paper, we are focusing on the movie rating problem. We are given some training samples which are composed of the user id $i$, movie id $j$ and the corresponding rating $r_{ij}$. All the ratings are integer values between 1 and 5. The task is to predict the rating $r_{i'j'}$ given user $i'$ and movie $j'$.
 
 \subsection{Models}
-We have implemented both memory-based methods and model-based methods, including the user-based neighbourhood-based method, the SVD with dimension reduction and some of the methods introduced in [---ref\_a---].
+We have implemented both memory-based methods and model-based methods, including the user-based neighbourhood-based method, the SVD with dimension reduction, the nonlinear biased regularized SVD and some of the methods introduced in [---ref\_a---].
 \subsubsection{Basic Models}
 Same to [---ref\_a---], we used 6 basic predictors which exploit the simple statistics of the data.
+
 \subsubsection{User-based Model}
-In the User-based collaborative filtering, the prediction of one user's rating to an item is an linear combination of the ratings of this item provided by the users similar to him. We implemented a method described in [---ref\_b---]. The similarity between users is evaluated via the Pearson correlation coefficient. $$Pearson formula$$
+In the User-based (UB) collaborative filtering, the prediction of one user's rating to an item is an linear combination of the ratings of this item provided by the users similar to him. We implemented a method described in [---ref\_b---]. The similarity between users is evaluated via the Pearson correlation coefficient. $$Pearson formula$$
 
 For a prediction of user $i$ and item $j$, no more than $K$ most similar users who have rated item $j$ will be selected and their ratings of item $j$ will be averaged with the weight being their Pearson coefficient to user $i$. Before the averaging, the raw ratings will be mean-centered in a user-wise fashion in order to tackle the problem that different users might provide ratings on different scales. The mean rating of user $i$ will be added back to the weighted average to get the final prediction. $$prediction formula$$
 
 \subsubsection{K-means}
-K-means algorithm is used to classify the users into $K$ clusters $C_k$ and minimizing the intra-cluster variance.
- $$   \sum_{k=1}^K \sum_{i \in C_k} (||r_{i}-\mu_k||^2)  $$, where $$  ||r_{i}-\mu_k||^2 = \sum_{j \in kn_i}(r_{ij}-\mu_{kj})^2  $$, where $kn_i$ is the set of movie rated by user $i$.
- For each user $i$ in cluster $k$, we use $\mu_{kj}$ to rate movie $j$. Besides we compute the average 11 runs of K-means with $K\in$ [4, 24] and stride 2 as the prediction.
+We used the K-means algorithm to classify the users into $K$ clusters $C_k$ and to minimized the intra-cluster variance. The intra-cluster variance is defined as in [---ref\_a---], $$   \sum_{k=1}^K \sum_{i \in C_k} (||r_{i}-\mu_k||^2)  $$, where $$  ||r_{i}-\mu_k||^2 = \sum_{j \in kn_i}(r_{ij}-\mu_{kj})^2  $$, where $kn_i$ is the set of movie rated by user $i$.
+ For a user $i$ classified to cluster $k$, $\mu_{kj}$ is our predicted rating for the movie $j$. We have run the K-means algorithm 11 times with $K$ varying from 4 to 24 with a stride of 2 and took an average of the predicting results as our prediction.
 
-\subsubsection{Regularized singular value decomposition(RSVD)}
-We map both users and movies to a joint latent factor space of dimensionality $k$. Accordingly each user $i$ is associated with a vector $u_{i} \in \textbf{R$^k$}$, while each movie $j$ is associated with a vector $v_{j} \in \textbf{R$^k$} $. The dot product $u_i^Tv_j$ captures the interaction between user $i$ and movie $j$. We use this product to estimate the rating of user $i$ and item $j$.
+\subsubsection{SVD with Dimension Reduction}
+In the SVD with dimension reduction method, we keep the $K$ most significant singular values for the reproduction of the rating matrix. $$reproduction of the matrix$$ For each movie $j$, the missing values in its column are filled with the mean of its observed ratings.
+
+\subsubsection{Regularized SVD}
+In the regularized SVD (RSVD) model, both the users and movies are mapped to a joint latent factor space with dimension $k$. Each user $i$ is associated with a vector $u_{i} \in \textbf{R$^k$}$, and each movie $j$ is associated with a vector $v_{j} \in \textbf{R$^k$} $. The dot product $u_i^Tv_j$ which captures the interaction between user $i$ and movie $j$ is used to estimate the rating of item $j$ by user $i$.
 
 $$ \hat{r_{ij}}=u_{i}^{T}v_{j} $$
 
-To learn the factor of the user and item, the system minimizes the regularized squared error on the set of known ratings.
+To learn the user and item vectors, we implemented both the stochastic gradient descent method and the full gradient descent method aiming at minimizing the squared error. A regularization term is added in order to avoid over-fitting.
 $$  \min \limits_{u, v} \sum_{i, j\in kn} (r_{ij} - \hat r_{ij})^2 + \lambda (||u_i||^2 + ||v_j||^2)  $$
+where $ (||u_i||^2 + ||v_j||^2)$ is the regularization term and $kn$ is the set of observed pairs $(i, j)$.
 
-where $ (||u_i||^2 + ||v_j||^2)$ is the regular terms to avoid overfitting and $kn$ is the set of pair $(i, j)$ of which rating $r_{ij}$ is known.
+\subsubsection{Biased Regularized SVD}
+Biases exist among both users and items. For example, some users tend to give higher rating than others. So in the biased regularized SVD (BRSVD) method, two bias terms are introduced.
+$$ \hat{r_{ij}}=u_{i}^{T}v_{j} + c_i + d_j  + \mu $$
+where $c_i$ and $d_j$ are the bias terms for user $i$ and item $j$ respectively. $\mu$ is the mean of all observed ratings. The objective function is the same as in the RSVD method.
+Both the stochastic gradient descent version and the full gradient descent version were implemented.
 
-\subsubsection{Improved regularized singular value decomposition}
-In the RSVD methods, we use dot product to fit the real rating. However, it is shown that some biases exist among both users and items. For example, some users tend to give higher rate than others. So we introduce the bias term into the evaluation.
+\subsubsection{Nonlinear Regularized SVD with Bias}
+The nonlinear regularized SVD with bias (NSVD) further considered adding some nonlinearity onto the biased regularized SVD, as introduced in [---red\_c the blog---]. The ratings are modeled by the function $$r_{ij}= 4*(sigmoid(u_{i}^{T}v_{j}) + b_i + b_j)+1$$
+The training objective is the same as that of RSVD. The parameters are learned using full gradient descent.
 
-$$ \hat{r_{ij}}=u_{i}^{T}v_{j} + b_i + b_j  + \mu $$
-where $b_i$ and $b_j$ are the biases of user and items. $\mu$ is the average of all rating. The system learns by minimizing the squared error function:
-$$  \min \limits_{u, v} \sum_{i, j\in kn} (r_{ij} - \hat r_{ij})^2 + \lambda (||u_i||^2 + ||v_j||^2 + b_i^2 + b_j^2)  $$
-
-\subsubsection{Postprocessing SVD with kernel ridge regression}
-In the Postprocessing SVD with kernel ridge regression(PSVD-KRR), we discard all user factor vector $u_i$ after training. For each user we predict the rating via regression of $v_j$. For user $i$, vector $y$ denotes the all real rating $r_i$in training data. And $X$ denote a matrix of movie features. We can use kernel ridge regression to predict $y$.
+\subsubsection{Kernel Ridge Regression Based on SVD}
+In the kernel ridge regression (KRR) based on SVD model [---ref\_a---], the user vectors $u_i$ are discarded and the movie vectors $v_j$ are used as predictors. For a user $i$, the target vector $y$ contains the observed ratings $r_i$ in the training set and $X$ denotes a matrix of movie features where each row of $X$ is the normalized movie vector $v_j$. Kernel ridge regression is trained to predict $y$.
 
 $$ \hat{y_i} = K(x_i^T, X)(K(X,X) + \lambda I)^{-1}y$$
-where $K(X, X')$ is a kernel function. We use $K(x_{i}^{T}, x_{j}^{T})=exp(2(x_i^Tx_j-1))$ in our experiments.
+where $K(X, X')$ is a kernel function. $K(x_{i}^{T}, x_{j}^{T})=exp(2(x_i^Tx_j-1))$ is used in our system.
 
-\subsection{Improvement}
-\subsubsection{Full Gradient vs Stochastic Gradient}
-In order to minimize the error of mean square, Stochastic Gradient Descent(SGD) is widely used [------ reference------]. But SGD is easily influenced by noise data, although it owns fast convergence speed. So we implement both full gradient decent and stochastic gradient decent and compare them in the experiment part.
+\subsubsection{Linear Model}
+The linear weighted model (LW) introduced in [---ref\_a---] is also adopted in our system. In this model, each movie $j$ has a weight $w_j$. The rating of a movie $j$ by a user $i$ is linear to the sum of the weights of the user's rated movies. $$formula$$ The movie weights are learned via gradient descent.
 
-\subsubsection{Linear Interaction vs Nolinear Interaction}
-Either RSVD and improved RSVD adopt linear Interaction between user and items. We conduct a nolinear function $f$ in the interaction part.
-$$ \hat{r_{ij}}=f(u_{i}^{T}v_{j})$$
-$$ \hat{r_{ij}}=f(u_{i}^{T}v_{j}) + b_i + b_j  + \mu $$
-where we use $f(x) = 4*sigmod(x)+1$ in our experiment
+%\subsection{Improvement}
+%\subsubsection{Full Gradient vs Stochastic Gradient}
+%In order to minimize the error of mean square, Stochastic Gradient Descent(SGD) is widely used [------ reference------]. But SGD is easily influenced by noise data, although it owns fast convergence speed. So we implement both full gradient decent and stochastic gradient decent and compare them in the experiment part.
+%
+%\subsubsection{Linear Interaction vs Nolinear Interaction}
+%Either RSVD and improved RSVD adopt linear Interaction between user and items. We conduct a nolinear function $f$ in the interaction part.
+%$$ \hat{r_{ij}}=f(u_{i}^{T}v_{j})$$
+%$$ \hat{r_{ij}}=f(u_{i}^{T}v_{j}) + b_i + b_j  + \mu $$
+%where we use $f(x) = 4*sigmod(x)+1$ in our experiment
+
 \subsection{Ensemble}
-We employ a linear model to ensemble all models. The $w_m$ denotes the weight of $m$th model we want to combine and $\hat{r_{ij}^m}$ is the predicted results of model $m$ for user $i$ and item $j$.
-The algorithm wants to training the weight $w$ by minimize
+In order to take advantage of different CF models and overcome their individual shortcomings, we decide to combine the results of the models. Ridge regression was fitted on the validation set to obtain the ensemble weights. $w_m$ denotes the weight of the $m$th mode and $\hat{r_{ij}^m}$ is the predicted results by model $m$ for user $i$ and item $j$. Ridge regression trained the weights $w_m$ by minimizing the regularized square error
 $$  \sum_{i, j\in kn} (r_{ij} - \sum_{m\in M}w_m\hat r_{ij}^m)^2 + \lambda (||w_i||^2)  $$
-where $M$ is the set of model we using.
+where $M$ is the set of models we implemented and. The two-way interactions of some of these models were also fed to the ridge regression as features.
+
+To avoid the possible drawback caused by the small size of the validation set (which is the training set for the ridge regression), we generated two training/validation data splits from the original training data. Ridge regression was run on each split and then the regression results were merged using averaging.
 
 
 \section{Experiment}
-\subsection{Datasets}
-We use a movie rating data set to evaluate variants of item-based recommendation algorithms. The datasets include ratings of 10000 users for 1000 different movies. All ratings are integer values between 1 and 5 stars.The number of known rating is 1176952 and the average is $3.857$. And we split the datasets into two part: 90\% training set and 10\% test set.
+\subsection{Data}
+ The data set is a movie rating data set that is composed of 10000 users and 1000 movies. The rating values are integers between 1 and 5. There are in total 1176952 observed ratings and the mean of the observed ratings is $3.857$. 
+ 
+ The observed ratings was split into a training set with approximately 90\% of the observations and a validation set with approximately 10\% of the observations. Two training/validation splits were generated from the original data. The training set was used for the training of individual CF models and the validation set was used for the validation of the individual CF models and the training of the ensemble regression.
 
 \subsection{Metric}
-Our collaborative filtering algorithm is evaluated according to the following weighted criteria:
-prediction error, measured by root-mean-squared error (RMSE)
+The performance of the methods and models is measured by the root-mean-squared error (RMSE).
+$$fomula$$
 
 \subsection{Experimental Results}
 We implement six models: SVD, RSVD, Improved RSVD(shown as RSVD2), RSVD with KRR, RSVD2 with KRR and K-means in the experiment. We compare different training methods(FGD/SGD) and different interaction
@@ -130,20 +142,13 @@ All experiments were done on the ETH cluster euler with XXXGHz processor and XXX
 
 \section{Summary}
 \subsection{Conclusion}
-We introduce various basic collaborative filters algorithms and build a framework to combine them all. Besides, we compare different training methods and interaction functions to gain a better movie rating. The experiments show out that an ensemble model with FGD and nolinear interaction model achieve a best results(XXX \%)
+In this project, we implemented various collaborative filtering models and built a hybrid framework that combines them all. The ensemble of different CF methods benefits from the advantages of these models and can overcome their individual limitations. We have conducted comprehensive experiments to tune the models to their best performance and tested different ensemble strategies. The system that combines the basic predictors, the user-based method, K-means, SVD with dimension reduction, the regularized SVD, the regularized SVD with bias, the kernel ridge regression based on RSVD and BSVD, the linear weighted model and the two-way interactions between some of them using ridge regression on two training/validation data splits achieves the best RMSE score, which is 0.97937 on the Kaggle public set.
 
 \subsection{Future Work}
-\subsubsection{Model}
-We may try to combine some deep learning models in our framework.
-\subsubsection{Data}
-Now we just limit our model on movie rating datasets. More experiments are needed on other recommendation tasks.
-
-
-
+We may incorporate some deep learning models into our framework. And for now we have only evaluated our model on the movie rating data set. More experiments can be conducted on other recommendation tasks to test the generalization ability of our system.
 
 \section*{Acknowledgements}
-The author thanks Christian Sigg for his careful reading and helpful
-suggestions.
+do we need this???
 
 \bibliographystyle{IEEEtran}
 \bibliography{howto-paper}

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2016.2.29)  3 JUL 2017 18:49
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2016.2.29)  4 JUL 2017 08:51
 entering extended mode
 **report.tex
 (D:\ETH\courses\CIL\Collaborative_Filtering\cil_report\report.tex
@@ -176,11 +176,17 @@ Underfull \hbox (badness 2020) in paragraph at lines 55--56
 
 
 ]
-Underfull \hbox (badness 1769) in paragraph at lines 113--115
-[]\OT1/ptm/m/n/10 We im-ple-men-t six mod-el-s: SVD, RSVD, Im-proved
+Underfull \hbox (badness 1460) in paragraph at lines 93--95
+\OT1/ptm/m/n/10 where $\OML/cmm/m/it/10 K\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 X; X
+[]\OT1/cmr/m/n/10 )$ \OT1/ptm/m/n/10 is a k-er-nel func-tion. $\OML/cmm/m/it/10
+ K\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 x[]; x[]\OT1/cmr/m/n/10 ) =$
  []
 
 [2]
+Underfull \hbox (badness 1769) in paragraph at lines 128--130
+[]\OT1/ptm/m/n/10 We im-ple-men-t six mod-el-s: SVD, RSVD, Im-proved
+ []
+
 No file report.bbl.
 
 ** Conference Paper **
@@ -193,9 +199,7 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[3
-
-] (D:\ETH\courses\CIL\Collaborative_Filtering\cil_report\report.aux) ) 
+[3] (D:\ETH\courses\CIL\Collaborative_Filtering\cil_report\report.aux) ) 
 Here is how much of TeX's memory you used:
  1884 strings out of 495354
  28870 string characters out of 3183859
@@ -203,19 +207,19 @@ Here is how much of TeX's memory you used:
  5080 multiletter control sequences out of 15000+200000
  38209 words of font info for 72 fonts, out of 3000000 for 9000
  14 hyphenation exceptions out of 8191
- 27i,8n,19p,789b,287s stack positions out of 5000i,500n,10000p,200000b,50000s
-{C:/CTEX/
-MiKTeX/fonts/enc/dvips/fontname/8r.enc}<C:/CTEX/MiKTeX/fonts/type1/public/amsfo
-nts/cm/cmex10.pfb><C:/CTEX/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:
-/CTEX/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi5.pfb><C:/CTEX/MiKTeX/fonts/typ
-e1/public/amsfonts/cm/cmmi7.pfb><C:/CTEX/MiKTeX/fonts/type1/public/amsfonts/cm/
-cmr10.pfb><C:/CTEX/MiKTeX/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/CTEX/MiKT
-eX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/CTEX/MiKTeX/fonts/type1/public
-/amsfonts/cm/cmsy5.pfb><C:/CTEX/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb
-><C:/CTEX/MiKTeX/fonts/type1/urw/times/utmb8a.pfb><C:/CTEX/MiKTeX/fonts/type1/u
-rw/times/utmbi8a.pfb><C:/CTEX/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><C:/CTEX/
-MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
-Output written on report.pdf (3 pages, 157673 bytes).
+ 27i,8n,19p,821b,287s stack positions out of 5000i,500n,10000p,200000b,50000s
+{C:/CTE
+X/MiKTeX/fonts/enc/dvips/fontname/8r.enc}<C:/CTEX/MiKTeX/fonts/type1/public/ams
+fonts/cm/cmex10.pfb><C:/CTEX/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><
+C:/CTEX/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi5.pfb><C:/CTEX/MiKTeX/fonts/t
+ype1/public/amsfonts/cm/cmmi7.pfb><C:/CTEX/MiKTeX/fonts/type1/public/amsfonts/c
+m/cmr10.pfb><C:/CTEX/MiKTeX/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/CTEX/Mi
+KTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/CTEX/MiKTeX/fonts/type1/publ
+ic/amsfonts/cm/cmsy5.pfb><C:/CTEX/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.p
+fb><C:/CTEX/MiKTeX/fonts/type1/urw/times/utmb8a.pfb><C:/CTEX/MiKTeX/fonts/type1
+/urw/times/utmbi8a.pfb><C:/CTEX/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><C:/CTE
+X/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
+Output written on report.pdf (3 pages, 159888 bytes).
 PDF statistics:
  65 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
