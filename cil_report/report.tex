@@ -39,7 +39,7 @@ Same to \cite{Paterek2007Improving}, we used 6 basic predictors which exploit th
 
 \subsubsection{User-based Model}
 In the User-based (UB) collaborative filtering, the prediction of one user's rating to an item is an linear combination of the ratings of this item provided by the users similar to him. We implemented a method described in \cite{Aggarwal2016Neighborhood}. The similarity between users is evaluated by the Pearson correlation coefficient:
-$$Pearson(u,v) = \frac{{\sum\limits_{k \in {I_u} \cap {I_v}} {({r_{uk}} - {\mu _u}) \cdot ({r_{vk}} - {\mu _v})} }}{{\sqrt {\sum\limits_{k \in {I_u} \cap {I_v}} {{{({r_{uk}} - {\mu _u})}^2}} }  \cdot \sqrt {\sum\limits_{k \in {I_u} \cap {I_v}} {{{({r_{vk}} - {\mu _v})}^2}} } }}$$
+$$Sim(u,v) = \frac{{\sum\limits_{k \in {I_u} \cap {I_v}} {({r_{uk}} - {\mu _u}) \cdot ({r_{vk}} - {\mu _v})} }}{{\sqrt {\sum\limits_{k \in {I_u} \cap {I_v}} {{{({r_{uk}} - {\mu _u})}^2}} }  \cdot \sqrt {\sum\limits_{k \in {I_u} \cap {I_v}} {{{({r_{vk}} - {\mu _v})}^2}} } }}$$
 where $\mu _u$ and $\mu _v$ are the mean ratings of user $u$ and user $v$, and ${I_u}$ and ${I_v}$ denote the set of indices of movies rated by user $u$ and $v$ respectively.
 
 For a prediction of user $u$ and item $j$, no more than $K$ most similar users who have rated item $j$ will be selected and the set of these similar users is denoted by ${P_u}(j)$. Their ratings of item $j$ will be averaged with the weight being their Pearson coefficient to user $u$. Before the averaging, the raw ratings will be mean-centered in a user-wise fashion in order to tackle the problem that different users might provide ratings on different scales. The mean rating of user $u$ will be added back to the weighted average to get the final prediction.
