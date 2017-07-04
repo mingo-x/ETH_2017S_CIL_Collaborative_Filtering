@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2016.2.29)  4 JUL 2017 10:11
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2016.2.29)  4 JUL 2017 10:48
 entering extended mode
 **report.tex
 (D:\ETH\courses\CIL\Collaborative_Filtering\cil_report\report.tex
@@ -124,7 +124,11 @@ Package: ltxcmds 2011/04/18 v1.20 LaTeX kernel commands for general use (HO)
 \Gin@req@height=\dimen117
 \Gin@req@width=\dimen118
 )
-(D:\ETH\courses\CIL\Collaborative_Filtering\cil_report\report.aux)
+(D:\ETH\courses\CIL\Collaborative_Filtering\cil_report\report.aux
+
+LaTeX Warning: Label `mytable' multiply defined.
+
+)
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 9.
 LaTeX Font Info:    ... okay on input line 9.
 LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 9.
@@ -137,8 +141,7 @@ LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 9.
 LaTeX Font Info:    ... okay on input line 9.
 LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 9.
 LaTeX Font Info:    ... okay on input line 9.
-
-(C:\CTEX\MiKTeX\tex\context\base\supp-pdf.mkii
+ (C:\CTEX\MiKTeX\tex\context\base\supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count92
 \scratchdimen=\dimen119
@@ -194,9 +197,8 @@ Underfull \hbox (badness 1472) in paragraph at lines 147--148
  []
 
 
-Underfull \hbox (badness 2142) in paragraph at lines 167--168
-[]\OT1/ptm/m/n/10 The en-sem-ble mod-el that com-bines al-l six above-
- []
+LaTeX Warning: Reference `ensembleTable' on page 3 undefined on input line 165.
+
 
 No file report.bbl.
 
@@ -212,17 +214,20 @@ Before submitting the final camera ready copy, remember to:
 
 [3] [4] (D:\ETH\courses\CIL\Collaborative_Filtering\cil_report\report.aux)
 
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+LaTeX Warning: There were undefined references.
+
+
+LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 1884 strings out of 495354
- 28870 string characters out of 3183859
- 87709 words of memory out of 3000000
- 5080 multiletter control sequences out of 15000+200000
+ 1885 strings out of 495354
+ 28885 string characters out of 3183859
+ 89749 words of memory out of 3000000
+ 5081 multiletter control sequences out of 15000+200000
  38209 words of font info for 72 fonts, out of 3000000 for 9000
  14 hyphenation exceptions out of 8191
- 27i,8n,19p,821b,287s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 27i,8n,19p,896b,287s stack positions out of 5000i,500n,10000p,200000b,50000s
 {C:/CTEX/MiKTeX/fonts/enc/dvips/fontname/8r.enc}<C:/CTEX/MiKTeX/fonts/type1/p
 ublic/amsfonts/cm/cmex10.pfb><C:/CTEX/MiKTeX/fonts/type1/public/amsfonts/cm/cmm
 i10.pfb><C:/CTEX/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi5.pfb><C:/CTEX/MiKTe
@@ -233,7 +238,7 @@ ype1/public/amsfonts/cm/cmsy5.pfb><C:/CTEX/MiKTeX/fonts/type1/public/amsfonts/c
 m/cmsy7.pfb><C:/CTEX/MiKTeX/fonts/type1/urw/times/utmb8a.pfb><C:/CTEX/MiKTeX/fo
 nts/type1/urw/times/utmbi8a.pfb><C:/CTEX/MiKTeX/fonts/type1/urw/times/utmr8a.pf
 b><C:/CTEX/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
-Output written on report.pdf (4 pages, 161442 bytes).
+Output written on report.pdf (4 pages, 163204 bytes).
 PDF statistics:
  68 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)

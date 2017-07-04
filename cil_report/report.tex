@@ -47,7 +47,7 @@ We used the K-means algorithm to classify the users into $K$ clusters $C_k$ and 
  For a user $i$ classified to cluster $k$, $\mu_{kj}$ is our predicted rating for the movie $j$. We have run the K-means algorithm 11 times with $K$ varying from 4 to 24 with a stride of 2 and took an average of the predicting results as our prediction.
 
 \subsubsection{SVD with Dimension Reduction}
-In the SVD with dimension reduction method, we keep the $K$ most significant singular values for the reproduction of the rating matrix. $$reproduction of the matrix$$ For each movie $j$, the missing values in its column are filled with the mean of its observed ratings.
+In the SVD with dimension reduction method, we keep the $k$ most significant singular values for the reproduction of the rating matrix. $$reproduction of the matrix$$ For each movie $j$, the missing values in its column are filled with the mean of its observed ratings. $k$ is set to 12 in our system.
 
 \subsubsection{Regularized SVD}
 In the regularized SVD (RSVD) model, both the users and movies are mapped to a joint latent factor space with dimension $k$. Each user $i$ is associated with a vector $u_{i} \in \textbf{R$^k$}$, and each movie $j$ is associated with a vector $v_{j} \in \textbf{R$^k$} $. The dot product $u_i^Tv_j$ which captures the interaction between user $i$ and movie $j$ is used to estimate the rating of item $j$ by user $i$.
@@ -56,30 +56,30 @@ $$ \hat{r_{ij}}=u_{i}^{T}v_{j} $$
 
 To learn the user and item vectors, we implemented both the stochastic gradient descent method and the full gradient descent method aiming at minimizing the squared error. A regularization term is added in order to avoid over-fitting.
 $$  \min \limits_{u, v} \sum_{i, j\in kn} (r_{ij} - \hat r_{ij})^2 + \lambda (||u_i||^2 + ||v_j||^2)  $$
-where $ (||u_i||^2 + ||v_j||^2)$ is the regularization term and $kn$ is the set of observed pairs $(i, j)$.
+where $ (||u_i||^2 + ||v_j||^2)$ is the regularization term and $kn$ is the set of observed pairs $(i, j)$. For the stochastic gradient descent version, $k=10$, $initial learning rate=0.01$, $\lambda=0.02$ and for the full gradient version, $k=32$, $initial learning rate=0.1$, $\lambda=0.1$.
 
 \subsubsection{Biased Regularized SVD}
 Biases exist among both users and items. For example, some users tend to give higher rating than others. So in the biased regularized SVD (BRSVD) method, two bias terms are introduced.
 $$ \hat{r_{ij}}=u_{i}^{T}v_{j} + c_i + d_j  + \mu $$
 where $c_i$ and $d_j$ are the bias terms for user $i$ and item $j$ respectively. $\mu$ is the mean of all observed ratings. The objective function is the same as in the RSVD method.
-Both the stochastic gradient descent version and the full gradient descent version were implemented.
+Both the stochastic gradient descent version and the full gradient descent version were implemented. For the stochastic gradient descent version, $k=5$, $initial learning rate=0.01$, $\lambda=0.02$ and for the full gradient version, $k=32$, $initial learning rate=0.1$, $\lambda=0.1$.
 
 \subsubsection{Nonlinear Regularized SVD with Bias}
 The nonlinear regularized SVD with bias (NSVD) further considered adding some nonlinearity onto the biased regularized SVD, as introduced in [---red\_c the blog---]. The ratings are modeled by the function $$r_{ij}= 4*(sigmoid(u_{i}^{T}v_{j}) + b_i + b_j)+1$$
-The training objective is the same as that of RSVD. The parameters are learned using full gradient descent.
+The training objective is the same as that of RSVD. The parameters are learned using full gradient descent. $k=32$, $learning-rate-like parameter = 400$, $lambda = 0.02$.
 
 \subsubsection{Kernel Ridge Regression Based on SVD}
 In the kernel ridge regression (KRR) based on SVD model [---ref\_a---], the user vectors $u_i$ are discarded and the movie vectors $v_j$ are used as predictors. For a user $i$, the target vector $y$ contains the observed ratings $r_i$ in the training set and $X$ denotes a matrix of movie features where each row of $X$ is the normalized movie vector $v_j$. Kernel ridge regression is trained to predict $y$.
 
 $$ \hat{y_i} = K(x_i^T, X)(K(X,X) + \lambda I)^{-1}y$$
-where $K(X, X')$ is a kernel function. $K(x_{i}^{T}, x_{j}^{T})=exp(2(x_i^Tx_j-1))$ is used in our system.
+where $K(X, X')$ is a kernel function. $K(x_{i}^{T}, x_{j}^{T})=exp(2(x_i^Tx_j-1))$ is used in our system. $k=32$, $alpha=0.7$.
 
 \subsubsection{Linear Model}
 The linear weighted model (LW) introduced in [---ref\_a---] is also adopted in our system. In this model, each movie $j$ has a weight $w_j$. The rating of a movie $j$ by a user $i$ is linear to the sum of the weights of the user's rated movies. $$formula$$ The movie weights are learned via gradient descent.
 
 %\subsection{Improvement}
 %\subsubsection{Full Gradient vs Stochastic Gradient}
-%In order to minimize the error of mean square, Stochastic Gradient Descent(SGD) is widely used [------ reference------]. But SGD is easily influenced by noise data, although it owns fast convergence speed. So we implement both full gradient decent and stochastic gradient decent and compare them in the experiment part.
+%In order to minimize the error of mean square, Stochastic Gradient Descent(SGD) is widely used [------ reference------]. But SGD is easily influenced by noise data, although it owns fast convergence speed. So we implement both full gradient decent and stochastic gradient decent and compare them in the %experiment part.
 %
 %\subsubsection{Linear Interaction vs Nolinear Interaction}
 %Either RSVD and improved RSVD adopt linear Interaction between user and items. We conduct a nolinear function $f$ in the interaction part.
@@ -162,10 +162,9 @@ The NSVD method adds nonlinearity to the interaction between user vectors and mo
     \caption{  \label{ensembleTable} RMSE of Different Ensemble Strategies on Kaggle Public Set}
 \end{table*}
 
-The final system uses the six basic predictors and eight of the CF models: UB, K-means, SVD, RSVD (SGD), BSVD (SGD), KRR-RSVD, KRR-BSVD and LW. All the predictors and models have been trained on two training/validation data splits. Ridge regression was run on each splits to obtain the corresponding ensemble weights. The final system takes the average of the two regression results and the RMSE on the Kaggle public set is shown in Table \ref{ensembleTable} with the row name "Ridge + 2-way + 2 splits". The RMSE score of the SVD with dimension reduction is 1.00501 on the Kaggle public set. The hybrid system gained a 2.55\% improvement compared with the SVD with dimension reduction.
+The final system uses the six basic predictors and eight of the CF models: UB, K-means, SVD, RSVD (SGD), BSVD (SGD), KRR-RSVD, KRR-BSVD and LW. All the predictors and models have been trained on two training/validation data splits. Ridge regression was run on each splits to obtain the corresponding ensemble weights. The final system takes the average of the two regression results and the RMSE on the Kaggle public set is shown in Table \ref{ensembleTable} with the row name "Ridge + 2-way + 2 splits". The RMSE score of the BSVD (FGD), which is the best single model on the validation set, is 0.98611 on the Kaggle public set. The hybrid system gained a 0.68\% improvement over the best single model we have implemented. This result demonstrates that the ensemble method can benefit from the advantages of different models and achieve a better prediction ability.
 
-
-The ensemble model that combines all six above-mentioned model achieve a XXX RMSE. The ensemble gain a XXX improvement compare to XXX, which is the best model among all single model. The results demonstrate that the ensemble methods strengthen the ability of model to fit complicated data.
+We also tested different ensemble strategies, including one that didn't add two-way interactions of the models, one that used linear regression instead of ridge regression and one that used only one training/validation data split. The RMSE scores of these strategies are all higher than our final strategy (ridge regression with two-way interaction on two data splits).
 
 \section{Summary}
 \subsection{Conclusion}
