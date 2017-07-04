@@ -33,9 +33,9 @@ The rest of the paper is organized as follows. In Section 2, we first introduce 
 In this paper, we are focusing on the movie rating problem. We are given some training samples which are composed of the user id $i$, movie id $j$ and the corresponding rating $r_{ij}$. All the ratings are integer values between 1 and 5. The task is to predict the rating $r_{i'j'}$ given user $i'$ and movie $j'$.
 
 \subsection{Models}
-We have implemented both memory-based methods and model-based methods, including the user-based neighbourhood-based method, the SVD with dimension reduction, the nonlinear biased regularized SVD and some of the methods introduced in [---ref\_a---].
+We have implemented both memory-based methods and model-based methods, including the user-based neighbourhood-based method, the SVD with dimension reduction, the nonlinear biased regularized SVD and some of the methods introduced in \cite{Paterek2007Improving}.
 \subsubsection{Basic Models}
-Same to [---ref\_a---], we used 6 basic predictors which exploit the simple statistics of the data.
+Same to \cite{Paterek2007Improving}, we used 6 basic predictors which exploit the simple statistics of the data.
 
 \subsubsection{User-based Model}
 In the User-based (UB) collaborative filtering, the prediction of one user's rating to an item is an linear combination of the ratings of this item provided by the users similar to him. We implemented a method described in [---ref\_b---]. The similarity between users is evaluated by the Pearson correlation coefficient:
@@ -47,7 +47,7 @@ $${\hat r_{uj}} = {\mu _u} + \frac{{\sum\limits_{v \in {P_u}(j)} {Sim(u,v) \cdot
 $K$ is set to 500 in our system.
 
 \subsubsection{K-means}
-We used the K-means algorithm to classify the users into $K$ clusters $C_k$ and to minimized the intra-cluster variance. The intra-cluster variance is defined as in [---ref\_a---], $$   \sum_{k=1}^K \sum_{i \in C_k} (||r_{i}-\mu_k||^2)  $$, where $$  ||r_{i}-\mu_k||^2 = \sum_{j \in kn_i}(r_{ij}-\mu_{kj})^2  $$, where $kn_i$ is the set of movie rated by user $i$.
+We used the K-means algorithm to classify the users into $K$ clusters $C_k$ and to minimized the intra-cluster variance. The intra-cluster variance is defined as in \cite{Paterek2007Improving}, $$   \sum_{k=1}^K \sum_{i \in C_k} (||r_{i}-\mu_k||^2)  $$, where $$  ||r_{i}-\mu_k||^2 = \sum_{j \in kn_i}(r_{ij}-\mu_{kj})^2  $$, where $kn_i$ is the set of movie rated by user $i$.
  For a user $i$ classified to cluster $k$, $\mu_{kj}$ is our predicted rating for the movie $j$. We have run the K-means algorithm 11 times with $K$ varying from 4 to 24 with a stride of 2 and took an average of the predicting results as our prediction.
 
 \subsubsection{SVD with Dimension Reduction}
@@ -75,13 +75,13 @@ The nonlinear regularized SVD with bias (NSVD) further considered adding some no
 The training objective is the same as that of RSVD. The parameters are learned using full gradient descent. $k=32$, learning-rate-like parameter = $400$, $lambda = 0.02$.
 
 \subsubsection{Kernel Ridge Regression Based on SVD}
-In the kernel ridge regression (KRR) based on SVD model [---ref\_a---], the user vectors $u_i$ are discarded and the movie vectors $v_j$ are used as predictors. For a user $i$, the target vector $y$ contains the observed ratings $r_i$ in the training set and $X$ denotes a matrix of movie features where each row of $X$ is the normalized movie vector $v_j$. Kernel ridge regression is trained to predict $y$.
+In the kernel ridge regression (KRR) based on SVD model \cite{Paterek2007Improving}, the user vectors $u_i$ are discarded and the movie vectors $v_j$ are used as predictors. For a user $i$, the target vector $y$ contains the observed ratings $r_i$ in the training set and $X$ denotes a matrix of movie features where each row of $X$ is the normalized movie vector $v_j$. Kernel ridge regression is trained to predict $y$.
 
 $$ \hat{y_i} = K(x_i^T, X)(K(X,X) + \lambda I)^{-1}y$$
 where $K(X, X')$ is a kernel function. $K(x_{i}^{T}, x_{j}^{T})=exp(2(x_i^Tx_j-1))$ is used in our system. $k=32$, $alpha=0.7$.
 
 \subsubsection{Linear Model}
-The linear weighted model (LW) introduced in [---ref\_a---] is also adopted in our system. In this model, each movie $j$ has a weight $w_j$. The rating of a movie $j$ by a user $i$ is linear to the sum of the weights of the user's rated movies.
+The linear weighted model (LW) introduced in \cite{Paterek2007Improving} is also adopted in our system. In this model, each movie $j$ has a weight $w_j$. The rating of a movie $j$ by a user $i$ is linear to the sum of the weights of the user's rated movies.
 \[{\hat r_{ij}} = {m_j} + {e_i} \cdot \sum\limits_{{j_2} \in {J_i}} {{w_{{j_2}}}} \]
 , where $J_i$ is the set of movies rated by user $i$, $m_j$ is the mean rating of movie $j$ and constant weights ${e_i} = {(\left| {{J_i}} \right| + 1)^{ - 1/2}}$
 The movie weights are learned via gradient descent which minimizes the regularized square error. The learning rate is set to 0.01 and the regularization parameter is set to 0.02.
@@ -187,5 +187,5 @@ We may incorporate some deep learning models into our framework. And for now we 
 do we need this???
 
 \bibliographystyle{IEEEtran}
-\bibliography{howto-paper}
+\bibliography{report}
 \end{document}
